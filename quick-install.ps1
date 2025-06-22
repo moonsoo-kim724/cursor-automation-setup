@@ -126,8 +126,8 @@ function Install-RequiredTools {
 function Download-AutomationFiles {
     Write-ColorOutput "📥 자동화 설정 파일 다운로드 중..." "Header"
     
-    # GitHub 저장소에서 클론 (실제 저장소 URL로 교체 필요)
-    $repoUrl = "https://github.com/username/cursor-automation-setup.git"  # 실제 URL로 교체
+    # GitHub 저장소에서 클론
+    $repoUrl = "https://github.com/moonsoo-kim724/cursor-automation-setup.git"
     
     if (Test-Path $InstallPath) {
         Write-ColorOutput "   🔄 기존 설치 폴더 발견, 백업 중..." "Warning"

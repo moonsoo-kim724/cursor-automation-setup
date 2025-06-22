@@ -36,8 +36,8 @@
 
 ### **2단계: 이 저장소 클론**
 ```powershell
-# GitHub에서 클론 (실제 URL로 교체)
-git clone https://github.com/사용자명/cursor-automation-setup.git C:\Cursor_Project\Cursor설정관리용
+# GitHub에서 클론
+git clone https://github.com/moonsoo-kim724/cursor-automation-setup.git C:\Cursor_Project\Cursor설정관리용
 cd C:\Cursor_Project\Cursor설정관리용
 ```
 
