@@ -238,6 +238,29 @@ function Setup-WSLAutomation {
     }
 }
 
+function Setup-MCPServers {
+    Write-ColorOutput "🤖 MCP Servers 설정 중..." "Header"
+    
+    try {
+        # Node.js 설치 (MCP Servers 실행에 필요)
+        Write-ColorOutput "   🔄 Node.js 설치 중..." "Info"
+        winget install --id OpenJS.NodeJS -e --source winget --accept-package-agreements --accept-source-agreements
+        
+        # MCP 설정 스크립트 실행
+        $mcpScript = Join-Path $InstallPath "scripts\setup-mcp-servers.ps1"
+        if (Test-Path $mcpScript) {
+            Write-ColorOutput "   🔄 MCP Servers 자동 설치 실행..." "Info"
+            & $mcpScript
+            Write-ColorOutput "   ✅ MCP Servers 설정 완료" "Success"
+        } else {
+            Write-ColorOutput "   ⚠️  MCP 설정 스크립트를 찾을 수 없습니다" "Warning"
+        }
+        
+    } catch {
+        Write-ColorOutput "   ⚠️  MCP Servers 설정 실패. 수동으로 설정하세요." "Warning"
+    }
+}
+
 function Show-PostInstallInstructions {
     Write-ColorOutput "`n🎉 설치 완료!" "Header"
     Write-ColorOutput "=========================================" "Header"
@@ -309,7 +332,10 @@ function Start-QuickInstall {
         # 6. WSL 자동화 설정
         Setup-WSLAutomation
         
-        # 7. 설치 완료 안내
+        # 7. MCP Servers 설정
+        Setup-MCPServers
+        
+        # 8. 설치 완료 안내
         Show-PostInstallInstructions
         
     } catch {
