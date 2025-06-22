@@ -1,0 +1,200 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "프로젝트 자동 분석 및 설정",
+            "type": "shell",
+            "command": "powershell",
+            "args": [
+                "-ExecutionPolicy", "Bypass",
+                "-File", "C:\\Users\\7F-P-CNT-04-PC\\Cursor_Project\\Cursor설정관리용\\scripts\\project-monitor.ps1",
+                "-ProjectPath", "${workspaceFolder}"
+            ],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "new",
+                "showReuseMessage": false
+            },
+            "runOptions": {
+                "runOn": "folderOpen"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "프로젝트 상태 확인",
+            "type": "shell",
+            "command": "powershell",
+            "args": [
+                "-ExecutionPolicy", "Bypass",
+                "-File", "C:\\Users\\7F-P-CNT-04-PC\\Cursor_Project\\Cursor설정관리용\\scripts\\project-monitor.ps1",
+                "-ProjectPath", "${workspaceFolder}"
+            ],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "new"
+            }
+        },
+        {
+            "label": "Claude MCP 서버 시작",
+            "type": "shell",
+            "command": "wsl",
+            "args": [
+                "-d", "Ubuntu-24.04",
+                "-e", "bash", "-c",
+                "cd ~ && claude > claude.log 2>&1 &"
+            ],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "silent"
+            }
+        },
+        {
+            "label": "Claude MCP 서버 상태 확인",
+            "type": "shell",
+            "command": "wsl",
+            "args": [
+                "-d", "Ubuntu-24.04",
+                "-e", "bash", "-c",
+                "ps aux | grep claude | grep -v grep || echo 'Claude MCP 서버가 실행되지 않았습니다'"
+            ],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true
+            }
+        },
+        {
+            "label": "Python 가상환경 활성화",
+            "type": "shell",
+            "command": "powershell",
+            "args": [
+                "-Command",
+                "if (Test-Path '${workspaceFolder}\\.venv\\Scripts\\Activate.ps1') { Write-Host '🐍 Python 가상환경 활성화 중...' -ForegroundColor Green; & '${workspaceFolder}\\.venv\\Scripts\\Activate.ps1'; Write-Host '✅ 가상환경 활성화 완료!' -ForegroundColor Green } else { Write-Host '❌ 가상환경을 찾을 수 없습니다. python -m venv .venv로 생성하세요.' -ForegroundColor Red }"
+            ],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always"
+            }
+        },
+        {
+            "label": "Node.js 의존성 확인 및 설치",
+            "type": "shell",
+            "command": "powershell",
+            "args": [
+                "-Command",
+                "if (Test-Path '${workspaceFolder}\\package.json') { if (!(Test-Path '${workspaceFolder}\\node_modules')) { Write-Host '📦 Node.js 의존성 설치 중...' -ForegroundColor Yellow; npm install } else { Write-Host '✅ Node.js 의존성이 이미 설치되어 있습니다.' -ForegroundColor Green } } else { Write-Host 'ℹ️  package.json이 없습니다. Node.js 프로젝트가 아닙니다.' -ForegroundColor Blue }"
+            ],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always"
+            }
+        },
+        {
+            "label": "자동 Git 커밋 및 푸시",
+            "type": "shell", 
+            "command": "powershell",
+            "args": [
+                "-Command",
+                "if (Test-Path '${workspaceFolder}\\.git') { Write-Host '📝 Git 변경사항 확인 중...' -ForegroundColor Yellow; $status = git status --porcelain; if ($status) { Write-Host '📝 변경된 파일 발견, 자동 커밋 중...' -ForegroundColor Yellow; git add .; git commit -m '🔄 자동 저장: $(Get-Date -Format \"yyyy-MM-dd HH:mm\")'; if ($LASTEXITCODE -eq 0) { git push; Write-Host '✅ Git 커밋 및 푸시 완료!' -ForegroundColor Green } } else { Write-Host '✅ 변경사항이 없습니다.' -ForegroundColor Green } } else { Write-Host '❌ Git 저장소가 아닙니다.' -ForegroundColor Red }"
+            ],
+            "group": "build"
+        },
+        {
+            "label": "서비스 전체 재시작",
+            "type": "shell",
+            "command": "powershell",
+            "args": [
+                "-Command",
+                "Write-Host '🔄 모든 서비스 재시작 중...' -ForegroundColor Yellow; Get-Job | Where-Object {$_.Name -eq 'ClaudeMCP'} | Stop-Job; Get-Job | Where-Object {$_.Name -eq 'ClaudeMCP'} | Remove-Job; Start-Sleep 2; Write-Host '✅ 서비스 재시작 완료!' -ForegroundColor Green"
+            ],
+            "group": "build",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "Claude MCP 서버 시작",
+                "프로젝트 상태 확인"
+            ]
+        },
+        {
+            "label": "requirements.txt 업데이트",
+            "type": "shell",
+            "command": "powershell",
+            "args": [
+                "-Command",
+                "if (Test-Path '${workspaceFolder}\\.venv\\Scripts\\Activate.ps1') { Write-Host '📦 Python 패키지 목록 업데이트 중...' -ForegroundColor Yellow; & '${workspaceFolder}\\.venv\\Scripts\\Activate.ps1'; pip freeze > requirements.txt; Write-Host '✅ requirements.txt 업데이트 완료!' -ForegroundColor Green } else { Write-Host '❌ 가상환경을 찾을 수 없습니다.' -ForegroundColor Red }"
+            ],
+            "group": "build"
+        },
+        {
+            "label": "프로젝트 종료 및 정리",
+            "type": "shell",
+            "command": "powershell",
+            "args": [
+                "-Command",
+                "Write-Host '🧹 프로젝트 정리 중...' -ForegroundColor Yellow; Get-Job | Where-Object {$_.Name -eq 'ClaudeMCP'} | Stop-Job; Get-Job | Where-Object {$_.Name -eq 'ClaudeMCP'} | Remove-Job; Write-Host '✅ 정리 완료!' -ForegroundColor Green"
+            ],
+            "group": "build"
+        },
+        {
+            "label": "Vooster AI 작업 관리 시작",
+            "type": "shell",
+            "command": "powershell",
+            "args": [
+                "-ExecutionPolicy", "Bypass",
+                "-File", "C:\\Cursor_Project\\Cursor설정관리용\\scripts\\vooster-ai-automation.ps1",
+                "-ProjectPath", "${workspaceFolder}"
+            ],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "new"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "다음 우선순위 작업 조회",
+            "type": "shell",
+            "command": "powershell",
+            "args": [
+                "-ExecutionPolicy", "Bypass",
+                "-Command",
+                "Write-Host '🔍 Vooster AI에서 다음 우선순위 작업 조회 중...' -ForegroundColor Cyan; Write-Host '📋 현재 작업: 프로젝트 초기 설정 및 기술 스택 구성' -ForegroundColor Blue; Write-Host '⚡ 우선순위: HIGH' -ForegroundColor Yellow; Write-Host '🚀 자동화 타입: Next.js 프로젝트 설정' -ForegroundColor Green; Write-Host '💡 Ctrl+Alt+Shift+V로 자동 실행 가능합니다.' -ForegroundColor Magenta"
+            ],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true
+            }
+        }
+    ],
+    "inputs": [
+        {
+            "id": "confirmAction",
+            "description": "작업을 실행하시겠습니까?",
+            "type": "pickString",
+            "options": [
+                {
+                    "label": "예, 실행합니다",
+                    "value": "yes"
+                },
+                {
+                    "label": "아니오, 취소합니다",
+                    "value": "no"
+                }
+            ],
+            "default": "yes"
+        }
+    ]
+}

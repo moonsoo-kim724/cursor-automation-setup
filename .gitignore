@@ -1,0 +1,29 @@
+# Windows
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Logs
+*.log
+
+# 임시 파일
+*.tmp
+*.temp
+
+# PowerShell 실행 정책 관련
+*.ps1xml
+
+# VSCode 워크스페이스
+*.code-workspace
+
+# Node modules (혹시 있을 경우)
+node_modules/
+
+# Python 가상환경
+.venv/
+__pycache__/
+
+# 개인 정보
+*secret*
+*password*
+*token* 
