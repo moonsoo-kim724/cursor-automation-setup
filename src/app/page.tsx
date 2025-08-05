@@ -7,8 +7,9 @@ import { Chatbot } from '@/components/ui/chatbot'
 import { Input } from '@/components/ui/input'
 import { Modal, useModal } from '@/components/ui/modal'
 import { motion } from 'framer-motion'
-import { Award, Calendar, CheckCircle, Clock, Eye, MapPin, MessageCircle, Phone, Shield, Star, TrendingUp, Users } from 'lucide-react'
+import { Award, Calendar, CheckCircle, Clock, Eye, MapPin, MessageCircle, Phone, Shield, Star, TrendingUp, Users, BarChart3 } from 'lucide-react'
 import { useEffect, useState } from 'react'
+import Link from 'next/link'
 
 export default function Home() {
   const consultModal = useModal()
@@ -873,6 +874,20 @@ export default function Home() {
         }}
         language="ko"
       />
+
+      {/* 부스터 대시보드 접속 버튼 - 관리자용 */}
+      <div className="fixed bottom-6 left-6 z-50">
+        <Link href="/dashboard">
+          <Button
+            variant="outline"
+            size="sm"
+            className="border-brand-primary-300 bg-white/90 backdrop-blur-sm text-brand-primary-700 hover:bg-brand-primary-50 shadow-lg"
+          >
+            <BarChart3 className="h-4 w-4 mr-2" />
+            2RU4 대시보드
+          </Button>
+        </Link>
+      </div>
     </main>
   )
 }

@@ -291,7 +291,7 @@ export function Chatbot({ isOpen, onClose, onBookingRequest, language = 'ko' }: 
       setMessages(prev => [...prev, fallbackMessage])
     }
 
-    setIsTyping(false)
+      setIsTyping(false)
   }
 
   const generateResponse = (message: string, lang: 'ko' | 'en' | 'zh') => {

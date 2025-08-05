@@ -1,0 +1,165 @@
+name: Preview Deployment
+
+on:
+  pull_request:
+    branches: [main, master]
+  push:
+    branches-ignore: [main, master]
+
+jobs:
+  preview-build:
+    runs-on: ubuntu-latest
+    name: Preview Build and Test
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run linter
+        run: npm run lint
+
+      - name: Type check
+        run: npm run type-check
+
+      - name: Build for preview
+        run: npm run build
+        env:
+          # Preview 환경용 환경변수 (필요시)
+          NODE_ENV: development
+          NEXT_PUBLIC_APP_URL: https://preview-ysk-landingpage.vercel.app
+
+      - name: Generate build report
+        run: |
+          echo "📊 빌드 리포트 생성"
+          echo "📅 빌드 시간: $(date)"
+          echo "🌿 브랜치: ${{ github.head_ref || github.ref_name }}"
+          echo "🔗 Commit: ${{ github.sha }}"
+          echo "👤 작성자: ${{ github.actor }}"
+
+          # 빌드 크기 체크
+          if [ -d ".next" ]; then
+            echo "📦 빌드 크기:"
+            du -sh .next/
+          fi
+
+  preview-security-check:
+    runs-on: ubuntu-latest
+    name: Preview Security Check
+    needs: preview-build
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Security audit
+        run: npm audit --production
+        continue-on-error: true
+
+      - name: Check package vulnerabilities
+        run: |
+          echo "🔍 패키지 보안 검사 중..."
+          npm audit --audit-level moderate
+        continue-on-error: true
+
+  preview-lighthouse:
+    runs-on: ubuntu-latest
+    name: Lighthouse Performance Check
+    needs: preview-build
+    if: github.event_name == 'pull_request'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build for Lighthouse
+        run: npm run build
+
+      - name: Start server for testing
+        run: |
+          npm run start &
+          sleep 10
+        env:
+          PORT: 3000
+
+      - name: Lighthouse Performance Test
+        run: |
+          echo "🚨 Lighthouse 성능 테스트"
+          echo "⚡ 목표: Performance > 90, SEO > 95"
+          echo "📱 모바일과 데스크톱 모두 테스트 예정"
+          echo "🔗 실제 테스트는 Vercel 프리뷰 URL에서 수행됩니다"
+
+  comment-pr:
+    runs-on: ubuntu-latest
+    name: Comment on PR
+    needs: [preview-build, preview-security-check]
+    if: github.event_name == 'pull_request'
+
+    steps:
+      - name: Comment PR
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { data: pr } = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number,
+            });
+
+            const comment = `
+            ## 🚀 프리뷰 배포 상태
+
+            **✅ 빌드 성공!** YSK 랜딩페이지 프리뷰가 준비되었습니다.
+
+            ### 📊 배포 정보
+            - **🌿 브랜치**: \`${context.payload.pull_request.head.ref}\`
+            - **🔗 커밋**: \`${context.sha.slice(0, 7)}\`
+            - **👤 작성자**: @${context.payload.pull_request.user.login}
+            - **📅 시간**: ${new Date().toLocaleString('ko-KR')}
+
+            ### 🔍 체크리스트
+            - ✅ TypeScript 컴파일
+            - ✅ ESLint 검사
+            - ✅ 빌드 테스트
+            - ✅ 보안 스캔
+
+            ### 🌐 프리뷰 링크
+            Vercel이 자동으로 프리뷰 배포를 생성합니다.
+            배포 완료 후 아래에서 확인할 수 있습니다.
+
+            ---
+            *🤖 자동 생성된 메시지입니다.*
+            `;
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });

@@ -1,0 +1,103 @@
+name: CodeRabbit AI Review
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  pull_request_review_comment:
+    types: [created]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    name: CodeRabbit AI Code Review
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: CodeRabbit AI Review
+        uses: coderabbitai/ai-pr-reviewer@latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        with:
+          debug: false
+          review_simple_changes: false
+          review_comment_lgtm: false
+          openai_light_model: gpt-3.5-turbo
+          openai_heavy_model: gpt-4
+          openai_model_temperature: 0.2
+          openai_retries: 3
+          openai_timeout_ms: 120000
+          openai_concurrency_limit: 4
+          system_message: |
+            당신은 @coderabbitai입니다. 연수김안과 AI 랜딩페이지 프로젝트의 코드 리뷰를 담당하는 AI 어시스턴트입니다.
+            
+            다음 가이드라인을 따라 리뷰해주세요:
+            
+            **기술 스택:**
+            - Next.js 14 (App Router)
+            - TypeScript 5.0+
+            - Tailwind CSS 3.4
+            - Supabase (백엔드)
+            - OpenAI GPT-4o (AI 챗봇)
+            - shadcn/ui (UI 컴포넌트)
+            
+            **리뷰 포커스:**
+            1. 🔒 **보안**: 개인정보 보호, SQL 인젝션, XSS 방지
+            2. ⚡ **성능**: Core Web Vitals, 번들 크기, 이미지 최적화
+            3. 🎯 **접근성**: WCAG 2.1 AA 준수, 키보드 내비게이션
+            4. 🧩 **코드 품질**: TypeScript 타입 안전성, 재사용성
+            5. 🎨 **UI/UX**: 의료 브랜드 가이드라인 준수
+            6. 📱 **반응형**: 모바일 우선 디자인
+            
+            **의료 규정 준수:**
+            - 과장 광고 금지
+            - 개인정보보호법 준수
+            - 의료법 준수
+            
+            **언어**: 한국어로 리뷰 제공
+          summarize: |
+            다음 형식으로 PR 요약을 제공해주세요:
+            
+            ## 🔍 CodeRabbit AI 리뷰 요약
+            
+            ### 📊 변경사항 개요
+            - 수정된 파일: X개
+            - 추가된 줄: +XXX
+            - 삭제된 줄: -XXX
+            
+            ### ⭐ 주요 개선사항
+            - [개선사항 1]
+            - [개선사항 2]
+            
+            ### ⚠️ 주의사항
+            - [주의사항 1]
+            - [주의사항 2]
+            
+            ### 🎯 권장사항
+            - [권장사항 1]
+            - [권장사항 2]
+          summarize_release_notes: |
+            다음 형식으로 릴리즈 노트를 작성해주세요:
+            
+            ## 🚀 릴리즈 노트
+            
+            ### ✨ 새로운 기능
+            - [새 기능들]
+            
+            ### 🐛 버그 수정
+            - [수정된 버그들]
+            
+            ### 🔧 개선사항
+            - [개선된 항목들]
+            
+            ### ⚠️ 주의사항
+            - [주의할 점들]

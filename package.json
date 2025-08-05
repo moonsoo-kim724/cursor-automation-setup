@@ -12,9 +12,19 @@
     "type-check": "tsc --noEmit",
     "clean": "rm -rf .next",
     "analyze": "ANALYZE=true npm run build",
-    "postbuild": "next-sitemap"
+    "postbuild": "next-sitemap",
+    "supabase:start": "supabase start",
+    "supabase:stop": "supabase stop",
+    "supabase:status": "supabase status",
+    "supabase:reset": "supabase db reset",
+    "supabase:migrate": "supabase db push",
+    "supabase:diff": "supabase db diff",
+    "supabase:generate": "supabase gen types typescript --local --schema public > types/supabase.ts",
+    "db:migrate": "supabase db push",
+    "db:reset": "supabase db reset"
   },
   "dependencies": {
+    "@hookform/resolvers": "^5.2.1",
     "@radix-ui/react-dialog": "^1.1.14",
     "@radix-ui/react-portal": "^1.1.9",
     "@radix-ui/react-slot": "^1.2.3",
@@ -31,9 +41,11 @@
     "openai": "^5.8.3",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
+    "react-hook-form": "^7.62.0",
     "tailwind-merge": "^3.3.1",
     "tailwindcss-animate": "^1.0.7",
-    "typescript": "^5.0.0"
+    "typescript": "^5.0.0",
+    "zod": "^3.25.76"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",
@@ -45,6 +57,7 @@
     "next-sitemap": "^4.2.3",
     "postcss": "^8.0.0",
     "prettier": "^3.0.0",
+    "supabase": "^2.33.9",
     "tailwindcss": "^3.4.0"
   },
   "description": "연수김안과의원 SEO/AEO 최적화 랜딩페이지",

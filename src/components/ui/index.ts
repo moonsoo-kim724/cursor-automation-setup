@@ -3,6 +3,7 @@
 
 export * from './button'
 export * from './card'
+export * from './dashboard'
 export * from './input' 
 export * from './modal'
 export * from './icon' 
