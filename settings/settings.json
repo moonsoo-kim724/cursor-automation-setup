@@ -1,0 +1,122 @@
+{
+    "terminal.integrated.defaultProfile.windows": "WSL",
+    "terminal.integrated.profiles.windows": {
+        "WSL": {
+            "path": "wsl.exe",
+            "args": ["-d", "Ubuntu-24.04"],
+            "icon": "terminal-ubuntu",
+            "color": "terminal.ansiBlue"
+        }
+    },
+    "terminal.integrated.automationProfile.windows": {
+        "path": "wsl.exe",
+        "args": ["-d", "Ubuntu-24.04"]
+    },
+    "terminal.integrated.startupShellArgs.wsl": ["-l"],
+    
+    // Python 설정
+    "python.defaultInterpreterPath": ".venv/Scripts/python.exe",
+    "python.terminal.activateEnvironment": true,
+    "python.linting.enabled": true,
+    "python.linting.pylintEnabled": true,
+    "python.formatting.provider": "black",
+    "python.analysis.autoImportCompletions": true,
+    "python.analysis.typeCheckingMode": "basic",
+    
+    // JavaScript/TypeScript 설정
+    "typescript.preferences.importModuleSpecifier": "relative",
+    "javascript.preferences.importModuleSpecifier": "relative",
+    "typescript.updateImportsOnFileMove.enabled": "always",
+    
+    // Next.js 및 React 설정
+    "emmet.includeLanguages": {
+        "javascript": "javascriptreact",
+        "typescript": "typescriptreact"
+    },
+    "emmet.syntaxProfiles": {
+        "javascript": "jsx",
+        "typescript": "tsx"
+    },
+    
+    // 에디터 설정
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+        "source.organizeImports": "explicit"
+    },
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true,
+    "editor.wordWrap": "on",
+    "editor.minimap.enabled": true,
+    "editor.suggestSelection": "first",
+    
+    // 파일 자동 저장
+    "files.autoSave": "afterDelay",
+    "files.autoSaveDelay": 1000,
+    "files.watcherExclude": {
+        "**/.git/objects/**": true,
+        "**/.git/subtree-cache/**": true,
+        "**/node_modules/*/**": true,
+        "**/.venv/**": true,
+        "**/venv/**": true
+    },
+    
+    // Git 설정
+    "git.autofetch": true,
+    "git.enableSmartCommit": true,
+    "git.confirmSync": false,
+    "git.autoStash": true,
+    "git.allowForcePush": false,
+    
+    // 워크벤치 설정
+    "workbench.startupEditor": "newUntitledFile",
+    "workbench.editor.enablePreview": false,
+    "workbench.colorTheme": "Default Dark+",
+    "workbench.iconTheme": "vs-seti",
+    
+    // 터미널 환경변수 설정
+    "terminal.integrated.env.windows": {
+        "PYTHONPATH": "${workspaceFolder}/src",
+        "NODE_ENV": "development"
+    },
+    
+    // 확장 프로그램 설정
+    "extensions.autoUpdate": true,
+    "extensions.autoCheckUpdates": true,
+    
+    // IntelliSense 설정
+    "typescript.suggest.autoImports": true,
+    "javascript.suggest.autoImports": true,
+    
+    // Tailwind CSS 설정
+    "tailwindCSS.includeLanguages": {
+        "typescript": "javascript",
+        "typescriptreact": "javascript"
+    },
+    "tailwindCSS.experimental.classRegex": [
+        ["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
+        ["cn\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"]
+    ],
+    
+    // 검색 설정
+    "search.exclude": {
+        "**/node_modules": true,
+        "**/bower_components": true,
+        "**/*.code-search": true,
+        "**/.venv": true,
+        "**/venv": true,
+        "**/dist": true,
+        "**/build": true,
+        "**/.next": true
+    },
+    
+    // 프로젝트 자동 감지 설정
+    "task.autoDetect": "on",
+    "npm.autoDetect": "on",
+    "typescript.tsc.autoDetect": "on",
+    
+    // Claude MCP 자동 실행 설정
+    "task.allowAutomaticTasks": "on",
+    
+    // 폴더 열기 시 자동 실행 설정
+    "security.workspace.trust.untrustedFiles": "open"
+}

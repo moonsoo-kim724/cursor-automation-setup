@@ -1,0 +1,252 @@
+{
+  "tags": {
+    "master": {
+      "metadata": {
+        "name": "연수김안과의원 랜딩페이지",
+        "description": "AI 기반 디지털 마케팅 랜딩페이지 개발 프로젝트",
+        "created": "2025-01-27T12:00:00Z"
+      },
+      "tasks": [
+        {
+          "id": "1",
+          "title": "프로젝트 설정 및 초기 구조 생성",
+          "description": "Next.js 14 App Router, Tailwind CSS 3.4, TypeScript 프로젝트 설정",
+          "status": "pending",
+          "priority": "high",
+          "tags": ["setup", "infrastructure"],
+          "created": "2025-01-27T12:00:00Z",
+          "details": "- Next.js 14 App Router 설정\n- Tailwind CSS 3.4 설정\n- TypeScript 설정\n- 폴더 구조 생성\n- 기본 컴포넌트 설정",
+          "complexity": 3
+        },
+        {
+          "id": "2", 
+          "title": "Hero Section 개발",
+          "description": "메인 랜딩페이지 Hero Section 구현 - '30년의 신뢰, AI로 미래를 열다' 브랜딩",
+          "status": "pending",
+          "priority": "high",
+          "tags": ["frontend", "ui"],
+          "created": "2025-01-27T12:00:00Z",
+          "dependencies": ["1"],
+          "details": "- Hero Section 디자인 구현\n- 연수김안과의원 브랜딩\n- 무료 상담 받기 CTA 버튼\n- 반응형 디자인\n- 애니메이션 효과",
+          "complexity": 5
+        },
+        {
+          "id": "3",
+          "title": "AI 챗봇 시스템 구현",
+          "description": "24/7 AI 상담 챗봇 시스템 구현 - 증상 분류 및 검사/수술 매핑",
+          "status": "pending",
+          "priority": "high",
+          "tags": ["ai", "chatbot"],
+          "created": "2025-01-27T12:00:00Z",
+          "dependencies": ["1"],
+          "details": "- AI 챗봇 UI 구현\n- 증상 분류 (12개 카테고리)\n- 검사/수술 매핑 로직\n- 실시간 예약 CTA\n- OpenAI GPT-4o 연동",
+          "complexity": 8
+        },
+        {
+          "id": "4",
+          "title": "주요 서비스 섹션 구현",
+          "description": "라식/라섹, 백내장 수술, 망막 질환 서비스 소개 섹션",
+          "status": "pending",
+          "priority": "high",
+          "tags": ["frontend", "services"],
+          "created": "2025-01-27T12:00:00Z",
+          "dependencies": ["1"],
+          "details": "- 라식/라섹 서비스 소개\n- 백내장 수술 정보\n- 망막 질환 치료\n- 서비스별 상세 페이지 링크\n- 예약 연결 CTA",
+          "complexity": 4
+        },
+        {
+          "id": "5",
+          "title": "의료진 소개 섹션",
+          "description": "김○○ 원장 소개 및 의료진 프로필 섹션",
+          "status": "pending",
+          "priority": "medium",
+          "tags": ["frontend", "doctors"],
+          "created": "2025-01-27T12:00:00Z",
+          "dependencies": ["1"],
+          "details": "- 김○○ 원장 프로필\n- 30년 경력 강조\n- 전문 분야 소개\n- 의료진 사진 및 경력\n- 신뢰도 향상 요소",
+          "complexity": 3
+        },
+        {
+          "id": "6",
+          "title": "예약 시스템 구현",
+          "description": "실시간 예약 시스템 및 예약 현황 표시",
+          "status": "pending",
+          "priority": "high",
+          "tags": ["booking", "system"],
+          "created": "2025-01-27T12:00:00Z",
+          "dependencies": ["1"],
+          "details": "- 실시간 예약 현황\n- 온라인 예약 폼\n- 달력 인터페이스\n- 예약 확인 시스템\n- 대기시간 표시",
+          "complexity": 7
+        },
+        {
+          "id": "7",
+          "title": "병원 정보 및 위치 섹션",
+          "description": "연수김안과의원 위치, 진료시간, 연락처 정보",
+          "status": "pending",
+          "priority": "medium",
+          "tags": ["frontend", "info"],
+          "created": "2025-01-27T12:00:00Z",
+          "dependencies": ["1"],
+          "details": "- 병원 위치 지도\n- 진료 시간 안내\n- 연락처 정보\n- 길찾기 기능\n- 교통편 안내",
+          "complexity": 3
+        },
+        {
+          "id": "8",
+          "title": "환자 후기 및 수술 실적",
+          "description": "환자 후기 및 수술 실적 섹션 구현",
+          "status": "pending",
+          "priority": "medium",
+          "tags": ["frontend", "reviews"],
+          "created": "2025-01-27T12:00:00Z",
+          "dependencies": ["1"],
+          "details": "- 환자 후기 카드\n- 수술 실적 통계\n- 만족도 지표\n- 후기 슬라이더\n- 신뢰도 지표",
+          "complexity": 4
+        },
+        {
+          "id": "9",
+          "title": "SEO/AEO 최적화",
+          "description": "구조화 데이터, 메타태그, 사이트맵 등 검색 최적화",
+          "status": "pending",
+          "priority": "high",
+          "tags": ["seo", "optimization"],
+          "created": "2025-01-27T12:00:00Z",
+          "dependencies": ["1"],
+          "details": "- 구조화 데이터 (JSON-LD)\n- 메타 태그 최적화\n- FAQ 섹션 구현\n- Speakable 마크업\n- 사이트맵 생성",
+          "complexity": 6
+        },
+        {
+          "id": "10",
+          "title": "접근성 구현 (KWCAG 2.1 AA)",
+          "description": "웹 접근성 표준 준수 구현",
+          "status": "pending",
+          "priority": "medium",
+          "tags": ["accessibility", "a11y"],
+          "created": "2025-01-27T12:00:00Z",
+          "dependencies": ["1"],
+          "details": "- 키보드 내비게이션\n- 스크린 리더 지원\n- 고대비 모드\n- aria-label 적용\n- 포커스 관리",
+          "complexity": 5
+        },
+        {
+          "id": "11",
+          "title": "모바일 최적화 및 PWA",
+          "description": "모바일 퍼스트 디자인 및 PWA 구현",
+          "status": "pending",
+          "priority": "high",
+          "tags": ["mobile", "pwa"],
+          "created": "2025-01-27T12:00:00Z",
+          "dependencies": ["1"],
+          "details": "- 모바일 퍼스트 디자인\n- PWA 매니페스트\n- 서비스 워커\n- 터치 최적화\n- 오프라인 지원",
+          "complexity": 6
+        },
+        {
+          "id": "12",
+          "title": "카카오톡 연동",
+          "description": "카카오 알림톡, 예약 확인, 리마인드 연동",
+          "status": "pending",
+          "priority": "high",
+          "tags": ["kakao", "integration"],
+          "created": "2025-01-27T12:00:00Z",
+          "dependencies": ["6"],
+          "details": "- 카카오 알림톡 API\n- 예약 확인 메시지\n- 리마인드 알림\n- 카카오 친구톡\n- 자동 메시지 시스템",
+          "complexity": 7
+        },
+        {
+          "id": "13",
+          "title": "BMX CRM 연동",
+          "description": "병원 CRM 시스템 (BMX) 연동 구현",
+          "status": "pending",
+          "priority": "high",
+          "tags": ["crm", "integration"],
+          "created": "2025-01-27T12:00:00Z",
+          "dependencies": ["6"],
+          "details": "- BMX CRM API 연동\n- 환자 정보 동기화\n- 검진 이력 연동\n- 재방문 리마인드\n- 마케팅 자동화",
+          "complexity": 9
+        },
+        {
+          "id": "14",
+          "title": "마케팅 자동화 시스템",
+          "description": "재검진 리마인드 및 이탈자 관리 시스템",
+          "status": "pending",
+          "priority": "medium",
+          "tags": ["marketing", "automation"],
+          "created": "2025-01-27T12:00:00Z",
+          "dependencies": ["13"],
+          "details": "- 재검진 리마인드 (6/12/24개월)\n- 미예약 이탈자 시퀀스\n- 수술 후기 UGC 촉진\n- 이메일 마케팅\n- 개인화 메시지",
+          "complexity": 8
+        },
+        {
+          "id": "15",
+          "title": "성능 최적화",
+          "description": "Core Web Vitals, 로딩 속도, 이미지 최적화",
+          "status": "pending",
+          "priority": "medium",
+          "tags": ["performance", "optimization"],
+          "created": "2025-01-27T12:00:00Z",
+          "dependencies": ["1"],
+          "details": "- Core Web Vitals 최적화\n- 이미지 최적화 (WebP/AVIF)\n- 코드 스플리팅\n- 캐싱 전략\n- 번들 크기 최적화",
+          "complexity": 5
+        },
+        {
+          "id": "16",
+          "title": "A/B 테스트 시스템",
+          "description": "전환율 최적화를 위한 A/B 테스트 시스템",
+          "status": "pending",
+          "priority": "low",
+          "tags": ["testing", "conversion"],
+          "created": "2025-01-27T12:00:00Z",
+          "dependencies": ["1"],
+          "details": "- A/B 테스트 프레임워크\n- 전환율 추적\n- 테스트 결과 분석\n- 실험 관리 대시보드\n- 통계적 유의성 검증",
+          "complexity": 6
+        },
+        {
+          "id": "17",
+          "title": "의료광고 심의 규정 준수",
+          "description": "한국 의료광고심의 규정 준수 및 법적 안전성 확보",
+          "status": "pending",
+          "priority": "high",
+          "tags": ["legal", "compliance"],
+          "created": "2025-01-27T12:00:00Z",
+          "dependencies": ["1"],
+          "details": "- 의료광고 심의 규정 검토\n- 과장 광고 방지\n- 법적 고지사항 추가\n- 개인정보보호법 준수\n- AI 챗봇 의료 정보 제공 한계 명시",
+          "complexity": 4
+        },
+        {
+          "id": "18",
+          "title": "보안 강화",
+          "description": "개인정보 보호 및 시스템 보안 강화",
+          "status": "pending",
+          "priority": "high",
+          "tags": ["security", "privacy"],
+          "created": "2025-01-27T12:00:00Z",
+          "dependencies": ["1"],
+          "details": "- HTTPS 적용\n- 개인정보 암호화\n- SQL 인젝션 방지\n- CSRF 보호\n- 접근 권한 관리",
+          "complexity": 6
+        },
+        {
+          "id": "19",
+          "title": "분석 및 모니터링",
+          "description": "Google Analytics, 전환 추적, 성과 모니터링",
+          "status": "pending",
+          "priority": "medium",
+          "tags": ["analytics", "monitoring"],
+          "created": "2025-01-27T12:00:00Z",
+          "dependencies": ["1"],
+          "details": "- Google Analytics 4 설정\n- 전환 추적 이벤트\n- 실시간 모니터링\n- 성과 대시보드\n- 오류 추적",
+          "complexity": 4
+        },
+        {
+          "id": "20",
+          "title": "배포 및 운영",
+          "description": "Vercel 배포, 도메인 연결, 운영 환경 설정",
+          "status": "pending",
+          "priority": "high",
+          "tags": ["deployment", "operations"],
+          "created": "2025-01-27T12:00:00Z",
+          "dependencies": ["1"],
+          "details": "- Vercel 배포 설정\n- 도메인 연결\n- SSL 인증서\n- 환경 변수 설정\n- CI/CD 파이프라인",
+          "complexity": 4
+        }
+      ]
+    }
+  }
+} 

@@ -1,0 +1,60 @@
+{
+  "name": "ysk-ai-landingpage",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "lint:fix": "next lint --fix",
+    "format": "prettier --write .",
+    "type-check": "tsc --noEmit",
+    "clean": "rm -rf .next",
+    "analyze": "ANALYZE=true npm run build",
+    "postbuild": "next-sitemap"
+  },
+  "dependencies": {
+    "@radix-ui/react-dialog": "^1.1.14",
+    "@radix-ui/react-portal": "^1.1.9",
+    "@radix-ui/react-slot": "^1.2.3",
+    "@supabase/ssr": "0.5.2",
+    "@supabase/supabase-js": "^2.53.0",
+    "@types/node": "^20.0.0",
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.0",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "framer-motion": "^12.23.0",
+    "lucide-react": "^0.525.0",
+    "next": "^14.0.0",
+    "openai": "^5.8.3",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "tailwind-merge": "^3.3.1",
+    "tailwindcss-animate": "^1.0.7",
+    "typescript": "^5.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.0",
+    "autoprefixer": "^10.0.0",
+    "eslint": "^8.0.0",
+    "eslint-config-next": "^14.0.0",
+    "next-sitemap": "^4.2.3",
+    "postcss": "^8.0.0",
+    "prettier": "^3.0.0",
+    "tailwindcss": "^3.4.0"
+  },
+  "description": "연수김안과의원 SEO/AEO 최적화 랜딩페이지",
+  "keywords": [
+    "nextjs",
+    "typescript",
+    "tailwindcss",
+    "landing-page",
+    "seo"
+  ],
+  "author": "YSK Eye Clinic",
+  "license": "MIT"
+}

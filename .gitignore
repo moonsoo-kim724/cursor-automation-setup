@@ -6,11 +6,29 @@ yarn-debug.log*
 yarn-error.log*
 dev-debug.log
 
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
 # Dependency directories
 node_modules/
+jspm_packages/
+
+# Next.js
+.next/
+out/
+
+# Production
+/build
 
 # Environment variables
 .env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
 
 # Editor directories and files
 .idea
@@ -22,3 +40,29 @@ node_modules/
 
 # OS specific
 .DS_Store
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# 임시 파일
+*.tmp
+*.temp
+
+# PowerShell 실행 정책 관련
+*.ps1xml
+
+# VSCode 워크스페이스 (settings.json은 포함)
+*.code-workspace
+
+# Python 가상환경
+.venv/
+__pycache__/
+
+# 개인 정보
+*secret*
+*password*
+*token*
+
+# 기타
+*.tgz
+*.tar.gz
