@@ -138,8 +138,8 @@ async function updateLocalProjectFile(taskData: any) {
     }
     
     // 마지막 업데이트 시간
-    projectConfig.lastUpdated = new Date().toISOString()
-    projectConfig.lastSync = new Date().toISOString()
+    ;(projectConfig as any).lastUpdated = new Date().toISOString()
+    ;(projectConfig as any).lastSync = new Date().toISOString()
     
     // 파일 저장
     fs.writeFileSync(projectConfigPath, JSON.stringify(projectConfig, null, 2), 'utf8')

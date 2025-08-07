@@ -15,7 +15,7 @@
 
 ## 🎯 개요
 
-CodeRabbit AI는 PR(Pull Request)에 대해 자동으로 코드 리뷰를 수행하는 AI 도구입니다. 
+CodeRabbit AI는 PR(Pull Request)에 대해 자동으로 코드 리뷰를 수행하는 AI 도구입니다.
 
 ### 주요 기능
 - 🔍 **자동 코드 분석**: TypeScript, React, Next.js 패턴 검증

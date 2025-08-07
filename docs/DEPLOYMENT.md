@@ -321,7 +321,7 @@ CodeRabbit과 직접 대화 가능:
 각 PR마다 자동 생성되는 체크리스트:
 
 - [ ] 🔒 개인정보 보호 규정 준수
-- [ ] ⚡ Core Web Vitals 최적화  
+- [ ] ⚡ Core Web Vitals 최적화
 - [ ] 🎯 WCAG 2.1 AA 접근성 준수
 - [ ] 🧩 TypeScript 타입 안전성
 - [ ] 📱 모바일 반응형 디자인

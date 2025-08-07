@@ -21,13 +21,21 @@
     "supabase:diff": "supabase db diff",
     "supabase:generate": "supabase gen types typescript --local --schema public > types/supabase.ts",
     "db:migrate": "supabase db push",
-    "db:reset": "supabase db reset"
+    "db:reset": "supabase db reset",
+    "scheduler:start": "curl -X POST http://localhost:3000/api/scheduler/reminder -H \"Content-Type: application/json\" -d '{\"action\":\"start\"}'",
+    "scheduler:stop": "curl -X POST http://localhost:3000/api/scheduler/reminder -H \"Content-Type: application/json\" -d '{\"action\":\"stop\"}'",
+    "scheduler:status": "curl -X POST http://localhost:3000/api/scheduler/reminder -H \"Content-Type: application/json\" -d '{\"action\":\"status\"}'",
+    "reminder:tomorrow": "curl -X POST http://localhost:3000/api/scheduler/reminder -H \"Content-Type: application/json\" -d '{\"action\":\"send_tomorrow\"}'",
+    "reminder:today": "curl -X POST http://localhost:3000/api/scheduler/reminder -H \"Content-Type: application/json\" -d '{\"action\":\"send_today\"}'",
+    "reminder:followup": "curl -X POST http://localhost:3000/api/scheduler/reminder -H \"Content-Type: application/json\" -d '{\"action\":\"send_followup\"}'"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.1",
+    "@radix-ui/react-accordion": "^1.2.11",
     "@radix-ui/react-dialog": "^1.1.14",
     "@radix-ui/react-portal": "^1.1.9",
     "@radix-ui/react-slot": "^1.2.3",
+    "@slack/web-api": "^7.9.3",
     "@supabase/ssr": "0.5.2",
     "@supabase/supabase-js": "^2.53.0",
     "@types/node": "^20.0.0",
@@ -38,17 +46,22 @@
     "framer-motion": "^12.23.0",
     "lucide-react": "^0.525.0",
     "next": "^14.0.0",
+    "node-cron": "^4.2.1",
     "openai": "^5.8.3",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-hook-form": "^7.62.0",
+    "resend": "^4.8.0",
     "tailwind-merge": "^3.3.1",
     "tailwindcss-animate": "^1.0.7",
+    "twilio": "^5.8.0",
     "typescript": "^5.0.0",
     "zod": "^3.25.76"
   },
   "devDependencies": {
+    "@svgr/webpack": "^8.1.0",
     "@types/node": "^20.0.0",
+    "@types/node-cron": "^3.0.11",
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
     "autoprefixer": "^10.0.0",
@@ -58,7 +71,8 @@
     "postcss": "^8.0.0",
     "prettier": "^3.0.0",
     "supabase": "^2.33.9",
-    "tailwindcss": "^3.4.0"
+    "tailwindcss": "^3.4.0",
+    "webpack-bundle-analyzer": "^4.10.2"
   },
   "description": "연수김안과의원 SEO/AEO 최적화 랜딩페이지",
   "keywords": [

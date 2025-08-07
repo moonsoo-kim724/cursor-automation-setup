@@ -3,13 +3,47 @@
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Chatbot } from '@/components/ui/chatbot'
 import { Input } from '@/components/ui/input'
 import { Modal, useModal } from '@/components/ui/modal'
 import { motion } from 'framer-motion'
-import { Award, Calendar, CheckCircle, Clock, Eye, MapPin, MessageCircle, Phone, Shield, Star, TrendingUp, Users, BarChart3 } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { Award, BarChart3, Calendar, CheckCircle, Clock, Eye, MapPin, MessageCircle, Phone, Shield, Star, TrendingUp, Users } from 'lucide-react'
+import dynamic from 'next/dynamic'
 import Link from 'next/link'
+import { Suspense, useEffect, useState } from 'react'
+
+// 동적 임포트로 번들 크기 최적화 - Critical 컴포넌트 우선 로드
+const Chatbot = dynamic(() => import('@/components/ui/chatbot').then(mod => ({ default: mod.Chatbot })), {
+  loading: () => <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div></div>,
+  ssr: false
+})
+
+const Leadbot = dynamic(() => import('@/components/ui/leadbot').then(mod => ({ default: mod.Leadbot })), {
+  loading: () => <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div></div>,
+  ssr: false
+})
+
+// Below-the-fold 컴포넌트들은 Intersection Observer와 함께 지연 로드
+const FAQSection = dynamic(() => import('@/components/ui/faq-section').then(mod => ({ default: mod.FAQSection })), {
+  loading: () => <div className="h-96 bg-gray-50 animate-pulse rounded-lg"></div>,
+  ssr: true
+})
+
+const MapLocation = dynamic(() => import('@/components/ui/map-location').then(mod => ({ default: mod.MapLocation })), {
+  loading: () => <div className="h-96 bg-gray-100 animate-pulse rounded-lg"></div>,
+  ssr: false
+})
+
+const MobileMenu = dynamic(() => import('@/components/mobile/mobile-menu').then(mod => ({ default: mod.MobileMenu })), {
+  ssr: false
+})
+
+const QuickActions = dynamic(() => import('@/components/mobile/quick-actions').then(mod => ({ default: mod.QuickActions })), {
+  ssr: false
+})
+
+const StructuredData = dynamic(() => import('@/components/seo/structured-data').then(mod => ({ default: mod.StructuredData })), {
+  ssr: true
+})
 
 export default function Home() {
   const consultModal = useModal()
@@ -17,6 +51,9 @@ export default function Home() {
 
   // AI 챗봇 상태
   const [isChatbotOpen, setIsChatbotOpen] = useState(false)
+
+  // 리드봇 상태
+  const [isLeadbotOpen, setIsLeadbotOpen] = useState(false)
 
   // 실시간 통계 애니메이션
   const [todayBookings, setTodayBookings] = useState(0)
@@ -45,27 +82,63 @@ export default function Home() {
 
   return (
     <main className="min-h-screen">
-      {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-brand-primary-50 via-white to-brand-secondary-50">
-        <div className="absolute inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(68,68,68,.1)_50%,transparent_75%,transparent_100%)] opacity-20" />
+      {/* Hero Section - Enhanced Vercel Style */}
+      <section className="relative overflow-hidden bg-black">
+        {/* Vercel-style gradient background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-black via-gray-950 to-black" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(99,102,241,0.1),transparent_50%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,rgba(14,165,233,0.1),transparent_50%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(6,182,212,0.05),transparent_40%)]" />
+        {/* Mesh gradient overlay */}
+        <div className="absolute inset-0 opacity-30 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.3),rgba(255,255,255,0))]" />
 
-        {/* Trust Badges - Top */}
+        {/* Trust Badges - Enhanced Top */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6, duration: 0.6 }}
-          className="absolute top-6 left-1/2 -translate-x-1/2 z-10"
+          className="absolute top-8 left-1/2 -translate-x-1/2 z-10"
         >
-          <div className="flex flex-wrap gap-2 justify-center">
-            <Badge variant="medical" size="sm" icon={<Award className="h-3 w-3" />}>
-              개원 30주년
-            </Badge>
-            <Badge variant="certification" size="sm" icon={<Shield className="h-3 w-3" />}>
-              의료진 인증
-            </Badge>
-            <Badge variant="award" size="sm" icon={<Star className="h-3 w-3" />}>
-              송도 1위 안과
-            </Badge>
+          <div className="flex flex-wrap gap-3 justify-center">
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ delay: 0.7, duration: 0.5 }}
+              whileHover={{ scale: 1.05, y: -2 }}
+            >
+              <div className="px-4 py-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-full shadow-2xl hover:bg-white/20 transition-all duration-300">
+                <div className="flex items-center gap-2">
+                  <Award className="h-4 w-4 text-yellow-400" />
+                  <span className="text-sm font-semibold text-white">개원 30주년</span>
+                </div>
+              </div>
+            </motion.div>
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ delay: 0.8, duration: 0.5 }}
+              whileHover={{ scale: 1.05, y: -2 }}
+            >
+              <div className="px-4 py-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-full shadow-2xl hover:bg-white/20 transition-all duration-300">
+                <div className="flex items-center gap-2">
+                  <Shield className="h-4 w-4 text-blue-400" />
+                  <span className="text-sm font-semibold text-white">의료진 인증</span>
+                </div>
+              </div>
+            </motion.div>
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ delay: 0.9, duration: 0.5 }}
+              whileHover={{ scale: 1.05, y: -2 }}
+            >
+              <div className="px-4 py-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-full shadow-2xl hover:bg-white/20 transition-all duration-300">
+                <div className="flex items-center gap-2">
+                  <Star className="h-4 w-4 text-cyan-400" />
+                  <span className="text-sm font-semibold text-white">송도 1위 안과</span>
+                </div>
+              </div>
+            </motion.div>
           </div>
         </motion.div>
 
@@ -76,177 +149,366 @@ export default function Home() {
             transition={{ duration: 0.8 }}
             className="text-center max-w-5xl mx-auto"
           >
-            {/* Logo & Icon */}
+            {/* Logo & Icon - Enhanced Vercel Style */}
             <motion.div
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ delay: 0.2, duration: 0.6 }}
-              className="mb-8"
+              className="mb-16"
             >
-              <div className="relative">
-                <Eye className="h-20 w-20 text-brand-primary-600 mx-auto mb-4" />
-                <motion.div
-                  animate={{
-                    scale: [1, 1.1, 1],
-                    opacity: [0.5, 0.8, 0.5]
-                  }}
-                  transition={{
-                    duration: 2,
-                    repeat: Infinity,
-                    ease: "easeInOut"
-                  }}
-                  className="absolute inset-0 h-20 w-20 mx-auto mb-4 rounded-full bg-brand-primary-200 blur-xl"
-                />
+              <div className="relative flex items-center justify-center">
+                <div className="relative">
+                  {/* Main Logo */}
+                  <div className="relative w-20 h-20 mx-auto">
+                    <Eye className="h-20 w-20 text-white mx-auto drop-shadow-2xl" aria-label="연수김안과의원 로고" />
+                    
+                    {/* Animated Glow Ring */}
+                    <motion.div
+                      animate={{
+                        rotate: [0, 360]
+                      }}
+                      transition={{
+                        duration: 20,
+                        repeat: Infinity,
+                        ease: "linear"
+                      }}
+                      className="absolute inset-0 rounded-full"
+                    >
+                      <div className="w-full h-full rounded-full border-2 border-transparent bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400 p-[2px]">
+                        <div className="w-full h-full rounded-full bg-black" />
+                      </div>
+                    </motion.div>
+                    
+                    {/* Inner Pulse */}
+                    <motion.div
+                      animate={{
+                        scale: [1, 1.1, 1],
+                        opacity: [0.3, 0.7, 0.3]
+                      }}
+                      transition={{
+                        duration: 3,
+                        repeat: Infinity,
+                        ease: "easeInOut"
+                      }}
+                      className="absolute -inset-4 rounded-full bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-cyan-500/20 blur-xl"
+                    />
+                    
+                    {/* Outer Glow */}
+                    <motion.div
+                      animate={{
+                        scale: [1, 1.15, 1],
+                        opacity: [0.1, 0.3, 0.1]
+                      }}
+                      transition={{
+                        duration: 4,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                        delay: 1
+                      }}
+                      className="absolute -inset-8 rounded-full bg-gradient-to-r from-blue-400/10 via-purple-400/10 to-cyan-400/10 blur-2xl"
+                    />
+                  </div>
+                </div>
               </div>
             </motion.div>
 
-            {/* Main Title */}
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-neutral-900 mb-6 leading-tight">
-              <motion.span
+            {/* Main Title - Enhanced Vercel Style */}
+            <div className="mb-8">
+              <motion.h1
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3, duration: 0.8 }}
-                className="bg-gradient-to-r from-brand-primary-600 to-brand-secondary-600 bg-clip-text text-transparent"
+                className="text-5xl md:text-7xl lg:text-8xl font-bold leading-[0.9] tracking-tight mb-4"
               >
-                연수김안과의원
-              </motion.span>
-            </h1>
+                <span className="block bg-gradient-to-r from-white via-blue-100 to-cyan-100 bg-clip-text text-transparent">
+                  연수김안과의원
+                </span>
+              </motion.h1>
+              
+              {/* Animated Underline */}
+              <motion.div
+                initial={{ scaleX: 0 }}
+                animate={{ scaleX: 1 }}
+                transition={{ delay: 1.1, duration: 1.2, ease: "easeOut" }}
+                className="w-48 md:w-72 h-1 bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400 mx-auto rounded-full"
+              />
+            </div>
 
-            {/* Subtitle */}
-            <motion.p
+            {/* Subtitle - Enhanced Branding */}
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4, duration: 0.6 }}
-              className="text-xl md:text-2xl lg:text-3xl text-neutral-600 mb-4 font-medium"
+              className="mb-12"
             >
-              30년의 신뢰, AI로 미래를 열다
-            </motion.p>
+              <div className="relative">
+                <h2 className="text-2xl md:text-4xl lg:text-5xl font-bold mb-6">
+                  <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent">
+                    30년의 신뢰, AI로 미래를 열다
+                  </span>
+                </h2>
+                {/* 배경 글로우 효과 */}
+                <motion.div
+                  animate={{
+                    opacity: [0.1, 0.4, 0.1],
+                    scale: [1, 1.1, 1]
+                  }}
+                  transition={{
+                    duration: 5,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  }}
+                  className="absolute inset-0 bg-gradient-to-r from-blue-500/10 via-purple-500/20 to-cyan-500/10 blur-3xl -z-10 rounded-3xl"
+                />
+              </div>
+
+              {/* 30주년 특별 뱃지 */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 1, duration: 0.5 }}
+                className="flex justify-center mt-6"
+              >
+                <motion.div
+                  whileHover={{ scale: 1.05, y: -2 }}
+                  className="flex items-center gap-3 px-6 py-3 bg-white/10 backdrop-blur-md border border-white/20 rounded-full shadow-2xl hover:bg-white/20 transition-all duration-300"
+                >
+                  <div className="relative">
+                    <Award className="h-5 w-5 text-yellow-400" />
+                    <motion.div
+                      animate={{ scale: [1, 1.2, 1], opacity: [0.5, 1, 0.5] }}
+                      transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                      className="absolute inset-0 rounded-full bg-yellow-400/30 blur-sm"
+                    />
+                  </div>
+                  <span className="text-sm font-bold text-white tracking-wide">개원 30주년 기념</span>
+                  <motion.div
+                    animate={{ rotate: [0, 15, -15, 0] }}
+                    transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                  >
+                    <Star className="h-5 w-5 text-yellow-400" />
+                  </motion.div>
+                </motion.div>
+              </motion.div>
+            </motion.div>
 
             {/* Description */}
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5, duration: 0.6 }}
-              className="text-lg text-neutral-500 mb-8 max-w-3xl mx-auto leading-relaxed"
+              className="text-lg md:text-xl text-gray-300 mb-12 max-w-4xl mx-auto leading-relaxed"
             >
-              인천 송도 소재 30년 전문 경력의 안과 수술 전문 병원입니다.
-              AI 기반 디지털 헬스케어와 다국어 진료로 프리미엄 안과 서비스를 제공합니다.
+              <span className="text-white font-medium">인천 송도 소재 30년 전문 경력</span>의 안과 수술 전문 병원입니다.
+              <br className="hidden md:block" />
+              <span className="text-blue-300 font-medium">AI 기반 디지털 헬스케어</span>와 <span className="text-cyan-300 font-medium">다국어 진료</span>로 프리미엄 안과 서비스를 제공합니다.
             </motion.p>
 
-            {/* Real-time Stats */}
+            {/* Real-time Stats - Enhanced Vercel Style */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6, duration: 0.6 }}
-              className="flex flex-wrap gap-6 justify-center mb-8"
+              className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16 max-w-4xl mx-auto"
             >
-              <div className="flex items-center gap-2 text-sm text-neutral-600">
-                <TrendingUp className="h-4 w-4 text-brand-secondary-600" />
-                <span>오늘 예약 완료</span>
-                <span className="font-bold text-brand-secondary-600">{todayBookings}건</span>
-              </div>
-              <div className="flex items-center gap-2 text-sm text-neutral-600">
-                <Users className="h-4 w-4 text-brand-primary-600" />
-                <span>총 진료 환자</span>
-                <span className="font-bold text-brand-primary-600">{totalPatients.toLocaleString()}명+</span>
-              </div>
-              <div className="flex items-center gap-2 text-sm text-neutral-600">
-                <CheckCircle className="h-4 w-4 text-brand-secondary-600" />
-                <span>수술 성공률</span>
-                <span className="font-bold text-brand-secondary-600">99.8%</span>
-              </div>
+              <motion.div
+                whileHover={{ scale: 1.05, y: -5 }}
+                className="group bg-white/5 backdrop-blur-md border border-white/20 rounded-2xl p-6 text-center hover:bg-white/10 transition-all duration-300 shadow-2xl"
+              >
+                <div className="flex items-center justify-center gap-2 mb-3">
+                  <div className="p-2 bg-blue-500/20 rounded-lg group-hover:bg-blue-500/30 transition-colors">
+                    <TrendingUp className="h-5 w-5 text-blue-400" aria-hidden="true" />
+                  </div>
+                  <span className="text-sm font-medium text-gray-300">오늘 예약</span>
+                </div>
+                <div className="relative">
+                  <span className="text-3xl font-bold text-white">{todayBookings}</span>
+                  <span className="text-lg text-gray-400 ml-1">건</span>
+                  <motion.div
+                    animate={{ opacity: [0.3, 0.8, 0.3] }}
+                    transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                    className="absolute -inset-2 bg-blue-500/10 rounded-lg blur-lg"
+                  />
+                </div>
+              </motion.div>
+              <motion.div
+                whileHover={{ scale: 1.05, y: -5 }}
+                className="group bg-white/5 backdrop-blur-md border border-white/20 rounded-2xl p-6 text-center hover:bg-white/10 transition-all duration-300 shadow-2xl"
+              >
+                <div className="flex items-center justify-center gap-2 mb-3">
+                  <div className="p-2 bg-purple-500/20 rounded-lg group-hover:bg-purple-500/30 transition-colors">
+                    <Users className="h-5 w-5 text-purple-400" aria-hidden="true" />
+                  </div>
+                  <span className="text-sm font-medium text-gray-300">총 진료</span>
+                </div>
+                <div className="relative">
+                  <span className="text-3xl font-bold text-white">{totalPatients.toLocaleString()}</span>
+                  <span className="text-lg text-gray-400 ml-1">명+</span>
+                  <motion.div
+                    animate={{ opacity: [0.3, 0.8, 0.3] }}
+                    transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+                    className="absolute -inset-2 bg-purple-500/10 rounded-lg blur-lg"
+                  />
+                </div>
+              </motion.div>
+              <motion.div
+                whileHover={{ scale: 1.05, y: -5 }}
+                className="group bg-white/5 backdrop-blur-md border border-white/20 rounded-2xl p-6 text-center hover:bg-white/10 transition-all duration-300 shadow-2xl"
+              >
+                <div className="flex items-center justify-center gap-2 mb-3">
+                  <div className="p-2 bg-cyan-500/20 rounded-lg group-hover:bg-cyan-500/30 transition-colors">
+                    <CheckCircle className="h-5 w-5 text-cyan-400" aria-hidden="true" />
+                  </div>
+                  <span className="text-sm font-medium text-gray-300">성공률</span>
+                </div>
+                <div className="relative">
+                  <span className="text-3xl font-bold text-white">99.8</span>
+                  <span className="text-lg text-gray-400 ml-1">%</span>
+                  <motion.div
+                    animate={{ opacity: [0.3, 0.8, 0.3] }}
+                    transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                    className="absolute -inset-2 bg-cyan-500/10 rounded-lg blur-lg"
+                  />
+                </div>
+              </motion.div>
             </motion.div>
 
-            {/* CTAs */}
+            {/* CTAs - Enhanced Vercel Style */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.7, duration: 0.6 }}
-              className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8"
+              className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16"
             >
-              <Button
-                size="xl"
-                variant="success"
-                onClick={() => setIsChatbotOpen(true)}
-                leftIcon={<MessageCircle className="h-5 w-5" />}
-                className="w-full sm:w-auto group"
+              <motion.div
+                whileHover={{ scale: 1.05, y: -2 }}
+                whileTap={{ scale: 0.98 }}
+                className="w-full sm:w-auto relative group"
               >
-                무료 AI 상담
-                <motion.span
-                  animate={{ x: [0, 4, 0] }}
-                  transition={{ duration: 1.5, repeat: Infinity }}
-                  className="ml-2"
+                <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 via-purple-600 to-cyan-600 rounded-2xl blur opacity-75 group-hover:opacity-100 transition-opacity"></div>
+                <Button
+                  size="xl"
+                  onClick={() => setIsChatbotOpen(true)}
+                  className="relative w-full sm:w-auto bg-white text-black hover:bg-gray-50 font-semibold px-8 py-4 text-lg shadow-2xl border-0 transition-all duration-300"
                 >
-                  →
-                </motion.span>
-              </Button>
-              <Button
-                size="xl"
-                variant="outline"
-                onClick={appointmentModal.openModal}
-                leftIcon={<Calendar className="h-5 w-5" />}
+                  <MessageCircle className="h-6 w-6 mr-3" />
+                  <span>무료 AI 상담</span>
+                  <motion.span
+                    animate={{ x: [0, 4, 0] }}
+                    transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                    className="ml-3 text-xl"
+                  >
+                    →
+                  </motion.span>
+                </Button>
+              </motion.div>
+
+              <motion.div
+                whileHover={{ scale: 1.05, y: -2 }}
+                whileTap={{ scale: 0.98 }}
                 className="w-full sm:w-auto"
               >
-                바로 예약하기
-              </Button>
-              <Button
-                size="xl"
-                variant="ghost"
-                leftIcon={<Phone className="h-5 w-5" />}
+                <Button
+                  size="xl"
+                  onClick={() => setIsLeadbotOpen(true)}
+                  className="w-full sm:w-auto bg-white/10 backdrop-blur-md border-2 border-white/30 text-white hover:bg-white/20 hover:border-white/50 font-semibold px-8 py-4 text-lg transition-all duration-300 shadow-2xl"
+                >
+                  <Calendar className="h-6 w-6 mr-3" />
+                  <span>바로 예약하기</span>
+                </Button>
+              </motion.div>
+
+              <motion.div
+                whileHover={{ scale: 1.05, y: -2 }}
+                whileTap={{ scale: 0.98 }}
                 className="w-full sm:w-auto"
-                onClick={() => window.open('tel:032-123-4567')}
               >
-                전화 상담
-              </Button>
+                <Button
+                  size="xl"
+                  onClick={() => window.open('tel:032-123-4567')}
+                  className="w-full sm:w-auto bg-transparent border-2 border-white/30 text-white hover:bg-white/10 hover:border-white/50 font-medium px-8 py-4 text-lg transition-all duration-300"
+                >
+                  <Phone className="h-6 w-6 mr-3" />
+                  <span>전화 상담</span>
+                </Button>
+              </motion.div>
             </motion.div>
 
-            {/* Trust Elements */}
+            {/* Trust Elements - Enhanced Vercel Style Grid */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.8, duration: 0.6 }}
-              className="flex flex-wrap gap-4 justify-center text-sm text-neutral-500"
+              className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto"
             >
-              <div className="flex items-center gap-1">
-                <CheckCircle className="h-4 w-4 text-brand-secondary-600" />
-                <span>24시간 상담 가능</span>
-              </div>
-              <div className="flex items-center gap-1">
-                <CheckCircle className="h-4 w-4 text-brand-secondary-600" />
-                <span>다국어 진료</span>
-              </div>
-              <div className="flex items-center gap-1">
-                <CheckCircle className="h-4 w-4 text-brand-secondary-600" />
-                <span>당일 예약 가능</span>
-              </div>
-              <div className="flex items-center gap-1">
-                <CheckCircle className="h-4 w-4 text-brand-secondary-600" />
-                <span>인천대입구역 도보 5분</span>
-              </div>
+              {[
+                { icon: <Clock className="h-5 w-5" />, text: "24시간 상담", color: "blue" },
+                { icon: <MessageCircle className="h-5 w-5" />, text: "다국어 진료", color: "purple" },
+                { icon: <Calendar className="h-5 w-5" />, text: "당일 예약", color: "cyan" },
+                { icon: <MapPin className="h-5 w-5" />, text: "역세권 위치", color: "green" }
+              ].map((item, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.9 + index * 0.1, duration: 0.4 }}
+                  whileHover={{ scale: 1.08, y: -5 }}
+                  className="group flex flex-col items-center gap-3 p-6 rounded-2xl bg-white/5 backdrop-blur-md border border-white/20 hover:bg-white/10 hover:border-white/30 transition-all duration-300 shadow-2xl"
+                >
+                  <div className={`flex items-center justify-center w-12 h-12 rounded-xl bg-${item.color}-500/20 text-${item.color}-400 group-hover:bg-${item.color}-500/30 group-hover:scale-110 transition-all duration-300`}>
+                    {item.icon}
+                  </div>
+                  <span className="text-sm font-semibold text-white text-center">{item.text}</span>
+                  <motion.div
+                    animate={{ opacity: [0, 0.3, 0] }}
+                    transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                    className={`absolute -inset-1 bg-${item.color}-500/10 rounded-2xl blur-lg`}
+                  />
+                </motion.div>
+              ))}
             </motion.div>
           </motion.div>
         </div>
 
-        {/* Floating Action Button for Mobile */}
+        {/* Enhanced Floating Action Button for Mobile */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 1, duration: 0.6 }}
+          initial={{ opacity: 0, scale: 0.8, y: 100 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          transition={{ delay: 1.2, duration: 0.6, ease: "easeOut" }}
           className="fixed bottom-6 right-6 z-50 md:hidden"
         >
-          <Button
-            size="lg"
-            variant="success"
-            onClick={() => setIsChatbotOpen(true)}
-            className="rounded-full shadow-lg"
+          <motion.div
+            animate={{
+              boxShadow: [
+                "0 4px 20px rgba(2, 132, 199, 0.3)",
+                "0 8px 30px rgba(2, 132, 199, 0.4)",
+                "0 4px 20px rgba(2, 132, 199, 0.3)"
+              ]
+            }}
+            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+            className="relative"
           >
-            <MessageCircle className="h-5 w-5" />
-          </Button>
+            <Button
+              size="lg"
+              variant="secondary"
+              onClick={() => setIsChatbotOpen(true)}
+              className="rounded-full shadow-xl bg-brand-secondary-600 hover:bg-brand-secondary-700 border-2 border-white"
+            >
+              <MessageCircle className="h-6 w-6" />
+            </Button>
+
+            {/* Pulse Animation */}
+            <motion.div
+              animate={{ scale: [1, 1.4, 1], opacity: [0.5, 0, 0.5] }}
+              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute inset-0 rounded-full bg-brand-secondary-400 -z-10"
+            />
+          </motion.div>
         </motion.div>
       </section>
 
-      {/* Features Section */}
-      <section className="py-20 bg-white">
+      {/* Features Section - Enhanced Vercel Style */}
+      <section className="py-32 bg-gradient-to-b from-black via-gray-950 to-black" aria-labelledby="features-heading">
         <div className="container">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -255,51 +517,59 @@ export default function Home() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-neutral-900 mb-4">
-              왜 연수김안과의원인가요?
+            <h2 id="features-heading" className="text-4xl md:text-5xl font-bold text-white mb-6">
+              <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent">
+                왜 연수김안과의원인가요?
+              </span>
             </h2>
-            <p className="text-lg text-neutral-600 max-w-2xl mx-auto">
-              30년 전문 경력과 최신 AI 기술의 완벽한 조화
+            <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
+              <span className="text-white font-semibold">30년 전문 경력</span>과 <span className="text-blue-300 font-semibold">최신 AI 기술</span>의 완벽한 조화
             </p>
           </motion.div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[
               {
-                icon: <Eye className="h-8 w-8" />,
+                icon: <Eye className="h-10 w-10" />,
                 title: "30년 전문 경력",
                 description: "풍부한 임상 경험과 수술 노하우로 안전하고 정확한 진료를 제공합니다.",
-                color: "brand"
+                color: "blue",
+                gradient: "from-blue-500 to-purple-600"
               },
               {
-                icon: <MessageCircle className="h-8 w-8" />,
+                icon: <MessageCircle className="h-10 w-10" />,
                 title: "AI 기반 상담",
                 description: "24시간 AI 챗봇을 통한 다국어 의료 상담 서비스를 제공합니다.",
-                color: "success"
+                color: "purple",
+                gradient: "from-purple-500 to-pink-600"
               },
               {
-                icon: <MapPin className="h-8 w-8" />,
+                icon: <MapPin className="h-10 w-10" />,
                 title: "송도 최적 위치",
                 description: "인천 송도 신도시 중심가에 위치하여 접근성이 뛰어납니다.",
-                color: "default"
+                color: "cyan",
+                gradient: "from-cyan-500 to-blue-600"
               },
               {
-                icon: <Star className="h-8 w-8" />,
+                icon: <Star className="h-10 w-10" />,
                 title: "프리미엄 서비스",
                 description: "개인 맞춤형 진료와 사후 관리로 최상의 의료 서비스를 제공합니다.",
-                color: "default"
+                color: "emerald",
+                gradient: "from-emerald-500 to-cyan-600"
               },
               {
-                icon: <Clock className="h-8 w-8" />,
+                icon: <Clock className="h-10 w-10" />,
                 title: "빠른 예약 시스템",
                 description: "스마트 예약 시스템으로 대기시간 없는 편리한 진료를 받으세요.",
-                color: "success"
+                color: "violet",
+                gradient: "from-violet-500 to-purple-600"
               },
               {
-                icon: <MessageCircle className="h-8 w-8" />,
+                icon: <MessageCircle className="h-10 w-10" />,
                 title: "다국어 지원",
                 description: "한국어, 영어, 중국어 진료로 외국인 환자도 편안하게 이용 가능합니다.",
-                color: "brand"
+                color: "pink",
+                gradient: "from-pink-500 to-rose-600"
               }
             ].map((feature, index) => (
               <motion.div
@@ -308,24 +578,39 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1, duration: 0.6 }}
                 viewport={{ once: true }}
+                className="group"
               >
-                <Card hover variant={feature.color as any} className="h-full">
-                  <CardHeader>
-                    <div className={`inline-flex p-3 rounded-lg ${
-                      feature.color === 'brand' ? 'bg-brand-primary-100 text-brand-primary-600' :
-                      feature.color === 'success' ? 'bg-brand-secondary-100 text-brand-secondary-600' :
-                      'bg-neutral-100 text-neutral-600'
-                    } w-fit mb-2`}>
-                      {feature.icon}
+                <div className="relative h-full">
+                  {/* Background Gradient */}
+                  <div className={`absolute inset-0 bg-gradient-to-br ${feature.gradient} opacity-5 rounded-2xl group-hover:opacity-10 transition-opacity duration-500`} />
+                  
+                  {/* Border Gradient */}
+                  <div className={`absolute inset-0 bg-gradient-to-br ${feature.gradient} opacity-20 rounded-2xl blur-sm group-hover:blur-md transition-all duration-500`} />
+                  
+                  <div className="relative bg-gray-950/50 backdrop-blur-xl border border-white/10 rounded-2xl p-8 h-full group-hover:border-white/20 group-hover:bg-gray-900/50 transition-all duration-500 shadow-2xl">
+                    <div className="flex flex-col h-full">
+                      <div className="mb-6">
+                        <div className={`inline-flex p-4 rounded-xl bg-${feature.color}-500/10 text-${feature.color}-400 group-hover:bg-${feature.color}-500/20 group-hover:scale-110 transition-all duration-300 mb-4`}>
+                          {feature.icon}
+                        </div>
+                        <h3 className="text-xl font-bold text-white mb-3 group-hover:text-blue-200 transition-colors">
+                          {feature.title}
+                        </h3>
+                      </div>
+                      <p className="text-gray-300 leading-relaxed flex-grow group-hover:text-gray-200 transition-colors">
+                        {feature.description}
+                      </p>
+                      
+                      {/* Bottom Accent Line */}
+                      <motion.div
+                        initial={{ scaleX: 0 }}
+                        whileInView={{ scaleX: 1 }}
+                        transition={{ delay: index * 0.1 + 0.5, duration: 0.6 }}
+                        className={`mt-6 h-1 bg-gradient-to-r ${feature.gradient} rounded-full`}
+                      />
                     </div>
-                    <CardTitle>{feature.title}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <CardDescription className="text-base leading-relaxed">
-                      {feature.description}
-                    </CardDescription>
-                  </CardContent>
-                </Card>
+                  </div>
+                </div>
               </motion.div>
             ))}
           </div>
@@ -333,7 +618,7 @@ export default function Home() {
       </section>
 
       {/* Medical Services Section */}
-      <section className="py-20 bg-gradient-to-br from-neutral-50 to-white">
+      <section className="py-20 bg-gradient-to-br from-neutral-50 to-white" aria-labelledby="services-heading">
         <div className="container">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -342,7 +627,7 @@ export default function Home() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-neutral-900 mb-4">
+            <h2 id="services-heading" className="text-3xl md:text-4xl font-bold text-neutral-900 mb-4">
               전문 진료 분야
             </h2>
             <p className="text-lg text-neutral-600 max-w-2xl mx-auto">
@@ -504,7 +789,7 @@ export default function Home() {
       </section>
 
       {/* FAQ Section */}
-      <section className="py-20 bg-white">
+      <section id="faq" className="py-20 bg-white">
         <div className="container">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -517,264 +802,43 @@ export default function Home() {
               자주 묻는 질문
             </h2>
             <p className="text-lg text-neutral-600 max-w-2xl mx-auto">
-              환자분들이 가장 궁금해하시는 질문들을 모았습니다
+              환자분들이 가장 궁금해하시는 질문들을 카테고리별로 정리했습니다
             </p>
           </motion.div>
 
-          <div className="max-w-4xl mx-auto">
-            {[
-              {
-                question: "라식 수술 후 회복 기간은 얼마나 걸리나요?",
-                answer: "라식 수술 후 대부분의 환자는 1-2일 내 일상생활이 가능합니다. 시력 안정화는 1-3개월 정도 소요되며, 개인차가 있을 수 있습니다. 수술 후 정기 검진을 통해 회복 상태를 점검합니다."
-              },
-              {
-                question: "백내장 수술 시 입원이 필요한가요?",
-                answer: "백내장 수술은 당일 수술로 진행되며 입원이 필요하지 않습니다. 수술 시간은 약 20-30분 정도이며, 수술 후 2-3시간 안정을 취한 후 귀가 가능합니다."
-              },
-              {
-                question: "수술 비용은 어떻게 되나요?",
-                answer: "수술 비용은 개인의 눈 상태와 선택하는 수술 방법에 따라 차이가 있습니다. 정확한 비용은 정밀 검사 후 상담을 통해 안내해드립니다. 건강보험 적용 여부도 함께 확인해드립니다."
-              },
-              {
-                question: "외국인도 진료 받을 수 있나요?",
-                answer: "네, 연수김안과의원은 영어와 중국어 진료가 가능합니다. 외국인 환자를 위한 전담 코디네이터가 있어 예약부터 수술, 사후 관리까지 원활한 소통을 도와드립니다."
-              },
-              {
-                question: "예약은 어떻게 하나요?",
-                answer: "온라인 예약, 전화 예약(032-123-4567), 또는 AI 챗봇을 통한 예약이 가능합니다. 급한 경우 당일 예약도 가능하며, 대기시간을 최소화하기 위해 사전 예약을 권장합니다."
-              },
-              {
-                question: "수술 후 관리는 어떻게 이루어지나요?",
-                answer: "수술 후 정기 검진 일정을 안내해드리며, 카카오톡과 SMS를 통해 자동 리마인드 서비스를 제공합니다. 응급상황 시 24시간 상담 가능한 핫라인도 운영하고 있습니다."
-              }
-            ].map((faq, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1, duration: 0.6 }}
-                viewport={{ once: true }}
-                className="mb-4"
-              >
-                <Card className="p-6 hover:shadow-lg transition-shadow duration-300">
-                  <h3 className="text-lg font-semibold text-neutral-900 mb-3 flex items-start gap-2">
-                    <span className="text-brand-primary-600 font-bold">Q.</span>
-                    {faq.question}
-                  </h3>
-                  <p className="text-neutral-600 leading-relaxed pl-6">
-                    <span className="text-brand-secondary-600 font-bold">A.</span> {faq.answer}
-                  </p>
-                </Card>
-              </motion.div>
-            ))}
+          <div className="max-w-5xl mx-auto">
+            <Suspense fallback={<div className="h-96 bg-gray-50 animate-pulse rounded-lg"></div>}>
+              <FAQSection />
+            </Suspense>
           </div>
         </div>
       </section>
 
-      {/* Clinic Information Section */}
-      <section className="py-20 bg-gradient-to-br from-neutral-50 to-white">
+      {/* Map & Location Section */}
+      <section id="location" className="py-20 bg-gradient-to-br from-neutral-50 to-white">
         <div className="container">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
-            className="text-center mb-16"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-neutral-900 mb-4">
-              오시는 길 & 병원 정보
-            </h2>
-            <p className="text-lg text-neutral-600 max-w-2xl mx-auto">
-              인천 송도 신도시 중심가(포스스코타워송도,센트럴파크)에 위치한 연수김안과의원으로 오세요
-            </p>
+            <Suspense fallback={<div className="h-96 bg-gray-100 animate-pulse rounded-lg"></div>}>
+              <MapLocation />
+            </Suspense>
           </motion.div>
-
-          <div className="grid lg:grid-cols-2 gap-12 items-start">
-            {/* 지도 및 주소 */}
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6 }}
-              viewport={{ once: true }}
-            >
-              <Card className="overflow-hidden">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2 text-xl">
-                    <MapPin className="h-5 w-5 text-brand-primary-600" />
-                    병원 위치
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="p-0">
-                  {/* Google Maps Embed */}
-                  <div className="relative w-full h-64 bg-neutral-100">
-                    <iframe
-                      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3171.8442358152966!2d126.6352!3d37.3859!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x357b7af78b8eff65%3A0x9f7e4eaa7d1b8ab2!2z7J247LKc6YqR642C!5e0!3m2!1sko!2skr!4v1635123456789!5m2!1sko!2skr"
-                      width="100%"
-                      height="256"
-                      style={{ border: 0 }}
-                      allowFullScreen
-                      loading="lazy"
-                      referrerPolicy="no-referrer-when-downgrade"
-                      className="rounded-b-lg"
-                    />
-                  </div>
-                  <div className="p-6">
-                    <div className="space-y-3">
-                      <div className="flex items-start gap-3">
-                        <MapPin className="h-4 w-4 text-brand-primary-600 mt-1 flex-shrink-0" />
-                        <div>
-                          <p className="font-medium text-neutral-900">연수김안과의원</p>
-                          <p className="text-neutral-600">인천광역시 연수구 컨벤시아대로 165</p>
-                          <p className="text-neutral-600">포스코타워송도 5층</p>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-3">
-                        <Phone className="h-4 w-4 text-brand-secondary-600" />
-                        <div>
-                          <p className="font-medium text-neutral-900">대표전화</p>
-                          <p className="text-brand-secondary-600 font-medium">1544-7260,032-817-3487</p>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="mt-6 pt-6 border-t border-neutral-200">
-                      <div className="flex flex-wrap gap-2">
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={() => window.open('https://map.naver.com/v5/search/연수김안과의원', '_blank')}
-                        >
-                          네이버 지도
-                        </Button>
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={() => window.open('https://map.kakao.com/link/search/연수김안과의원', '_blank')}
-                        >
-                          카카오맵
-                        </Button>
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={() => window.open('tel:032-123-4567')}
-                        >
-                          전화걸기
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </motion.div>
-
-            {/* 진료시간 및 교통편 */}
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6 }}
-              viewport={{ once: true }}
-              className="space-y-6"
-            >
-              {/* 진료시간 */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2 text-xl">
-                    <Clock className="h-5 w-5 text-brand-secondary-600" />
-                    진료시간
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-3">
-                    <div className="flex justify-between items-center py-2 border-b border-neutral-100">
-                      <span className="font-medium">월 ~ 금</span>
-                      <span className="text-neutral-600">09:00 ~ 18:00</span>
-                    </div>
-                    <div className="flex justify-between items-center py-2 border-b border-neutral-100">
-                      <span className="font-medium">토요일</span>
-                      <span className="text-neutral-600">09:00 ~ 13:00</span>
-                    </div>
-                    <div className="flex justify-between items-center py-2 border-b border-neutral-100">
-                      <span className="font-medium">점심시간</span>
-                      <span className="text-neutral-600">12:30 ~ 13:30</span>
-                    </div>
-                    <div className="flex justify-between items-center py-2">
-                      <span className="font-medium">일요일/공휴일</span>
-                      <span className="text-red-500">휴진</span>
-                    </div>
-                  </div>
-
-                  <div className="mt-6 p-4 bg-brand-primary-50 rounded-lg">
-                    <div className="flex items-center gap-2 mb-2">
-                      <CheckCircle className="h-4 w-4 text-brand-primary-600" />
-                      <span className="font-medium text-brand-primary-800">진료 안내</span>
-                    </div>
-                    <ul className="text-sm text-brand-primary-700 space-y-1">
-                      <li>• 수술 전 검사 예약제</li>
-                      <li>• 수술 예약제</li>
-                      <li>• 수술 후 검사 예약제</li>
-                    </ul>
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* 교통편 */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2 text-xl">
-                    <MapPin className="h-5 w-5 text-brand-primary-600" />
-                    교통편 & 주차
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    <div>
-                      <h4 className="font-medium text-neutral-900 mb-2">🚇 지하철</h4>
-                      <p className="text-neutral-600 text-sm">
-                        • 인천지하철 1호선 인천대입구역 4번 출구 도보 5분, 롯데마트 옆 포스코타워송도 5층<br/>
-                      </p>
-                    </div>
-
-                    <div>
-                      <h4 className="font-medium text-neutral-900 mb-2">🚌 버스</h4>
-                      <p className="text-neutral-600 text-sm">
-                        * 간선버스: 6, 8 : 송도컨벤시아
-                         6-1, 9 : 컨벤시아, 송도더샵퍼스트월드(서문)
-                         16, 58 : 롯데마트송도점, 포스코타워앤쉐라톤호텔, 센트럴공원
-                         16-1 : 송도컨벤시아남문
-                        * 지선버스: 순환41 : 롯데마트송도점, 포스코타워앤쉐라톤호텔, 센트럴공원
-                         순환43, 순환47 : 컨벤시아, 송도더샵퍼스트월드(서문)
-                        * 좌석버스: 303-1 : 컨벤시아, 송도더샵퍼스트월드(서문)
-                        * 광역버스: 1301, M6724 : 컨벤시아, 송도더샵퍼스트월드(서문)
-                          3002 : 포스코타워앤쉐라톤호텔, 센트럴공원
-                        * 공항버스: 6777, 6777-1 : 포스코타워앤쉐라톤호텔, 센트럴공원<br/>
-                      </p>
-                    </div>
-
-                    <div>
-                      <h4 className="font-medium text-neutral-900 mb-2">🚗 주차</h4>
-                      <p className="text-neutral-600 text-sm">
-                        • 건물 지하 주차장 (3시간 무료), 입원환자 24시간 무료<br/>
-                        • 장애인 전용 주차구역 완비
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="mt-6 pt-6 border-t border-neutral-200">
-                    <div className="flex items-center gap-2 text-sm text-neutral-500">
-                      <CheckCircle className="h-4 w-4 text-brand-secondary-600" />
-                      <span>송도 국제업무단지 중심가, 접근성 최고의 위치</span>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </motion.div>
-          </div>
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-brand-primary-600 to-brand-secondary-600">
-        <div className="container">
+      {/* CTA Section - Vercel Style */}
+      <section className="py-20 bg-black relative overflow-hidden">
+        {/* Vercel-style background effects */}
+        <div className="absolute inset-0">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-l from-brand-secondary-600/20 to-transparent rounded-full blur-3xl" />
+          <div className="absolute bottom-0 left-0 w-96 h-96 bg-gradient-to-r from-brand-accent-600/20 to-transparent rounded-full blur-3xl" />
+        </div>
+
+        <div className="container relative">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -782,20 +846,32 @@ export default function Home() {
             viewport={{ once: true }}
             className="text-center text-white"
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            <h2 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">
               지금 바로 시작하세요
             </h2>
-            <p className="text-xl mb-8 opacity-90">
-              AI 상담을 통해 맞춤형 진료 계획을 받아보세요
+            <p className="text-xl mb-10 text-gray-300 max-w-2xl mx-auto">
+              AI 상담과 빠른 예약으로 맞춤형 진료 계획을 받아보세요
             </p>
-            <Button
-              size="xl"
-              variant="secondary"
-              onClick={() => setIsChatbotOpen(true)}
-              leftIcon={<MessageCircle className="h-5 w-5" />}
-            >
-              무료 AI 상담 받기
-            </Button>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+              <Button
+                size="xl"
+                variant="secondary"
+                onClick={() => setIsChatbotOpen(true)}
+                leftIcon={<MessageCircle className="h-5 w-5" />}
+                className="bg-white text-black hover:bg-gray-100"
+              >
+                무료 AI 상담 받기
+              </Button>
+              <Button
+                size="xl"
+                variant="outline"
+                onClick={() => setIsLeadbotOpen(true)}
+                leftIcon={<Calendar className="h-5 w-5" />}
+                className="border-white/30 text-white hover:bg-white/10"
+              >
+                빠른 예약 신청
+              </Button>
+            </div>
           </motion.div>
         </div>
       </section>
@@ -875,6 +951,72 @@ export default function Home() {
         language="ko"
       />
 
+      {/* Lead Bot */}
+      <Leadbot
+        isOpen={isLeadbotOpen}
+        onClose={() => setIsLeadbotOpen(false)}
+        onLeadSubmit={(leadData) => {
+          console.log('Lead submitted:', leadData)
+          // 리드 제출 후 추가 처리 (예: 감사 메시지, 추적 이벤트 등)
+        }}
+      />
+
+      {/* 플로팅 AI 챗봇 버튼 */}
+      {!isChatbotOpen && (
+        <motion.div
+          initial={{ scale: 0, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ delay: 1, duration: 0.5, type: "spring", stiffness: 260, damping: 20 }}
+          className="fixed bottom-6 right-6 z-50"
+        >
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="relative"
+          >
+            <Button
+              onClick={() => setIsChatbotOpen(true)}
+              size="lg"
+              className="w-14 h-14 rounded-full bg-brand-secondary-600 hover:bg-brand-secondary-700 shadow-xl hover:shadow-2xl transition-all duration-300 border-2 border-white"
+            >
+              <MessageCircle className="h-6 w-6 text-white" />
+            </Button>
+            {/* 펄스 애니메이션 */}
+            <motion.div
+              animate={{
+                scale: [1, 1.3, 1],
+                opacity: [0.7, 0, 0.7]
+              }}
+              transition={{
+                duration: 2,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+              className="absolute inset-0 rounded-full bg-brand-secondary-400"
+            />
+            {/* 알림 배지 */}
+            <motion.div
+              animate={{
+                scale: [1, 1.1, 1],
+                opacity: [1, 0.8, 1]
+              }}
+              transition={{
+                duration: 1.5,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+              className="absolute -top-2 -right-2 w-5 h-5 bg-red-500 rounded-full flex items-center justify-center border-2 border-white"
+            >
+              <span className="text-xs font-bold text-white">AI</span>
+            </motion.div>
+          </motion.div>
+          {/* 툴팁 */}
+          <div className="absolute bottom-full right-0 mb-2 px-3 py-1 bg-gray-900 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+            무료 AI 상담 시작하기
+          </div>
+        </motion.div>
+      )}
+
       {/* 부스터 대시보드 접속 버튼 - 관리자용 */}
       <div className="fixed bottom-6 left-6 z-50">
         <Link href="/dashboard">
@@ -888,6 +1030,28 @@ export default function Home() {
           </Button>
         </Link>
       </div>
+
+      {/* 모바일 메뉴 */}
+      <Suspense fallback={null}>
+        <MobileMenu
+          onChatbotOpen={() => setIsChatbotOpen(true)}
+          onLeadbotOpen={() => setIsLeadbotOpen(true)}
+        />
+      </Suspense>
+
+      {/* 모바일 빠른 액션 버튼 */}
+      <Suspense fallback={null}>
+        <QuickActions
+          onChatbotOpen={() => setIsChatbotOpen(true)}
+          onLeadbotOpen={() => setIsLeadbotOpen(true)}
+        />
+      </Suspense>
+
+      {/* SEO 구조화된 데이터 */}
+      <Suspense fallback={null}>
+        <StructuredData type="organization" />
+        <StructuredData type="localBusiness" />
+      </Suspense>
     </main>
   )
 }

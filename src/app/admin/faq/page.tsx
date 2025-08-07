@@ -9,7 +9,7 @@ import { createClient } from '@/lib/supabase/client'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Edit2, Eye, EyeOff, Filter, Plus, Search, Trash2 } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
@@ -75,9 +75,13 @@ export default function AdminFAQPage() {
   })
 
   // FAQ 목록 조회
-  const fetchFAQs = async () => {
+  const fetchFAQs = useCallback(async () => {
     try {
       setLoading(true)
+      if (!supabase) {
+        console.warn('Supabase client not available')
+        return
+      }
       const { data, error } = await supabase
         .from('faqs')
         .select('*')
@@ -92,11 +96,15 @@ export default function AdminFAQPage() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [supabase])
 
   // FAQ 생성
   const createFAQ = async (data: FAQFormData) => {
     try {
+      if (!supabase) {
+        console.warn('Supabase client not available')
+        return
+      }
       const { error } = await supabase
         .from('faqs')
         .insert([data])
@@ -105,7 +113,7 @@ export default function AdminFAQPage() {
 
       alert('FAQ가 성공적으로 생성되었습니다.')
       reset()
-      createModal.close()
+      createModal.closeModal()
       fetchFAQs()
     } catch (error) {
       console.error('FAQ 생성 오류:', error)
@@ -118,6 +126,10 @@ export default function AdminFAQPage() {
     if (!selectedFAQ) return
 
     try {
+      if (!supabase) {
+        console.warn('Supabase client not available')
+        return
+      }
       const { error } = await supabase
         .from('faqs')
         .update(data)
@@ -127,7 +139,7 @@ export default function AdminFAQPage() {
 
       alert('FAQ가 성공적으로 수정되었습니다.')
       reset()
-      editModal.close()
+      editModal.closeModal()
       setSelectedFAQ(null)
       fetchFAQs()
     } catch (error) {
@@ -141,6 +153,10 @@ export default function AdminFAQPage() {
     if (!selectedFAQ) return
 
     try {
+      if (!supabase) {
+        console.warn('Supabase client not available')
+        return
+      }
       const { error } = await supabase
         .from('faqs')
         .delete()
@@ -149,7 +165,7 @@ export default function AdminFAQPage() {
       if (error) throw error
 
       alert('FAQ가 성공적으로 삭제되었습니다.')
-      deleteModal.close()
+      deleteModal.closeModal()
       setSelectedFAQ(null)
       fetchFAQs()
     } catch (error) {
@@ -161,6 +177,10 @@ export default function AdminFAQPage() {
   // FAQ 발행 상태 토글
   const togglePublished = async (faq: FAQ) => {
     try {
+      if (!supabase) {
+        console.warn('Supabase client not available')
+        return
+      }
       const { error } = await supabase
         .from('faqs')
         .update({ is_published: !faq.is_published })
@@ -184,13 +204,13 @@ export default function AdminFAQPage() {
       order_index: faq.order_index,
       is_published: faq.is_published
     })
-    editModal.open()
+    editModal.openModal()
   }
 
   // 삭제 모달 열기
   const openDeleteModal = (faq: FAQ) => {
     setSelectedFAQ(faq)
-    deleteModal.open()
+    deleteModal.openModal()
   }
 
   // 필터링된 FAQ 목록
@@ -209,7 +229,7 @@ export default function AdminFAQPage() {
 
   useEffect(() => {
     fetchFAQs()
-  }, [])
+  }, [fetchFAQs])
 
   return (
     <div className="min-h-screen bg-neutral-50 p-6">
@@ -220,7 +240,7 @@ export default function AdminFAQPage() {
             <h1 className="text-3xl font-bold text-neutral-900">FAQ 관리</h1>
             <p className="text-neutral-600 mt-1">자주 묻는 질문을 관리하고 편집할 수 있습니다.</p>
           </div>
-          <Button onClick={createModal.open} className="flex items-center gap-2">
+          <Button onClick={createModal.openModal} className="flex items-center gap-2">
             <Plus className="h-4 w-4" />
             새 FAQ 추가
           </Button>
@@ -361,7 +381,7 @@ export default function AdminFAQPage() {
         </Card>
 
         {/* FAQ 생성 모달 */}
-        <Modal {...createModal.modalProps}>
+        <Modal isOpen={createModal.isOpen} onClose={createModal.closeModal}>
           <div className="p-6">
             <h2 className="text-xl font-semibold mb-4">새 FAQ 추가</h2>
             <form onSubmit={handleSubmit(createFAQ)} className="space-y-4">
@@ -423,7 +443,7 @@ export default function AdminFAQPage() {
               </div>
 
               <div className="flex justify-end gap-2 pt-4">
-                <Button type="button" variant="ghost" onClick={createModal.close}>
+                <Button type="button" variant="ghost" onClick={createModal.closeModal}>
                   취소
                 </Button>
                 <Button type="submit" disabled={isSubmitting}>
@@ -435,7 +455,7 @@ export default function AdminFAQPage() {
         </Modal>
 
         {/* FAQ 수정 모달 */}
-        <Modal {...editModal.modalProps}>
+        <Modal isOpen={editModal.isOpen} onClose={editModal.closeModal}>
           <div className="p-6">
             <h2 className="text-xl font-semibold mb-4">FAQ 수정</h2>
             <form onSubmit={handleSubmit(updateFAQ)} className="space-y-4">
@@ -497,7 +517,7 @@ export default function AdminFAQPage() {
               </div>
 
               <div className="flex justify-end gap-2 pt-4">
-                <Button type="button" variant="ghost" onClick={editModal.close}>
+                <Button type="button" variant="ghost" onClick={editModal.closeModal}>
                   취소
                 </Button>
                 <Button type="submit" disabled={isSubmitting}>
@@ -509,7 +529,7 @@ export default function AdminFAQPage() {
         </Modal>
 
         {/* FAQ 삭제 확인 모달 */}
-        <Modal {...deleteModal.modalProps}>
+        <Modal isOpen={deleteModal.isOpen} onClose={deleteModal.closeModal}>
           <div className="p-6">
             <h2 className="text-xl font-semibold mb-4 text-red-600">FAQ 삭제</h2>
             <p className="text-neutral-600 mb-6">
@@ -522,7 +542,7 @@ export default function AdminFAQPage() {
               </div>
             )}
             <div className="flex justify-end gap-2">
-              <Button variant="ghost" onClick={deleteModal.close}>
+              <Button variant="ghost" onClick={deleteModal.closeModal}>
                 취소
               </Button>
               <Button variant="destructive" onClick={deleteFAQ}>

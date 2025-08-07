@@ -1,0 +1,32 @@
+# 랜딩페이지 기본 구조 및 SEO/AEO 최적화
+
+**Task ID:** T-001
+**Status:** DONE
+**Importance:** MUST
+**Complexity:** 6/10
+**Urgency:** 10/10
+**Dependencies:** None
+
+## Description
+
+### 설명
+Next.js 14(App Router), TypeScript, Tailwind CSS를 기반으로 랜딩페이지의 기본 구조를 설정합니다. SEO 및 AEO(App Environment Optimization)를 위해 메타태그, 시맨틱 마크업, 사이트맵을 최적화하고, Vercel 배포를 통해 초기 성능 목표(Lighthouse 95점 이상)를 달성합니다.
+
+### 구현 상세
+1.  **프로젝트 초기화**: `npx create-next-app@latest --typescript` 명령어로 Next.js 프로젝트를 생성합니다.
+2.  **스타일링 설정**: `tailwindcss`를 설치하고 `tailwind.config.ts`를 설정합니다. `shadcn/ui` CLI (`npx shadcn-ui@latest init`)를 실행하여 UI 라이브러리 기반을 마련합니다.
+3.  **기본 레이아웃 및 SEO**: `app/layout.tsx` 파일에 `next-seo` 또는 Next.js 14의 내장 `Metadata` 객체를 사용하여 전역 SEO 태그(title, description, openGraph)를 설정합니다. 페이지별 동적 메타데이터는 `generateMetadata` 함수를 사용합니다.
+4.  **시맨틱 마크업**: 페이지의 주요 섹션(헤더, 메인, 푸터 등)을 `<header>`, `<main>`, `<footer>`, `<section>`, `<nav>` 등 시맨틱 HTML 태그를 사용하여 구조화합니다.
+5.  **사이트맵 생성**: `next-sitemap` 패키지를 설치하고 설정하여 빌드 시 `sitemap.xml`과 `robots.txt`가 자동으로 생성되도록 합니다.
+6.  **Vercel 배포**: GitHub 레포지토리를 Vercel에 연결하여 CI/CD 파이프라인을 구축하고, 푸시할 때마다 자동 배포가 이루어지도록 설정합니다.
+
+### 테스트 전략
+1.  **빌드 테스트**: `npm run build` 명령어가 에러 없이 성공적으로 완료되는지 확인합니다.
+2.  **Lighthouse 점수 측정**: Chrome 개발자 도구의 Lighthouse 탭을 사용하여 Performance, SEO, Accessibility, Best Practices 점수가 각각 95점 이상인지 확인합니다.
+3.  **SEO 유효성 검사**: 배포된 페이지의 소스를 확인하여 `title`, `description`, `og:image` 등 주요 메타태그가 올바르게 삽입되었는지 검사합니다.
+4.  **Search Console 확인**: Google Search Console에 배포된 사이트와 사이트맵을 등록하고, 색인 생성 관련 오류가 없는지 확인합니다.
+
+---
+
+**Created:** 2025-07-29T04:44:49.562Z
+**Updated:** 2025-08-05T11:17:30.660Z

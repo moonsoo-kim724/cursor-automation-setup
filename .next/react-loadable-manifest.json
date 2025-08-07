@@ -1,1 +1,60 @@
-{}
+{
+  "..\\node_modules\\@supabase\\auth-js\\dist\\module\\lib\\helpers.js -> @supabase/node-fetch": {
+    "id": "..\\node_modules\\@supabase\\auth-js\\dist\\module\\lib\\helpers.js -> @supabase/node-fetch",
+    "files": []
+  },
+  "..\\node_modules\\@supabase\\functions-js\\dist\\module\\helper.js -> @supabase/node-fetch": {
+    "id": "..\\node_modules\\@supabase\\functions-js\\dist\\module\\helper.js -> @supabase/node-fetch",
+    "files": []
+  },
+  "..\\node_modules\\@supabase\\realtime-js\\dist\\module\\RealtimeClient.js -> @supabase/node-fetch": {
+    "id": "..\\node_modules\\@supabase\\realtime-js\\dist\\module\\RealtimeClient.js -> @supabase/node-fetch",
+    "files": []
+  },
+  "..\\node_modules\\@supabase\\storage-js\\dist\\module\\lib\\helpers.js -> @supabase/node-fetch": {
+    "id": "..\\node_modules\\@supabase\\storage-js\\dist\\module\\lib\\helpers.js -> @supabase/node-fetch",
+    "files": []
+  },
+  "app\\page.tsx -> @/components/mobile/mobile-menu": {
+    "id": "app\\page.tsx -> @/components/mobile/mobile-menu",
+    "files": [
+      "static/chunks/_app-pages-browser_src_components_mobile_mobile-menu_tsx.js"
+    ]
+  },
+  "app\\page.tsx -> @/components/mobile/quick-actions": {
+    "id": "app\\page.tsx -> @/components/mobile/quick-actions",
+    "files": [
+      "static/chunks/_app-pages-browser_src_components_mobile_quick-actions_tsx.js"
+    ]
+  },
+  "app\\page.tsx -> @/components/seo/structured-data": {
+    "id": "app\\page.tsx -> @/components/seo/structured-data",
+    "files": [
+      "static/chunks/_app-pages-browser_src_components_seo_structured-data_tsx.js"
+    ]
+  },
+  "app\\page.tsx -> @/components/ui/chatbot": {
+    "id": "app\\page.tsx -> @/components/ui/chatbot",
+    "files": [
+      "static/chunks/_app-pages-browser_src_components_ui_chatbot_tsx.js"
+    ]
+  },
+  "app\\page.tsx -> @/components/ui/faq-section": {
+    "id": "app\\page.tsx -> @/components/ui/faq-section",
+    "files": [
+      "static/chunks/_app-pages-browser_src_components_ui_faq-section_tsx.js"
+    ]
+  },
+  "app\\page.tsx -> @/components/ui/leadbot": {
+    "id": "app\\page.tsx -> @/components/ui/leadbot",
+    "files": [
+      "static/chunks/_app-pages-browser_src_components_ui_leadbot_tsx.js"
+    ]
+  },
+  "app\\page.tsx -> @/components/ui/map-location": {
+    "id": "app\\page.tsx -> @/components/ui/map-location",
+    "files": [
+      "static/chunks/_app-pages-browser_src_components_ui_map-location_tsx.js"
+    ]
+  }
+}

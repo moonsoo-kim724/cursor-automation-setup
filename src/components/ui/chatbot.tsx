@@ -394,27 +394,30 @@ export function Chatbot({ isOpen, onClose, onBookingRequest, language = 'ko' }: 
   if (!isOpen) return null
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 md:p-4 p-2 z-50">
       <motion.div
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        exit={{ opacity: 0, scale: 0.95 }}
-        className="w-full max-w-2xl h-[600px] bg-white rounded-2xl shadow-2xl overflow-hidden"
+        initial={{ opacity: 0, scale: 0.95, y: 20 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.95, y: 20 }}
+        transition={{ duration: 0.2, ease: "easeOut" }}
+        className="w-full max-w-2xl h-[600px] md:h-[600px] h-[calc(100vh-2rem)] bg-white rounded-xl md:rounded-xl rounded-t-xl shadow-xl border border-gray-200 overflow-hidden"
       >
-        {/* Header */}
-        <div className="bg-gradient-to-r from-brand-primary-600 to-brand-secondary-600 text-white p-4 flex items-center justify-between">
+        {/* Header - Vercel Style */}
+        <div className="bg-white border-b border-gray-200 p-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="relative">
-              <Bot className="h-8 w-8" />
+              <div className="w-10 h-10 bg-brand-secondary-600 rounded-full flex items-center justify-center">
+                <Bot className="h-5 w-5 text-white" />
+              </div>
               <motion.div
-                animate={{ scale: [1, 1.2, 1] }}
-                transition={{ duration: 2, repeat: Infinity }}
-                className="absolute -top-1 -right-1 h-3 w-3 bg-green-400 rounded-full"
+                animate={{ scale: [1, 1.1, 1], opacity: [0.7, 1, 0.7] }}
+                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                className="absolute -top-0.5 -right-0.5 h-3 w-3 bg-green-500 rounded-full border-2 border-white"
               />
             </div>
             <div>
-              <h3 className="font-semibold text-lg">{t.aiAgent}</h3>
-              <p className="text-sm text-white/80">연수김안과의원 AI 상담</p>
+              <h3 className="font-semibold text-lg text-gray-900">{t.aiAgent}</h3>
+              <p className="text-sm text-gray-600">연수김안과의원 AI 상담</p>
             </div>
           </div>
           <div className="flex items-center gap-2">
@@ -422,7 +425,7 @@ export function Chatbot({ isOpen, onClose, onBookingRequest, language = 'ko' }: 
               variant="ghost"
               size="sm"
               onClick={() => window.open('tel:032-123-4567')}
-              className="text-white hover:bg-white/20"
+              className="text-gray-600 hover:text-gray-900 hover:bg-gray-100"
             >
               <Phone className="h-4 w-4" />
             </Button>
@@ -430,15 +433,15 @@ export function Chatbot({ isOpen, onClose, onBookingRequest, language = 'ko' }: 
               variant="ghost"
               size="sm"
               onClick={onClose}
-              className="text-white hover:bg-white/20"
+              className="text-gray-600 hover:text-gray-900 hover:bg-gray-100"
             >
               <X className="h-4 w-4" />
             </Button>
           </div>
         </div>
 
-        {/* Messages */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-4 h-[400px]">
+        {/* Messages - Vercel Style */}
+        <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50/30" style={{ height: 'calc(100% - 140px)' }}>
           <AnimatePresence>
             {messages.map((message) => (
               <motion.div
@@ -446,53 +449,58 @@ export function Chatbot({ isOpen, onClose, onBookingRequest, language = 'ko' }: 
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.2, ease: "easeOut" }}
                 className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
               >
-                <div className={`max-w-[80%] ${message.role === 'user' ? 'order-2' : 'order-1'}`}>
-                  <div className="flex items-start gap-2 mb-2">
-                    {message.role === 'assistant' && (
-                      <div className="w-8 h-8 bg-brand-primary-100 rounded-full flex items-center justify-center">
-                        <Bot className="h-4 w-4 text-brand-primary-600" />
+                <div className={`max-w-[85%] ${message.role === 'user' ? 'order-2' : 'order-1'}`}>
+                  {message.role !== 'user' && (
+                    <div className="flex items-center gap-2 mb-2">
+                      <div className="w-7 h-7 bg-brand-secondary-600 rounded-full flex items-center justify-center">
+                        <Bot className="h-4 w-4 text-white" />
                       </div>
-                    )}
-                    {message.role === 'user' && (
-                      <div className="w-8 h-8 bg-brand-secondary-100 rounded-full flex items-center justify-center">
-                        <User className="h-4 w-4 text-brand-secondary-600" />
-                      </div>
-                    )}
-                  </div>
+                      <span className="text-xs font-medium text-gray-600">AI Agent</span>
+                    </div>
+                  )}
 
-                  <div className={`rounded-2xl p-3 ${
+                  <div className={`rounded-2xl p-4 shadow-sm border ${
                     message.role === 'user'
-                      ? 'bg-brand-secondary-600 text-white'
+                      ? 'bg-black text-white border-black ml-8'
                       : message.role === 'system'
-                      ? 'bg-amber-50 text-amber-800 border border-amber-200'
-                      : 'bg-gray-100 text-gray-800'
+                      ? 'bg-orange-50 text-orange-800 border-orange-200'
+                      : 'bg-white text-gray-800 border-gray-200'
                   }`}>
                     <div className="whitespace-pre-wrap text-sm">
                       {message.content}
                     </div>
 
                     {message.suggestions && (
-                      <div className="mt-3 flex flex-wrap gap-2">
+                      <div className="mt-4 flex flex-wrap gap-2">
                         {message.suggestions.map((suggestion, index) => (
-                          <button
+                          <motion.button
                             key={index}
+                            initial={{ opacity: 0, scale: 0.9 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ delay: index * 0.05 }}
                             onClick={() => handleSuggestionClick(suggestion)}
-                            className="px-3 py-1 bg-white/20 hover:bg-white/30 rounded-full text-xs transition-colors"
+                            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-200 ${
+                              message.role === 'user' 
+                                ? 'bg-white/20 hover:bg-white/30 text-white'
+                                : 'bg-gray-100 hover:bg-gray-200 text-gray-700 border border-gray-200'
+                            }`}
                           >
                             {suggestion}
-                          </button>
+                          </motion.button>
                         ))}
                       </div>
                     )}
 
                     {message.bookingInfo && (
-                      <div className="mt-3 flex gap-2">
+                      <div className="mt-4 flex gap-2">
                         <Button
                           size="sm"
+                          variant="secondary"
                           onClick={() => handleBooking(message.bookingInfo)}
-                          className="flex items-center gap-2"
+                          className="flex items-center gap-2 bg-brand-secondary-600 hover:bg-brand-secondary-700 text-white"
                         >
                           <Calendar className="h-3 w-3" />
                           {t.booking}
@@ -501,7 +509,7 @@ export function Chatbot({ isOpen, onClose, onBookingRequest, language = 'ko' }: 
                           size="sm"
                           variant="outline"
                           onClick={() => window.open('tel:032-123-4567')}
-                          className="flex items-center gap-2"
+                          className="flex items-center gap-2 border-gray-300 hover:border-gray-400"
                         >
                           <Phone className="h-3 w-3" />
                           {t.call}
@@ -524,14 +532,16 @@ export function Chatbot({ isOpen, onClose, onBookingRequest, language = 'ko' }: 
               animate={{ opacity: 1, y: 0 }}
               className="flex justify-start"
             >
-              <div className="flex items-center gap-2 bg-gray-100 rounded-2xl px-4 py-3">
-                <Bot className="h-4 w-4 text-brand-primary-600" />
-                <div className="flex gap-1">
-                  <div className="w-2 h-2 bg-brand-primary-600 rounded-full animate-bounce" />
-                  <div className="w-2 h-2 bg-brand-primary-600 rounded-full animate-bounce delay-100" />
-                  <div className="w-2 h-2 bg-brand-primary-600 rounded-full animate-bounce delay-200" />
+              <div className="flex items-center gap-3 bg-white rounded-2xl px-4 py-3 shadow-sm border border-gray-200">
+                <div className="w-7 h-7 bg-brand-secondary-600 rounded-full flex items-center justify-center">
+                  <Bot className="h-4 w-4 text-white" />
                 </div>
-                <span className="text-sm text-gray-600">{t.typing}</span>
+                <div className="flex gap-1">
+                  <div className="w-2 h-2 bg-brand-secondary-600 rounded-full animate-bounce" />
+                  <div className="w-2 h-2 bg-brand-secondary-600 rounded-full animate-bounce delay-100" />
+                  <div className="w-2 h-2 bg-brand-secondary-600 rounded-full animate-bounce delay-200" />
+                </div>
+                <span className="text-sm text-gray-600 font-medium">{t.typing}</span>
               </div>
             </motion.div>
           )}
@@ -539,14 +549,18 @@ export function Chatbot({ isOpen, onClose, onBookingRequest, language = 'ko' }: 
           <div ref={messagesEndRef} />
         </div>
 
-        {/* Input */}
-        <div className="border-t p-4">
-          <div className="flex items-center gap-2 mb-2">
-            <Badge variant="outline" className="text-xs">
+        {/* Input - Vercel Style */}
+        <div className="border-t border-gray-200 p-4 bg-white">
+          <div className="flex items-center gap-2 mb-3">
+            <Badge 
+              variant="outline" 
+              className="text-xs text-gray-600 border-gray-300"
+              id="chatbot-disclaimer"
+            >
               {t.disclaimer}
             </Badge>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3">
             <div className="flex-1 relative">
               <input
                 ref={inputRef}
@@ -555,14 +569,21 @@ export function Chatbot({ isOpen, onClose, onBookingRequest, language = 'ko' }: 
                 onChange={(e) => setInputValue(e.target.value)}
                 onKeyPress={handleKeyPress}
                 placeholder={t.placeholder}
-                className="w-full px-4 py-3 bg-gray-50 rounded-2xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-primary-500 focus:border-transparent"
+                aria-label={t.placeholder}
+                aria-describedby="chatbot-disclaimer"
+                className="w-full px-4 py-3 bg-gray-50 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-secondary-500 focus:border-brand-secondary-500 transition-colors"
               />
               <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1">
                 <Button
                   variant="ghost"
                   size="sm"
                   onClick={toggleListening}
-                  className={`h-8 w-8 p-0 ${isListening ? 'text-red-500' : 'text-gray-500'}`}
+                  aria-label={isListening ? "음성 인식 중지" : "음성 인식 시작"}
+                  className={`h-8 w-8 p-0 rounded-lg ${
+                    isListening 
+                      ? 'text-red-500 bg-red-50 hover:bg-red-100' 
+                      : 'text-gray-500 hover:text-gray-700 hover:bg-gray-100'
+                  }`}
                 >
                   {isListening ? <MicOff className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
                 </Button>
@@ -570,7 +591,12 @@ export function Chatbot({ isOpen, onClose, onBookingRequest, language = 'ko' }: 
                   variant="ghost"
                   size="sm"
                   onClick={toggleSpeech}
-                  className={`h-8 w-8 p-0 ${isSpeaking ? 'text-blue-500' : 'text-gray-500'}`}
+                  aria-label={isSpeaking ? "음성 출력 중지" : "음성 출력 시작"}
+                  className={`h-8 w-8 p-0 rounded-lg ${
+                    isSpeaking 
+                      ? 'text-brand-secondary-500 bg-brand-secondary-50 hover:bg-brand-secondary-100' 
+                      : 'text-gray-500 hover:text-gray-700 hover:bg-gray-100'
+                  }`}
                 >
                   {isSpeaking ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
                 </Button>
@@ -579,7 +605,9 @@ export function Chatbot({ isOpen, onClose, onBookingRequest, language = 'ko' }: 
             <Button
               onClick={() => handleSend()}
               disabled={!inputValue.trim()}
-              className="h-12 w-12 rounded-2xl p-0"
+              variant="secondary"
+              aria-label="메시지 전송"
+              className="h-12 w-12 rounded-xl p-0 bg-black hover:bg-gray-800 text-white border-0 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <Send className="h-4 w-4" />
             </Button>

@@ -53,11 +53,63 @@ const Modal: React.FC<ModalProps> = ({
   closeOnEscape = true,
   className,
 }) => {
-  React.useEffect(() => {
-    if (!closeOnEscape) return
+  const modalRef = React.useRef<HTMLDivElement>(null)
+  const previousFocusRef = React.useRef<HTMLElement | null>(null)
 
+  // 포커스 관리 및 키보드 이벤트 처리
+  React.useEffect(() => {
+    if (isOpen) {
+      // 이전 포커스 요소 저장
+      previousFocusRef.current = document.activeElement as HTMLElement
+      
+      // 모달에 포커스 설정
+      setTimeout(() => {
+        modalRef.current?.focus()
+      }, 100)
+      
+      // 포커스 트래핑 설정
+      const focusableElements = modalRef.current?.querySelectorAll(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      )
+      
+      if (focusableElements && focusableElements.length > 0) {
+        const firstElement = focusableElements[0] as HTMLElement
+        const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement
+        
+        const handleTabKey = (e: KeyboardEvent) => {
+          if (e.key === 'Tab') {
+            if (e.shiftKey) {
+              // Shift + Tab
+              if (document.activeElement === firstElement) {
+                lastElement?.focus()
+                e.preventDefault()
+              }
+            } else {
+              // Tab
+              if (document.activeElement === lastElement) {
+                firstElement?.focus()
+                e.preventDefault()
+              }
+            }
+          }
+        }
+        
+        document.addEventListener('keydown', handleTabKey)
+        
+        return () => {
+          document.removeEventListener('keydown', handleTabKey)
+        }
+      }
+    } else if (previousFocusRef.current) {
+      // 모달이 닫힐 때 이전 포커스 복원
+      previousFocusRef.current.focus()
+    }
+  }, [isOpen])
+
+  // Escape 키 처리 및 body 스크롤 관리
+  React.useEffect(() => {
     const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
+      if (closeOnEscape && event.key === 'Escape') {
         onClose()
       }
     }
@@ -95,6 +147,7 @@ const Modal: React.FC<ModalProps> = ({
 
           {/* Modal */}
           <motion.div
+            ref={modalRef}
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
@@ -104,6 +157,7 @@ const Modal: React.FC<ModalProps> = ({
             aria-modal="true"
             aria-labelledby={title ? 'modal-title' : undefined}
             aria-describedby={description ? 'modal-description' : undefined}
+            tabIndex={-1}
           >
             {/* Close Button */}
             {showCloseButton && (

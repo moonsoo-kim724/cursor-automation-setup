@@ -1,11 +1,11 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { cn } from '@/lib/utils'
 import { motion } from 'framer-motion'
-import { ChevronLeft, ChevronRight, Clock, User, Calendar as CalendarIcon } from 'lucide-react'
+import { Calendar as CalendarIcon, ChevronLeft, ChevronRight, Clock, User } from 'lucide-react'
+import { useEffect, useState } from 'react'
 import { Button } from './button'
 import { Card, CardContent, CardHeader, CardTitle } from './card'
-import { cn } from '@/lib/utils'
 
 interface TimeSlot {
   id: string
@@ -34,29 +34,29 @@ const MONTHS = [
 const generateTimeSlots = (date: Date): TimeSlot[] => {
   const slots: TimeSlot[] = []
   const isWeekend = date.getDay() === 0 || date.getDay() === 6
-  
+
   if (isWeekend && date.getDay() === 0) {
     // 일요일은 휴진
     return []
   }
-  
+
   const startHour = 9
   const endHour = isWeekend ? 13 : 18 // 토요일은 13시까지
   const lunchStart = 12.5 // 12:30
   const lunchEnd = 13.5 // 13:30
-  
+
   for (let hour = startHour; hour < endHour; hour++) {
     for (let minute = 0; minute < 60; minute += 30) {
       const timeValue = hour + minute / 60
-      
+
       // 점심시간 제외 (평일만)
       if (!isWeekend && timeValue >= lunchStart && timeValue < lunchEnd) {
         continue
       }
-      
+
       const timeString = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`
       const isAvailable = Math.random() > 0.3 // 70% 확률로 예약 가능
-      
+
       slots.push({
         id: `${date.toISOString().split('T')[0]}-${timeString}`,
         time: timeString,
@@ -66,14 +66,14 @@ const generateTimeSlots = (date: Date): TimeSlot[] => {
       })
     }
   }
-  
+
   return slots
 }
 
-export function Calendar({ 
-  selectedDate = new Date(), 
-  onDateSelect, 
-  onTimeSelect, 
+export function Calendar({
+  selectedDate = new Date(),
+  onDateSelect,
+  onTimeSelect,
   selectedTimeSlot,
   doctorId = 'dr-kim',
   appointmentType = 'consultation'
@@ -86,27 +86,27 @@ export function Calendar({
   const generateCalendarDays = () => {
     const year = currentMonth.getFullYear()
     const month = currentMonth.getMonth()
-    
+
     const firstDay = new Date(year, month, 1)
     const lastDay = new Date(year, month + 1, 0)
     const startDate = new Date(firstDay)
     startDate.setDate(startDate.getDate() - firstDay.getDay())
-    
+
     const days = []
     const today = new Date()
     today.setHours(0, 0, 0, 0)
-    
+
     for (let i = 0; i < 42; i++) {
       const date = new Date(startDate)
       date.setDate(startDate.getDate() + i)
-      
+
       const isCurrentMonth = date.getMonth() === month
       const isToday = date.getTime() === today.getTime()
       const isSelected = selectedDate && date.toDateString() === selectedDate.toDateString()
       const isPast = date < today
       const isWeekend = date.getDay() === 0 || date.getDay() === 6
       const isSunday = date.getDay() === 0
-      
+
       days.push({
         date,
         isCurrentMonth,
@@ -118,7 +118,7 @@ export function Calendar({
         isSelectable: isCurrentMonth && !isPast && !isSunday
       })
     }
-    
+
     return days
   }
 
@@ -166,7 +166,7 @@ export function Calendar({
         <CardHeader>
           <div className="flex items-center justify-between">
             <CardTitle className="flex items-center gap-2">
-              <CalendarIcon className="h-5 w-5 text-brand-primary-600" />
+              <CalendarIcon className="h-5 w-5 text-brand-secondary-600" />
               날짜 선택
             </CardTitle>
             <div className="flex items-center gap-2">
@@ -217,19 +217,19 @@ export function Calendar({
                 disabled={!day.isSelectable}
                 className={cn(
                   "relative p-2 text-sm rounded-lg transition-all duration-200",
-                  "hover:bg-neutral-100 focus:outline-none focus:ring-2 focus:ring-brand-primary-500",
+                  "hover:bg-neutral-100 focus:outline-none focus:ring-2 focus:ring-brand-secondary-500",
                   {
                     // 기본 스타일
                     "text-neutral-900": day.isCurrentMonth && day.isSelectable,
                     "text-neutral-400": !day.isCurrentMonth || day.isPast,
                     "text-red-500": day.isSunday,
-                    
+
                     // 선택된 날짜
-                    "bg-brand-primary-600 text-white hover:bg-brand-primary-700": day.isSelected,
-                    
+                    "bg-brand-secondary-600 text-white hover:bg-brand-secondary-700": day.isSelected,
+
                     // 오늘 날짜
                     "bg-brand-secondary-100 text-brand-secondary-700 font-semibold": day.isToday && !day.isSelected,
-                    
+
                     // 비활성화된 날짜
                     "cursor-not-allowed opacity-50": !day.isSelectable,
                     "cursor-pointer": day.isSelectable
@@ -237,7 +237,7 @@ export function Calendar({
                 )}
               >
                 {day.date.getDate()}
-                
+
                 {/* 오늘 표시 */}
                 {day.isToday && !day.isSelected && (
                   <div className="absolute bottom-1 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-brand-secondary-600 rounded-full" />
@@ -312,18 +312,18 @@ export function Calendar({
                               disabled={!slot.available}
                               className={cn(
                                 "p-2 text-sm rounded-lg border transition-all duration-200",
-                                "focus:outline-none focus:ring-2 focus:ring-brand-primary-500",
+                                "focus:outline-none focus:ring-2 focus:ring-brand-secondary-500",
                                 {
                                   // 예약 가능한 시간
-                                  "border-neutral-200 bg-white text-neutral-700 hover:border-brand-primary-300 hover:bg-brand-primary-50": 
+                                  "border-neutral-200 bg-white text-neutral-700 hover:border-brand-secondary-300 hover:bg-brand-secondary-50":
                                     slot.available && selectedTimeSlot?.id !== slot.id,
-                                  
+
                                   // 선택된 시간
-                                  "border-brand-primary-600 bg-brand-primary-600 text-white": 
+                                  "border-brand-secondary-600 bg-brand-secondary-600 text-white":
                                     selectedTimeSlot?.id === slot.id,
-                                  
+
                                   // 예약 불가능한 시간
-                                  "border-neutral-200 bg-neutral-100 text-neutral-400 cursor-not-allowed": 
+                                  "border-neutral-200 bg-neutral-100 text-neutral-400 cursor-not-allowed":
                                     !slot.available
                                 }
                               )}
@@ -351,13 +351,13 @@ export function Calendar({
                               disabled={!slot.available}
                               className={cn(
                                 "p-2 text-sm rounded-lg border transition-all duration-200",
-                                "focus:outline-none focus:ring-2 focus:ring-brand-primary-500",
+                                "focus:outline-none focus:ring-2 focus:ring-brand-secondary-500",
                                 {
-                                  "border-neutral-200 bg-white text-neutral-700 hover:border-brand-primary-300 hover:bg-brand-primary-50": 
+                                  "border-neutral-200 bg-white text-neutral-700 hover:border-brand-secondary-300 hover:bg-brand-secondary-50":
                                     slot.available && selectedTimeSlot?.id !== slot.id,
-                                  "border-brand-primary-600 bg-brand-primary-600 text-white": 
+                                  "border-brand-secondary-600 bg-brand-secondary-600 text-white":
                                     selectedTimeSlot?.id === slot.id,
-                                  "border-neutral-200 bg-neutral-100 text-neutral-400 cursor-not-allowed": 
+                                  "border-neutral-200 bg-neutral-100 text-neutral-400 cursor-not-allowed":
                                     !slot.available
                                 }
                               )}

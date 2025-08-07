@@ -1,0 +1,35 @@
+# 웹 성능 최적화 (Lighthouse 95+ 목표)
+
+**Task ID:** T-021
+**Status:** BACKLOG
+**Importance:** MUST
+**Complexity:** 6/10
+**Urgency:** 8/10
+**Dependencies:** T-017, T-018
+
+## Description
+
+### 설명
+Google Lighthouse 점수 95점 이상, 주요 성능 지표(FCP < 1.5s, TTFB < 200ms) 달성을 목표로 웹사이트 전반의 로딩 속도와 렌더링 성능을 최적화합니다. 이미지 최적화, 코드 스플리팅, 렌더링 최적화 등 다양한 기법을 적용하여 사용자에게 빠르고 쾌적한 경험을 제공합니다.
+
+### 구현 상세
+1.  **이미지 최적화**: 프로젝트 내 모든 `<img>` 태그를 Next.js의 `<Image>` 컴포넌트로 교체합니다. 이를 통해 이미지 사이즈 최적화, WebP와 같은 최신 포맷 자동 변환, 지연 로딩(lazy loading)이 자동으로 적용됩니다.
+2.  **코드 스플리팅**: `next/dynamic`을 사용하여 사용자의 초기 화면에 즉시 필요하지 않은 무거운 컴포넌트(예: 복잡한 차트 라이브러리, 특정 페이지에서만 사용되는 모달)를 동적으로 임포트합니다. 이를 통해 초기 JavaScript 번들 크기를 줄입니다.
+    ```javascript
+    import dynamic from 'next/dynamic'
+    const HeavyComponent = dynamic(() => import('../components/HeavyComponent'))
+    ```
+3.  **렌더링 최적화**: 불필요한 리렌더링이 자주 발생하는 컴포넌트를 React Profiler로 식별하고, `React.memo`, `useCallback`, `useMemo` 훅을 적절히 사용하여 렌더링 성능을 개선합니다.
+4.  **정적 자산 캐싱 및 전송 최적화**: Vercel Edge Network(CDN) 설정을 확인하고, 폰트, CSS, JS 파일에 대한 최적의 캐싱 정책이 적용되도록 합니다. 폰트 로딩 최적화를 위해 `next/font`를 사용합니다.
+5.  **서버/클라이언트 컴포넌트 전략**: Next.js 14의 App Router를 활용하여, 인터랙션이 없는 정적인 부분은 서버 컴포넌트(RSC)로 유지하고, 사용자 인터랙션이 필요한 부분만 클라이언트 컴포넌트(`'use client'`)로 전환하여 초기 로딩 페이로드를 최소화합니다.
+
+### 테스트 전략
+1.  **성능 지표 측정**: Google Lighthouse, PageSpeed Insights, WebPageTest와 같은 도구를 사용하여 주기적으로 성능을 측정하고 리포트를 생성합니다. 특히 FCP, LCP, TBT, CLS 등 Core Web Vitals 지표를 집중적으로 관리합니다.
+2.  **실사용자 모니터링 (RUM)**: Vercel Analytics를 통해 실제 사용자 환경에서의 성능 데이터를 모니터링하고, 특정 지역이나 디바이스에서 발생하는 성능 저하 문제를 파악합니다.
+3.  **번들 사이즈 분석**: `@next/bundle-analyzer` 패키지를 설치하여 빌드 시 생성되는 JavaScript 번들 사이즈를 시각적으로 분석하고, 불필요하게 큰 라이브러리가 포함되지 않았는지 확인합니다.
+4.  **최적화 전후 비교**: 각 최적화 기법을 적용하기 전과 후의 Lighthouse 점수 및 주요 지표를 비교 측정하여 개선 효과를 정량적으로 문서화합니다.
+
+---
+
+**Created:** 2025-07-30T03:34:48.326Z
+**Updated:** 2025-07-30T03:34:48.326Z

@@ -1,0 +1,600 @@
+---
+description:
+globs:
+alwaysApply: true
+---
+# 🏥 연수김안과의원 기술스택 명세서 (Supabase 통합)
+
+> **"30년의 신뢰, AI로 미래를 열다"** - 1주일 빠른 출시 완전 기술스택
+
+---
+
+## 📋 **프로젝트 개요 및 범위 (PRD 태스크 001~022 반영)**
+
+### **프로젝트명**: YSK AI Landing Page (연수김안과)
+### **버전**: 1.0.0
+### **주요 목표**:
+- 1주일 MVP 출시, 의료 상담·예약 자동화, SEO/AEO 최적화
+- 사용자 친화적 UI, 실시간 데이터 처리, 보안 및 개인정보보호
+
+### **PRD 태스크 통합 범위**:
+- 태스크001: 랜딩페이지 기본 구조 설계
+- 태스크002: 의료 서비스 설명 영역 구성
+- 태스크003: AI 챗봇 UI 및 대화 흐름 설계
+- 태스크004: 예약 폼 및 프로세스 정의
+- 태스크005: 환자 정보 수집 설계
+- 태스크006: 진료/상담 서비스 타입 구분
+- 태스크007: 상담 기록 및 이력 관리 방식
+- 태스크008: 실시간 알림/푸시 연동
+- 태스크009: 이메일/SMS/카카오톡 통합 알림
+- 태스크010: AI 상담 추천 로직 설계
+- 태스크011: 의료 FAQ 및 지식베이스 구조화
+- 태스크012: 벡터 DB 기반 검색 적용
+- 태스크013: 개인정보처리방침/동의 플로우
+- 태스크014: 인증/로그인(비회원 포함) 처리
+- 태스크015: 예약 확인/취소/변경 플로우
+- 태스크016: 관리자 모니터링 대시보드 정의
+- 태스크017: SEO, AEO, 모바일 최적화
+- 태스크018: 성능 모니터링 및 장애 알림
+- 태스크019: 데이터 백업 및 복구 전략
+- 태스크020: HIPAA/의료 규정 준수 요구사항
+- 태스크021: 외부 API(카카오/슬랙/이메일) 연동
+- 태스크022: 장애 대응 및 운영 자동화 구조
+
+---
+
+## 🛠️ **Core Technology Stack**
+
+### **⚛️ Frontend Framework**
+```typescript
+{
+  "framework": "Next.js 14 (App Router)",
+  "language": "TypeScript 5.0+",
+  "runtime": "React 18+ (Server Components)",
+  "styling": "Tailwind CSS 3.4",
+  "deployment": "Vercel"
+}
+```
+
+### **🗄️ Backend & Database (Supabase 통합)**
+```typescript
+{
+  "backend": "Supabase (PostgreSQL + Edge Functions)",
+  "database": "Supabase PostgreSQL",
+  "auth": "Supabase Auth",
+  "storage": "Supabase Storage",
+  "realtime": "Supabase Realtime",
+  "edge_functions": "Supabase Edge Functions (Deno)"
+}
+```
+
+### **🎨 UI/UX Libraries**
+```typescript
+{
+  // Component System
+  "ui_framework": "shadcn/ui + Radix UI",
+  "components": [
+    "@radix-ui/react-dialog",
+    "@radix-ui/react-portal", 
+    "@radix-ui/react-slot",
+    "@radix-ui/react-accordion",
+    "@radix-ui/react-avatar",
+    "@radix-ui/react-checkbox",
+    "@radix-ui/react-dropdown-menu",
+    "@radix-ui/react-label",
+    "@radix-ui/react-select",
+    "@radix-ui/react-separator",
+    "@radix-ui/react-toast"
+  ],
+  
+  // Styling Utilities
+  "utilities": [
+    "class-variance-authority",
+    "clsx",
+    "tailwind-merge",
+    "tailwindcss-animate"
+  ],
+  
+  // Icons & Animation
+  "icons": "Lucide React",
+  "animation": "Framer Motion 12"
+}
+```
+
+---
+
+## 🤖 **AI & Integration Stack**
+
+### **AI Services**
+```typescript
+{
+  "primary_llm": "OpenAI GPT-4o",
+  "chatbot_platform": "기존 GPTs + Typebot",
+  "vector_db": "Supabase pgvector (벡터 검색)",
+  "embedding": "OpenAI text-embedding-3-large"
+}
+```
+
+### **외부 서비스 연동**
+```typescript
+{
+  "messaging": {
+    "kakao": "KakaoTalk Business API",
+    "email": "Resend.com",
+    "sms": "Twilio",
+    "slack": "Slack API (내부 알림)"
+  },
+  "analytics": {
+    "web": "Vercel Analytics",
+    "seo": "Google Search Console",
+    "user": "Supabase Analytics"
+  }
+}
+```
+
+---
+
+## 📦 **Package Dependencies**
+
+### **Production Dependencies**
+```json
+{
+  // Core Framework
+  "next": "^14.0.0",
+  "react": "^18.0.0",
+  "react-dom": "^18.0.0",
+  "typescript": "^5.0.0",
+  
+  // Supabase Integration
+  "@supabase/supabase-js": "^2.39.0",
+  "@supabase/ssr": "^0.1.0",
+  "@supabase/auth-helpers-nextjs": "^0.8.0",
+  
+  // UI Components
+  "@radix-ui/react-dialog": "^1.1.14",
+  "@radix-ui/react-portal": "^1.1.9",
+  "@radix-ui/react-slot": "^1.2.3",
+  "@radix-ui/react-accordion": "^1.1.0",
+  "@radix-ui/react-avatar": "^1.0.0",
+  "@radix-ui/react-checkbox": "^1.0.0",
+  "@radix-ui/react-dropdown-menu": "^2.0.0",
+  "@radix-ui/react-label": "^2.0.0",
+  "@radix-ui/react-select": "^1.2.0",
+  "@radix-ui/react-separator": "^1.0.0",
+  "@radix-ui/react-toast": "^1.1.0",
+  
+  // Styling
+  "tailwindcss": "^3.4.0",
+  "class-variance-authority": "^0.7.1",
+  "clsx": "^2.1.1",
+  "tailwind-merge": "^3.3.1",
+  "tailwindcss-animate": "^1.0.7",
+  
+  // State Management & Forms
+  "zustand": "^4.4.0",
+  "@tanstack/react-query": "^5.0.0",
+  "react-hook-form": "^7.48.0",
+  "zod": "^3.22.0",
+  "@hookform/resolvers": "^3.3.0",
+  
+  // AI & External APIs
+  "openai": "^5.8.3",
+  "resend": "^2.0.0",
+  "axios": "^1.6.0",
+  
+  // Animation & Icons
+  "framer-motion": "^12.23.0",
+  "lucide-react": "^0.525.0",
+  
+  // SEO & Internationalization
+  "next-seo": "^6.4.0",
+  "next-sitemap": "^4.2.0",
+  "next-intl": "^3.0.0",
+  
+  // Analytics
+  "@vercel/analytics": "^1.1.0",
+  
+  // Utilities
+  "date-fns": "^3.0.0",
+  "es-toolkit": "^1.0.0"
+}
+```
+
+### **Development Dependencies**
+```json
+{
+  "@types/node": "^20.0.0",
+  "@types/react": "^18.0.0",
+  "@types/react-dom": "^18.0.0",
+  "autoprefixer": "^10.0.0",
+  "eslint": "^8.0.0",
+  "eslint-config-next": "^14.0.0",
+  "postcss": "^8.0.0",
+  "prettier": "^3.0.0",
+  "supabase": "^1.123.0"
+}
+```
+
+---
+
+## 🏗️ **Supabase 아키텍처 설계**
+
+### **데이터베이스 스키마**
+```sql
+-- 환자 정보 테이블
+CREATE TABLE patients (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  name VARCHAR(100) NOT NULL,
+  phone VARCHAR(20) UNIQUE NOT NULL,
+  email VARCHAR(255),
+  birth_date DATE,
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW()
+);
+
+-- 예약 테이블
+CREATE TABLE reservations (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  patient_id UUID REFERENCES patients(id),
+  service_type VARCHAR(50) NOT NULL, -- 라식/라섹/백내장 등
+  appointment_date DATE NOT NULL,
+  appointment_time TIME NOT NULL,
+  status VARCHAR(20) DEFAULT 'pending', -- pending/confirmed/completed/cancelled
+  notes TEXT,
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW()
+);
+
+-- AI 상담 기록 테이블
+CREATE TABLE consultations (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  patient_id UUID REFERENCES patients(id),
+  conversation JSONB NOT NULL, -- 대화 내용 JSON
+  symptoms TEXT[], -- 증상 배열
+  recommendations TEXT[], -- AI 추천사항
+  urgency_level INTEGER DEFAULT 1, -- 1-5 긴급도
+  created_at TIMESTAMP DEFAULT NOW()
+);
+
+-- 뉴스레터 구독 테이블
+CREATE TABLE newsletter_subscribers (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  email VARCHAR(255) UNIQUE NOT NULL,
+  name VARCHAR(100),
+  subscribed_at TIMESTAMP DEFAULT NOW(),
+  is_active BOOLEAN DEFAULT true
+);
+
+-- FAQ 테이블
+CREATE TABLE faqs (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  category VARCHAR(50) NOT NULL,
+  question TEXT NOT NULL,
+  answer TEXT NOT NULL,
+  order_index INTEGER DEFAULT 0,
+  is_published BOOLEAN DEFAULT true,
+  created_at TIMESTAMP DEFAULT NOW()
+);
+
+-- 벡터 검색을 위한 확장
+CREATE EXTENSION IF NOT EXISTS vector;
+
+-- AI 지식베이스 테이블 (벡터 검색용)
+CREATE TABLE knowledge_base (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  title VARCHAR(255) NOT NULL,
+  content TEXT NOT NULL,
+  category VARCHAR(50) NOT NULL,
+  embedding vector(1536), -- OpenAI embedding 차원
+  metadata JSONB,
+  created_at TIMESTAMP DEFAULT NOW()
+);
+
+-- 벡터 유사도 검색 인덱스
+CREATE INDEX ON knowledge_base USING ivfflat (embedding vector_cosine_ops);
+```
+
+### **Row Level Security (RLS) 정책**
+```sql
+-- 환자 정보 보안 정책
+ALTER TABLE patients ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Users can view own data" ON patients
+  FOR SELECT USING (auth.uid() = id);
+
+-- 예약 정보 보안 정책  
+ALTER TABLE reservations ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Users can view own reservations" ON reservations
+  FOR SELECT USING (patient_id = auth.uid());
+
+-- 상담 기록 보안 정책
+ALTER TABLE consultations ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Users can view own consultations" ON consultations
+  FOR SELECT USING (patient_id = auth.uid());
+```
+
+---
+
+## ⚡ **Supabase Edge Functions**
+
+### **AI 상담 처리 함수**
+```typescript
+// supabase/functions/ai-consultation/index.ts
+import { serve } from 'https://deno.land/std@0.168.0/http/server.ts'
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
+
+serve(async (req) => {
+  const { symptoms, patientId } = await req.json()
+  
+  // OpenAI API 호출
+  const aiResponse = await fetch('https://api.openai.com/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${Deno.env.get('OPENAI_API_KEY')}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      model: 'gpt-4o',
+      messages: [{
+        role: 'system',
+        content: '당신은 연수김안과의원의 AI 상담 어시스턴트입니다...'
+      }, {
+        role: 'user',
+        content: `증상: ${symptoms.join(', ')}`
+      }]
+    })
+  })
+  
+  const aiResult = await aiResponse.json()
+  
+  // Supabase에 상담 기록 저장
+  const supabase = createClient(
+    Deno.env.get('SUPABASE_URL')!,
+    Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
+  )
+  
+  await supabase.from('consultations').insert({
+    patient_id: patientId,
+    conversation: aiResult,
+    symptoms: symptoms,
+    recommendations: extractRecommendations(aiResult)
+  })
+  
+  return new Response(JSON.stringify(aiResult), {
+    headers: { 'Content-Type': 'application/json' }
+  })
+})
+```
+
+### **예약 알림 함수**
+```typescript
+// supabase/functions/send-reservation-notification/index.ts
+import { serve } from 'https://deno.land/std@0.168.0/http/server.ts'
+
+serve(async (req) => {
+  const { reservationId, type } = await req.json()
+  
+  // 예약 정보 조회
+  const supabase = createClient(...)
+  const { data: reservation } = await supabase
+    .from('reservations')
+    .select('*, patients(*)')
+    .eq('id', reservationId)
+    .single()
+  
+  // 카카오톡 알림톡 발송
+  await sendKakaoNotification({
+    phone: reservation.patients.phone,
+    template: 'reservation_confirm',
+    variables: {
+      name: reservation.patients.name,
+      date: reservation.appointment_date,
+      time: reservation.appointment_time
+    }
+  })
+  
+  // Slack 알림 (병원 스태프용)
+  await sendSlackNotification({
+    text: `새 예약: ${reservation.patients.name} - ${reservation.appointment_date}`
+  })
+  
+  return new Response('OK')
+})
+```
+
+---
+
+## 🔧 **환경 설정**
+
+### **환경 변수 (.env.local)**
+```bash
+# Supabase
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
+
+# OpenAI
+OPENAI_API_KEY=your_openai_api_key
+
+# External APIs
+KAKAO_API_KEY=your_kakao_api_key
+RESEND_API_KEY=your_resend_api_key
+TWILIO_ACCOUNT_SID=your_twilio_sid
+TWILIO_AUTH_TOKEN=your_twilio_token
+SLACK_WEBHOOK_URL=your_slack_webhook
+
+# Analytics
+NEXT_PUBLIC_GA_ID=your_google_analytics_id
+```
+
+### **Supabase 클라이언트 설정**
+```typescript
+// lib/supabase.ts
+import { createClientComponentClient, createServerComponentClient } from '@supabase/auth-helpers-nextjs'
+import { cookies } from 'next/headers'
+
+// 클라이언트 컴포넌트용
+export const createClient = () => createClientComponentClient()
+
+// 서버 컴포넌트용
+export const createServerClient = () => createServerComponentClient({ cookies })
+
+// 타입 정의
+export type Database = {
+  public: {
+    Tables: {
+      patients: {
+        Row: {
+          id: string
+          name: string
+          phone: string
+          email: string | null
+## 📱 **주요 기능별 구현 계획 (PRD 태스크 001~022 반영)**
+
+### **1주차: MVP 핵심 기능**
+```typescript
+// 태스크001~006: 기본 랜딩페이지, 의료 서비스 설명, 예약/상담 UI
+- ✅ Next.js 14 + TypeScript 구조
+- ✅ Tailwind CSS + shadcn/ui 컴포넌트
+- ✅ 서비스 설명, 진료/상담 유형 구분, 예약 폼 설계
+
+// 태스크007~010: AI 챗봇 및 상담 기록
+- 🔄 AI 챗봇 UI/UX, 대화 저장, 상담 추천 알고리즘, 증상 입력
+- 🔄 Supabase 상담 이력 관리 및 AI 추천 로직
+
+// 태스크011~015: 지식베이스, FAQ, 인증, 개인정보
+- 🔄 FAQ/지식베이스 구조화, 벡터 DB 검색, 개인정보 동의
+- 🔄 인증/비회원 처리, 예약 확인/변경/취소 플로우
+
+// 태스크016~019: 관리자, SEO, 모니터링, 백업
+- 🔄 관리자 대시보드, SEO/AEO/모바일 최적화, 성능/이상 모니터링, 자동 백업
+
+// 태스크020~022: 규정 준수, 외부 API, 장애 대응
+- 🔄 HIPAA/의료 규정 준수, 카카오/이메일/슬랙 연동, 장애 자동화 및 복구
+```
+
+### **2주차: 고도화 및 자동화 기능**
+```typescript
+// AI 및 실시간 기능
+- 고급 벡터 검색, 실시간 상담/알림, 예약/상담 자동화
+// 마케팅/운영 자동화
+- 이메일 뉴스레터, 재방문 리마인더, 고객 여정 추적, 장애 대응 자동화
+// 분석/최적화
+- 사용자 행동 분석, A/B 테스트, 성능 모니터링, 데이터 복구
+```
+
+## 📱 **주요 기능별 구현 계획**
+
+### **1주차: MVP 핵심 기능**
+```typescript
+// 우선순위 1: 기본 랜딩페이지
+- ✅ Next.js 14 + TypeScript 기반 구조
+- ✅ Tailwind CSS + shadcn/ui 컴포넌트
+- ✅ Supabase 초기 설정
+
+// 우선순위 2: AI 챗봇 연동
+- 🔄 기존 GPTs 링크 연결
+- 🔄 Typebot 임베딩
+- 🔄 상담 내용 Supabase 저장
+
+// 우선순위 3: 예약 시스템
+- 🔄 예약 폼 (React Hook Form + Zod)
+- 🔄 Supabase 데이터 저장
+- 🔄 카카오톡 알림톡 발송
+- 🔄 Slack 내부 알림
+
+// 우선순위 4: 기본 SEO
+- 🔄 메타 태그 최적화
+- 🔄 구조화 데이터
+- 🔄 사이트맵 생성
+```
+
+### **2주차: 고도화 기능**
+```typescript
+// 고급 AI 기능
+- 벡터 검색 (pgvector)
+- 실시간 상담 (Supabase Realtime)
+- AI 추천 시스템
+
+// 마케팅 자동화
+- 이메일 뉴스레터 (Resend)
+- 재방문 리마인더
+- 고객 여정 추적
+
+// 분석 & 최적화
+- 사용자 행동 분석
+- A/B 테스트
+- 성능 모니터링
+```
+
+---
+
+## 🚀 **배포 아키텍처**
+
+### **Production Stack**
+```typescript
+{
+  "frontend": "Vercel (Next.js)",
+  "backend": "Supabase (Edge Functions)",
+  "database": "Supabase PostgreSQL",
+  "cdn": "Vercel Edge Network",
+  "monitoring": "Vercel Analytics + Supabase Monitoring",
+  "domain": "연수김안과 도메인"
+}
+```
+
+### **개발 워크플로우**
+```bash
+# 1. 로컬 개발 환경 설정
+npm install
+npx supabase start
+npm run dev
+
+# 2. Supabase 마이그레이션
+npx supabase db reset
+npx supabase db push
+
+# 3. Edge Functions 배포
+npx supabase functions deploy ai-consultation
+npx supabase functions deploy send-reservation-notification
+
+# 4. 프로덕션 배포
+npm run build
+vercel --prod
+```
+
+---
+
+## 💡 **Supabase 활용의 핵심 장점**
+
+### **🎯 1주일 출시를 위한 최적 선택**
+1. **즉시 사용 가능한 PostgreSQL**: 복잡한 DB 설정 불필요
+2. **실시간 기능**: 예약 현황 실시간 업데이트
+3. **인증 시스템**: 환자 로그인/가입 자동 처리
+4. **Edge Functions**: 서버리스 백엔드 로직
+5. **파일 스토리지**: 의료 이미지/문서 저장
+6. **벡터 검색**: AI 지식베이스 구축
+
+### **의료 서비스 특화 기능**
+1. **Row Level Security**: 환자 개인정보 보호
+2. **실시간 알림**: 응급 상황 즉시 대응
+3. **데이터 백업**: 자동 백업 및 복구
+4. **규정 준수**: HIPAA 준수 인프라
+
+---
+
+## 📊 **예상 성능 지표**
+
+### **기술적 성능**
+- **Lighthouse Score**: 95+ (Vercel + Supabase 최적화)
+- **Core Web Vitals**: 모든 지표 Green
+- **API Response Time**: < 200ms (Edge Functions)
+- **Database Query Time**: < 50ms (최적화된 인덱스)
+
+### **비즈니스 성능**
+- **예약 전환율**: 35% 목표
+- **챗봇 상담 만족도**: 4.8/5.0 목표
+- **페이지 로딩 시간**: < 2초
+- **모바일 사용성**: 90% 이상
+
+---
+

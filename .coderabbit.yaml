@@ -11,25 +11,25 @@ early_access: true
 reviews:
   # 변경 요청 표시자
   request_changes_indicator: "🚨"
-  
+
   # 고수준 요약 활성화
   high_level_summary: true
-  
+
   # 시 형태 요약 비활성화 (의료 프로젝트에 적합하지 않음)
   poem: false
-  
+
   # 리뷰 트리거 설정
   review_simple_changes: false
-  
+
   # LGTM 코멘트 비활성화
   review_comment_lgtm: false
-  
+
   # 자동 요약 활성화
   auto_review: true
-  
+
   # 긴 함수에 대한 경고
   max_function_length: 50
-  
+
   # 복잡도 체크
   max_complexity: 10
 
@@ -67,36 +67,36 @@ rules:
     strict_mode: true
     no_any: true
     prefer_interfaces: true
-    
-  # React 관련  
+
+  # React 관련
   react:
     prefer_function_components: true
     use_client_directive: true
     prefer_arrow_functions: true
-    
+
   # Next.js 관련
   nextjs:
     app_router: true
     server_components_first: true
-    
+
   # 보안 관련
   security:
     no_secrets_in_code: true
     sanitize_inputs: true
     validate_env_vars: true
-    
+
   # 성능 관련
   performance:
     bundle_size_check: true
     image_optimization: true
     lazy_loading: true
-    
+
   # 접근성 관련
   accessibility:
     wcag_compliance: true
     semantic_html: true
     keyboard_navigation: true
-    
+
   # 의료 규정 관련
   medical:
     no_medical_claims: true
@@ -120,10 +120,10 @@ checklist:
 notifications:
   # PR 작성자에게 알림
   notify_author: true
-  
+
   # 리뷰어에게 알림
   notify_reviewers: true
-  
+
   # 중요한 보안 이슈 발견 시 즉시 알림
   security_alerts: true
 
@@ -131,10 +131,10 @@ notifications:
 reporting:
   # 주간 코드 품질 리포트
   weekly_summary: true
-  
+
   # 성능 트렌드 추적
   performance_tracking: true
-  
+
   # 보안 스캔 결과
   security_scan: true
 
@@ -142,10 +142,10 @@ reporting:
 integrations:
   # GitHub Actions 연동
   github_actions: true
-  
+
   # Vercel 연동
   vercel: true
-  
+
   # Supabase 연동
   supabase: true
 
@@ -153,12 +153,12 @@ integrations:
 quality_gates:
   # 최소 코드 커버리지 (향후 테스트 추가 시)
   min_coverage: 80
-  
+
   # 최대 기술 부채 점수
   max_tech_debt: 3
-  
+
   # 성능 점수 최소값
   min_performance_score: 90
-  
+
   # 접근성 점수 최소값
   min_accessibility_score: 95

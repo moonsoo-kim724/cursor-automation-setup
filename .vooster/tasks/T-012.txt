@@ -1,0 +1,52 @@
+# CI/CD 파이프라인 구축 (GitHub Actions, Vercel, Supabase CLI)
+
+**Task ID:** T-012
+**Status:** DONE
+**Importance:** MUST
+**Complexity:** 8/10
+**Urgency:** 9/10
+**Dependencies:** T-001, T-002
+
+## Description
+
+### 설명
+개발, 스테이징, 프로덕션 환경에 대한 코드 변경사항을 안정적이고 신속하게 배포하기 위해 CI/CD(지속적 통합/지속적 배포) 파이프라인을 구축합니다. GitHub Actions를 사용하여 코드 푸시 이벤트를 트리거하고, Vercel에 자동으로 애플리케이션을 배포하며, Supabase CLI를 통해 데이터베이스 스키마 마이그레이션을 동기화합니다.
+
+### 구현 상세
+1.  **Vercel-GitHub 연동**: Vercel 대시보드에서 GitHub 리포지토리를 연결합니다. `main` 브랜치는 프로덕션 배포로, 그 외 `develop`이나 `feature/*` 같은 브랜치는 프리뷰 배포로 자동 설정합니다.
+2.  **Supabase CLI 설정**: 로컬 개발 환경에 Supabase CLI를 설치(`npm install supabase --save-dev`)하고 `supabase init`으로 프로젝트를 초기화합니다. `supabase link --project-ref <your-project-ref>` 명령으로 원격 Supabase 프로젝트와 연결합니다.
+3.  **DB 마이그레이션 관리**: 스키마 변경이 필요할 때마다 `supabase migration new <migration_name>` 명령으로 SQL 마이그레이션 파일을 생성합니다. 생성된 파일은 Git을 통해 버전 관리합니다.
+4.  **GitHub Actions 워크플로우 생성**: `.github/workflows/` 디렉토리에 `production-deploy.yml` 파일을 생성합니다.
+5.  **워크플로우 스크립트 작성**: `main` 브랜치에 푸시될 때 실행될 워크플로우를 정의합니다. 이 워크플로우는 Vercel 배포가 완료된 후 Supabase 마이그레이션을 실행하도록 구성할 수 있습니다. Vercel 배포는 자동 연동되므로, DB 마이그레이션에 집중합니다.
+    ```yaml
+    # .github/workflows/supabase-migration.yml
+    name: Deploy Supabase Migrations
+    on:
+      push:
+        branches:
+          - main
+    jobs:
+      migrate-database:
+        runs-on: ubuntu-latest
+        steps:
+          - uses: actions/checkout@v4
+          - uses: supabase/setup-cli@v1
+            with:
+              version: latest
+          - run: supabase db push
+            env:
+              SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+              SUPABASE_DB_PASSWORD: ${{ secrets.PRODUCTION_DB_PASSWORD }}
+              # 프로젝트 ID는 환경변수 또는 직접 명시
+    ```
+6.  **보안 정보 설정**: GitHub 리포지토리의 `Settings > Secrets and variables > Actions`에 `SUPABASE_ACCESS_TOKEN`과 데이터베이스 비밀번호인 `PRODUCTION_DB_PASSWORD`를 안전하게 등록합니다.
+
+### 테스트 전략
+*   **기능 테스트**: `feature` 브랜치를 생성하고 코드를 푸시하여 Vercel에 프리뷰 배포가 자동으로 생성되고 해당 URL이 정상 작동하는지 확인합니다.
+*   **마이그레이션 테스트**: `develop` 브랜치에서 간단한 테이블 변경(예: 컬럼 추가) 마이그레이션 파일을 생성하고 `main` 브랜치로 병합합니다. GitHub Actions의 실행 로그를 통해 마이그레이션 스크립트가 오류 없이 실행되었는지 확인하고, Supabase 대시보드에서 실제 DB 스키마가 변경되었는지 최종 검증합니다.
+*   **배포 실패 테스트**: 의도적으로 오류가 있는 코드를 푸시하여 Vercel 빌드가 실패하고 배포가 중단되는지 확인합니다. DB 마이그레이션 스크립트에 문법 오류를 넣어 푸시했을 때 GitHub Actions가 실패 처리하는지 검증합니다.
+
+---
+
+**Created:** 2025-07-30T01:28:32.479Z
+**Updated:** 2025-08-05T11:25:05.804Z

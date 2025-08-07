@@ -1,19 +1,39 @@
-import type { Metadata } from 'next'
+import { InstallPrompt } from '@/components/pwa/install-prompt'
+import { ServiceWorkerRegister } from '@/components/pwa/service-worker-register'
+import type { Metadata, Viewport } from 'next'
 import { Inter, Noto_Sans_KR } from 'next/font/google'
 import './globals.css'
 
-// 한글 최적화 폰트
+// 한글 최적화 폰트 - 성능 최적화
 const notoSansKR = Noto_Sans_KR({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700'],
-  variable: '--font-pretendard',
+  variable: '--font-noto-sans-kr',
   display: 'swap',
+  preload: true,
+  fallback: [
+    'Apple SD Gothic Neo',
+    'Malgun Gothic',
+    '맑은 고딕',
+    'sans-serif'
+  ],
+  adjustFontFallback: true,
 })
 
 const inter = Inter({
   subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
   variable: '--font-inter',
   display: 'swap',
+  preload: true,
+  fallback: [
+    '-apple-system',
+    'BlinkMacSystemFont',
+    'Segoe UI',
+    'Roboto',
+    'sans-serif'
+  ],
+  adjustFontFallback: true,
 })
 
 export const metadata: Metadata = {
@@ -23,8 +43,8 @@ export const metadata: Metadata = {
   },
   description: '인천 송도 연수김안과의원은 30년 전문 경력의 안과 수술 전문 병원입니다. AI 기반 디지털 헬스케어와 다국어 진료로 프리미엄 안과 서비스를 제공합니다.',
   keywords: [
-    '연수김안과의원', '인천 송도 안과', '안과 전문의', '시력교정술', 'LASIK', 'LASEK', 
-    '백내장 수술', '노안 교정', '망막 질환', '녹내장', 'AI 안과 진료', 
+    '연수김안과의원', '인천 송도 안과', '안과 전문의', '시력교정술', 'LASIK', 'LASEK',
+    '백내장 수술', '노안 교정', '망막 질환', '녹내장', 'AI 안과 진료',
     '외국인 친화 병원', '다국어 진료', '송도 신도시', '의료 관광'
   ],
   authors: [{ name: '연수김안과의원' }],
@@ -86,6 +106,18 @@ export const metadata: Metadata = {
   },
 }
 
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+  userScalable: true,
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#0054A6' },
+    { media: '(prefers-color-scheme: dark)', color: '#0054A6' }
+  ],
+  colorScheme: 'light',
+}
+
 export default function RootLayout({
   children,
 }: {
@@ -94,8 +126,25 @@ export default function RootLayout({
   return (
     <html lang="ko" className="scroll-smooth">
       <body className={`${notoSansKR.variable} ${inter.variable} font-sans antialiased bg-white text-neutral-900`}>
-        {children}
+        {/* Skip Navigation Links for Accessibility */}
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 bg-black text-white px-4 py-2 rounded z-50 focus:z-[9999] transition-all duration-200 font-medium"
+        >
+          주요 내용으로 건너뛰기
+        </a>
+        <a
+          href="#navigation"
+          className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-40 bg-black text-white px-4 py-2 rounded z-50 focus:z-[9999] transition-all duration-200 font-medium"
+        >
+          내비게이션으로 건너뛰기
+        </a>
+        <main id="main-content">
+          {children}
+        </main>
+        <ServiceWorkerRegister />
+        <InstallPrompt />
       </body>
     </html>
   )
-} 
+}

@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl:*)",
+      "WebFetch(domain:app.vooster.ai)",
+      "Bash(npx @vooster/cli@latest project:connect:*)",
+      "Bash(npx @vooster/cli@latest tasks:download:*)",
+      "Bash(npx @vooster/cli@latest rules:init:*)",
+      "Bash(find:*)",
+      "Bash(npx @vooster/cli@latest:*)",
+      "Bash(npm install:*)",
+      "Bash(npm run build:*)",
+      "Bash(npm run analyze:*)"
+    ],
+    "deny": []
+  }
+}

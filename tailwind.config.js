@@ -42,24 +42,50 @@ module.exports = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        
-        // YSK 브랜드 컬러 팔레트 (의료 + 기술 조화)
+
+        // Mayo Clinic / Philips Healthcare 스타일 브랜드 컬러 (Medical Excellence)
         brand: {
-          // 메인 브랜드 - 신뢰감을 주는 네이비 블루
+          // Primary - Professional Blue (#0054A6)
           primary: {
             50: '#f0f7ff',
             100: '#e0efff',
-            200: '#b9ddff',
-            300: '#7cc4ff',
-            400: '#36a9ff',
-            500: '#0891ff',
-            600: '#0066cc',
-            700: '#0056b3',
-            800: '#004a9e',
-            900: '#003d82',
+            200: '#c7e2ff',
+            300: '#a5d0ff',
+            400: '#7fb4ff',
+            500: '#5a98ff',
+            600: '#2f7cff',
+            700: '#0054a6',
+            800: '#004085',
+            900: '#003366',
           },
-          // 서브 브랜드 - 생명력을 나타내는 그린
+          // Secondary - Light Medical Blue (#F0F7FF)
           secondary: {
+            50: '#f0f7ff',
+            100: '#e0efff',
+            200: '#c7e2ff',
+            300: '#a5d0ff',
+            400: '#7fb4ff',
+            500: '#5a98ff',
+            600: '#2f7cff',
+            700: '#1e5eff',
+            800: '#0054a6',
+            900: '#003366',
+          },
+          // Accent - Healthcare Teal (#00A8CC)
+          accent: {
+            50: '#ecfeff',
+            100: '#cffafe',
+            200: '#a5f3fc',
+            300: '#67e8f9',
+            400: '#22d3ee',
+            500: '#00a8cc',
+            600: '#0891b2',
+            700: '#0e7490',
+            800: '#155e75',
+            900: '#164e63',
+          },
+          // Success - Medical Green (예약 완료, 성공 상태)
+          success: {
             50: '#f0fdf4',
             100: '#dcfce7',
             200: '#bbf7d0',
@@ -71,18 +97,18 @@ module.exports = {
             800: '#166534',
             900: '#14532d',
           },
-          // 액센트 - 첨단 기술을 나타내는 바이올렛
-          accent: {
-            50: '#faf5ff',
-            100: '#f3e8ff',
-            200: '#e9d5ff',
-            300: '#d8b4fe',
-            400: '#c084fc',
-            500: '#a855f7',
-            600: '#9333ea',
-            700: '#7c2d12',
-            800: '#6b21a8',
-            900: '#581c87',
+          // Trust - Deep Navy (신뢰성과 전문성)
+          trust: {
+            50: '#f8fafc',
+            100: '#f1f5f9',
+            200: '#e2e8f0',
+            300: '#cbd5e1',
+            400: '#94a3b8',
+            500: '#64748b',
+            600: '#475569',
+            700: '#334155',
+            800: '#1e293b',
+            900: '#0f172a',
           }
         },
         // 시스템 컬러
@@ -119,9 +145,8 @@ module.exports = {
         }
       },
       fontFamily: {
-        // 한글 가독성 최적화 폰트
+        // Vercel 스타일 폰트 스택 (Pretendard 기반)
         sans: [
-          'var(--font-pretendard)',
           'Pretendard',
           '-apple-system',
           'BlinkMacSystemFont',
@@ -132,19 +157,16 @@ module.exports = {
           '"Apple SD Gothic Neo"',
           '"Noto Sans KR"',
           '"Malgun Gothic"',
-          '"Apple Color Emoji"',
-          '"Segoe UI Emoji"',
-          '"Segoe UI Symbol"',
           'sans-serif',
         ],
         heading: [
-          'var(--font-pretendard)',
           'Pretendard',
           'system-ui',
           'sans-serif'
         ],
         mono: [
-          'var(--font-geist-mono)',
+          '"JetBrains Mono"',
+          '"Fira Code"',
           'ui-monospace',
           'SFMono-Regular',
           '"SF Mono"',
@@ -155,20 +177,20 @@ module.exports = {
         ],
       },
       fontSize: {
-        // 한글 최적화 폰트 크기
-        'xs': ['0.75rem', { lineHeight: '1.5', letterSpacing: '-0.01em' }],
-        'sm': ['0.875rem', { lineHeight: '1.5', letterSpacing: '-0.01em' }],
-        'base': ['1rem', { lineHeight: '1.6', letterSpacing: '-0.01em' }],
-        'lg': ['1.125rem', { lineHeight: '1.6', letterSpacing: '-0.01em' }],
-        'xl': ['1.25rem', { lineHeight: '1.5', letterSpacing: '-0.02em' }],
-        '2xl': ['1.5rem', { lineHeight: '1.4', letterSpacing: '-0.02em' }],
-        '3xl': ['1.875rem', { lineHeight: '1.3', letterSpacing: '-0.02em' }],
-        '4xl': ['2.25rem', { lineHeight: '1.2', letterSpacing: '-0.03em' }],
-        '5xl': ['3rem', { lineHeight: '1.1', letterSpacing: '-0.03em' }],
-        '6xl': ['3.75rem', { lineHeight: '1', letterSpacing: '-0.03em' }],
-        '7xl': ['4.5rem', { lineHeight: '1', letterSpacing: '-0.04em' }],
-        '8xl': ['6rem', { lineHeight: '1', letterSpacing: '-0.04em' }],
-        '9xl': ['8rem', { lineHeight: '1', letterSpacing: '-0.05em' }],
+        // Vercel 스타일 타이포그래피 스케일 (디자인 가이드 준수)
+        'xs': ['0.75rem', { lineHeight: '1.5', letterSpacing: '-0.01em', fontWeight: '400' }],
+        'sm': ['0.875rem', { lineHeight: '1.4', letterSpacing: '-0.01em', fontWeight: '400' }],
+        'base': ['1rem', { lineHeight: '1.5', letterSpacing: '-0.01em', fontWeight: '400' }],
+        'lg': ['1.125rem', { lineHeight: '1.6', letterSpacing: '-0.01em', fontWeight: '400' }],
+        'xl': ['1.25rem', { lineHeight: '1.5', letterSpacing: '-0.01em', fontWeight: '500' }],
+        '2xl': ['1.5rem', { lineHeight: '1.4', letterSpacing: '-0.02em', fontWeight: '600' }],
+        '3xl': ['1.875rem', { lineHeight: '1.3', letterSpacing: '-0.02em', fontWeight: '600' }],
+        '4xl': ['2.25rem', { lineHeight: '1.2', letterSpacing: '-0.025em', fontWeight: '700' }],
+        '5xl': ['3rem', { lineHeight: '1.1', letterSpacing: '-0.025em', fontWeight: '700' }],
+        '6xl': ['3.75rem', { lineHeight: '1', letterSpacing: '-0.025em', fontWeight: '700' }],
+        '7xl': ['4.5rem', { lineHeight: '1', letterSpacing: '-0.025em', fontWeight: '700' }],
+        '8xl': ['6rem', { lineHeight: '1', letterSpacing: '-0.025em', fontWeight: '700' }],
+        '9xl': ['8rem', { lineHeight: '1', letterSpacing: '-0.025em', fontWeight: '700' }],
       },
       spacing: {
         '18': '4.5rem',
@@ -191,11 +213,16 @@ module.exports = {
         sm: "calc(var(--radius) - 4px)",
       },
       boxShadow: {
-        // 의료 브랜드에 적합한 부드러운 그림자
-        'soft': '0 2px 8px rgba(0, 0, 0, 0.06)',
-        'medium': '0 4px 16px rgba(0, 0, 0, 0.08)',
-        'large': '0 8px 32px rgba(0, 0, 0, 0.12)',
-        'brand': '0 4px 16px rgba(8, 145, 255, 0.15)',
+        // Medical 스타일 그림자 시스템 (Mayo Clinic 스타일)
+        'soft': '0 1px 3px rgba(0, 84, 166, 0.05)',
+        'medium': '0 4px 6px rgba(0, 84, 166, 0.08)',
+        'large': '0 10px 15px rgba(0, 84, 166, 0.12)',
+        'xl': '0 20px 25px rgba(0, 84, 166, 0.15)',
+        'brand': '0 4px 14px rgba(0, 84, 166, 0.2)',
+        'accent': '0 4px 14px rgba(0, 168, 204, 0.15)',
+        'trust': '0 8px 25px rgba(15, 23, 42, 0.1)',
+        'glow': '0 0 20px rgba(0, 84, 166, 0.3)',
+        'medical': '0 2px 8px rgba(0, 84, 166, 0.12)',
       },
       animation: {
         'fade-in': 'fadeIn 0.5s ease-out',
@@ -203,6 +230,8 @@ module.exports = {
         'slide-down': 'slideDown 0.3s ease-out',
         'scale-in': 'scaleIn 0.2s ease-out',
         'pulse-slow': 'pulse 3s infinite',
+        'accordion-down': 'accordion-down 0.2s ease-out',
+        'accordion-up': 'accordion-up 0.2s ease-out',
       },
       keyframes: {
         fadeIn: {
@@ -221,8 +250,16 @@ module.exports = {
           '0%': { transform: 'scale(0.95)', opacity: '0' },
           '100%': { transform: 'scale(1)', opacity: '1' },
         },
+        'accordion-down': {
+          from: { height: '0' },
+          to: { height: 'var(--radix-accordion-content-height)' },
+        },
+        'accordion-up': {
+          from: { height: 'var(--radix-accordion-content-height)' },
+          to: { height: '0' },
+        },
       },
     },
   },
   plugins: [require("tailwindcss-animate")],
-} 
+}

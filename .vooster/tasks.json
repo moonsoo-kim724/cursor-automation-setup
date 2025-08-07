@@ -1,0 +1,226 @@
+{
+  "totalCount": 22,
+  "downloadedAt": "2025-08-05T23:15:54.006Z",
+  "tasks": [
+    {
+      "taskId": "T-001",
+      "summary": "랜딩페이지 기본 구조 및 SEO/AEO 최적화",
+      "status": "DONE",
+      "importance": "MUST",
+      "complexity": 6,
+      "urgency": 10,
+      "createdAt": "2025-07-29T04:44:49.562Z",
+      "updatedAt": "2025-08-05T11:17:30.660Z"
+    },
+    {
+      "taskId": "T-002",
+      "summary": "Supabase 기반 데이터베이스/인증/기초 관리자 기능 세팅",
+      "status": "DONE",
+      "importance": "MUST",
+      "complexity": 6,
+      "urgency": 8,
+      "createdAt": "2025-07-29T04:44:49.562Z",
+      "updatedAt": "2025-08-05T11:21:17.180Z"
+    },
+    {
+      "taskId": "T-003",
+      "summary": "핵심 브랜딩 콘텐츠/FAQ 데이터 구조화 및 AI 챗봇 학습",
+      "status": "BACKLOG",
+      "importance": "MUST",
+      "complexity": 5,
+      "urgency": 7,
+      "createdAt": "2025-07-29T04:44:49.562Z",
+      "updatedAt": "2025-07-29T04:44:49.562Z"
+    },
+    {
+      "taskId": "T-004",
+      "summary": "AI 챗봇(GPTs) 연동 및 실시간 Q&A/예약 퍼널 구축",
+      "status": "DONE",
+      "importance": "MUST",
+      "complexity": 7,
+      "urgency": 10,
+      "createdAt": "2025-07-29T04:44:49.562Z",
+      "updatedAt": "2025-08-05T11:17:43.750Z"
+    },
+    {
+      "taskId": "T-005",
+      "summary": "리드 챗봇(Typebot) 통한 예약·상담 퍼널",
+      "status": "DONE",
+      "importance": "MUST",
+      "complexity": 5,
+      "urgency": 9,
+      "createdAt": "2025-07-29T04:44:49.562Z",
+      "updatedAt": "2025-08-05T14:01:09.819Z"
+    },
+    {
+      "taskId": "T-006",
+      "summary": "예약 시스템(검사예약 포함) 및 실시간 캘린더 UI",
+      "status": "DONE",
+      "importance": "MUST",
+      "complexity": 7,
+      "urgency": 9,
+      "createdAt": "2025-07-29T04:44:49.562Z",
+      "updatedAt": "2025-08-05T11:17:56.833Z"
+    },
+    {
+      "taskId": "T-007",
+      "summary": "지도/위치 안내 및 네비게이션 연동",
+      "status": "DONE",
+      "importance": "MUST",
+      "complexity": 4,
+      "urgency": 8,
+      "createdAt": "2025-07-29T04:44:49.562Z",
+      "updatedAt": "2025-08-05T13:54:20.444Z"
+    },
+    {
+      "taskId": "T-008",
+      "summary": "카카오톡/이메일/Slack 자동 알림 기능",
+      "status": "BACKLOG",
+      "importance": "MUST",
+      "complexity": 6,
+      "urgency": 8,
+      "createdAt": "2025-07-29T04:44:49.562Z",
+      "updatedAt": "2025-07-29T04:44:49.562Z"
+    },
+    {
+      "taskId": "T-009",
+      "summary": "장애 알림(Slack, 이메일) 연동",
+      "status": "BACKLOG",
+      "importance": "MUST",
+      "complexity": 3,
+      "urgency": 7,
+      "createdAt": "2025-07-29T04:44:49.562Z",
+      "updatedAt": "2025-07-29T04:44:49.562Z"
+    },
+    {
+      "taskId": "T-010",
+      "summary": "기본 유입/전환 데이터 분석 연동(GA4/Supabase Analytics)",
+      "status": "BACKLOG",
+      "importance": "SHOULD",
+      "complexity": 4,
+      "urgency": 6,
+      "createdAt": "2025-07-29T04:44:49.562Z",
+      "updatedAt": "2025-07-29T04:44:49.562Z"
+    },
+    {
+      "taskId": "T-011",
+      "summary": "다국어(i18n) 지원 기능 구현 (KO/EN)",
+      "status": "BACKLOG",
+      "importance": "MUST",
+      "complexity": 7,
+      "urgency": 7,
+      "createdAt": "2025-07-30T01:28:32.479Z",
+      "updatedAt": "2025-07-30T01:28:32.479Z"
+    },
+    {
+      "taskId": "T-012",
+      "summary": "CI/CD 파이프라인 구축 (GitHub Actions, Vercel, Supabase CLI)",
+      "status": "DONE",
+      "importance": "MUST",
+      "complexity": 8,
+      "urgency": 9,
+      "createdAt": "2025-07-30T01:28:32.479Z",
+      "updatedAt": "2025-08-05T11:25:05.804Z"
+    },
+    {
+      "taskId": "T-013",
+      "summary": "AI 기반 FAQ 자동 생성 및 게시 기능",
+      "status": "BACKLOG",
+      "importance": "SHOULD",
+      "complexity": 8,
+      "urgency": 5,
+      "createdAt": "2025-07-30T01:28:32.479Z",
+      "updatedAt": "2025-07-30T01:28:32.479Z"
+    },
+    {
+      "taskId": "T-014",
+      "summary": "관리자용 데이터 시각화 대시보드 개발",
+      "status": "BACKLOG",
+      "importance": "SHOULD",
+      "complexity": 7,
+      "urgency": 6,
+      "createdAt": "2025-07-30T01:28:32.479Z",
+      "updatedAt": "2025-07-30T01:28:32.479Z"
+    },
+    {
+      "taskId": "T-015",
+      "summary": "코드래빗(coderabbit.ai) 연동 및 코드 리팩토링 자동화",
+      "status": "DONE",
+      "importance": "MUST",
+      "complexity": 7,
+      "urgency": 10,
+      "createdAt": "2025-07-30T03:34:48.326Z",
+      "updatedAt": "2025-08-05T11:45:27.486Z"
+    },
+    {
+      "taskId": "T-016",
+      "summary": "새 디자인 가이드 기반 전체 랜딩페이지 UI/UX 리디자인",
+      "status": "BACKLOG",
+      "importance": "MUST",
+      "complexity": 8,
+      "urgency": 10,
+      "createdAt": "2025-07-30T03:34:48.326Z",
+      "updatedAt": "2025-07-30T03:34:48.326Z"
+    },
+    {
+      "taskId": "T-017",
+      "summary": "메인 Hero 영역 및 AI 챗봇 UI 우선 리디자인",
+      "status": "BACKLOG",
+      "importance": "MUST",
+      "complexity": 7,
+      "urgency": 9,
+      "createdAt": "2025-07-30T03:34:48.326Z",
+      "updatedAt": "2025-07-30T03:34:48.326Z"
+    },
+    {
+      "taskId": "T-018",
+      "summary": "예약/상담 퍼널 UI/UX 리디자인 및 단계별 폼 개선",
+      "status": "BACKLOG",
+      "importance": "MUST",
+      "complexity": 7,
+      "urgency": 8,
+      "createdAt": "2025-07-30T03:34:48.326Z",
+      "updatedAt": "2025-07-30T03:34:48.326Z"
+    },
+    {
+      "taskId": "T-019",
+      "summary": "FAQ 및 AI FAQ 자동생성 UI 리디자인 및 인터랙션 개선",
+      "status": "BACKLOG",
+      "importance": "SHOULD",
+      "complexity": 6,
+      "urgency": 7,
+      "createdAt": "2025-07-30T03:34:48.326Z",
+      "updatedAt": "2025-07-30T03:34:48.326Z"
+    },
+    {
+      "taskId": "T-020",
+      "summary": "관리자용 데이터 시각화 대시보드 UI 리디자인",
+      "status": "BACKLOG",
+      "importance": "SHOULD",
+      "complexity": 6,
+      "urgency": 6,
+      "createdAt": "2025-07-30T03:34:48.326Z",
+      "updatedAt": "2025-07-30T03:34:48.326Z"
+    },
+    {
+      "taskId": "T-021",
+      "summary": "웹 성능 최적화 (Lighthouse 95+ 목표)",
+      "status": "BACKLOG",
+      "importance": "MUST",
+      "complexity": 6,
+      "urgency": 8,
+      "createdAt": "2025-07-30T03:34:48.326Z",
+      "updatedAt": "2025-07-30T03:34:48.326Z"
+    },
+    {
+      "taskId": "T-022",
+      "summary": "웹 접근성(WCAG 2.1 AA) 및 반응형 디자인 개선",
+      "status": "BACKLOG",
+      "importance": "MUST",
+      "complexity": 6,
+      "urgency": 9,
+      "createdAt": "2025-07-30T03:34:48.326Z",
+      "updatedAt": "2025-07-30T03:34:48.326Z"
+    }
+  ]
+}

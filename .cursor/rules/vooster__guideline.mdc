@@ -1,0 +1,467 @@
+---
+description:
+globs:
+alwaysApply: true
+---
+# Code Guidelines for YSK AI Landing Page
+
+## 1. Project Overview
+
+이 프로젝트는 TRD(Technical Requirements Document)에서 정의한 아키텍처, 기술 스택, 기능 요구사항을 기반으로 개발합니다. 주요 변경 사항 및 스펙은 다음과 같습니다:
+
+## 2. Core Principles (TRD 반영)
+
+1.  **TRD 준수 최우선**: 모든 기술적·기능적 의사결정은 TRD 명세를 우선합니다.
+2.  **성능 지표 충족**: FCP <1.5s, TTFB <200ms 등 TRD의 구체적 성능 목표를 반드시 달성
+3.  **보안 요건 강화**: RLS, 개인정보 암호화, 인증·인가 등 TRD의 보안 요구사항을 코드 레벨에서 구현
+4.  **유지보수성/확장성**: TRD에서 요구하는 확장성(EMR, 음성 AI 등) 고려한 컴포넌트 설계 및 분리
+5.  **테스트 및 검증성**: TRD에 명시된 테스트 커버리지, 자동화 요구를 반영하여 코드 작성
+6.  **코드 일관성/가독성**: TRD의 네이밍, 파일구조, 스타일 가이드에 따름
+
+## 3. Language-Specific Guidelines (TRD 기준)
+
+## 2. Core Principles
+
+1.  **Performance First**: Prioritize fast loading times and efficient resource utilization to meet FCP <1.5s and TTFB <200ms.
+2.  **Security by Design**: Implement robust security measures, especially RLS, to protect sensitive patient data.
+3.  **Maintainability & Readability**: Write clean, well-structured, and easily understandable code with clear naming conventions.
+4.  **Scalability & Extensibility**: Design components and services to be easily scalable and adaptable for future features like voice AI and EMR integration.
+5.  **Testability**: Write code that is inherently testable to ensure reliability and reduce bugs.
+
+## 3. Language-Specific Guidelines
+
+### 3.1. File Organization and Directory Structure (Next.js App Router)
+
+**MUST:**
+*   Organize code by feature or domain within the `app/` directory.
+*   Use `(group)` conventions for logical grouping without affecting routing.
+*   Place shared components in `components/ui` (for shadcn/ui extensions) or `components/shared`.
+*   Store Supabase client logic in `lib/supabase.ts`.
+*   Keep utility functions in `lib/utils.ts` or `lib/helpers/`.
+*   Define API routes in `app/api/`.
+*   Place Supabase Edge Functions in `supabase/functions/`.
+
+```
+// MUST: Recommended project structure
+.
+├── app/
+│   ├── (auth)/
+│   │   ├── login/
+│   │   │   └── page.tsx
+│   │   └── signup/
+│   │       └── page.tsx
+│   ├── (main)/
+│   │   ├── page.tsx          // Homepage
+│   │   ├── about/
+│   │   │   └── page.tsx
+│   │   ├── booking/
+│   │   │   ├── page.tsx
+│   │   │   └── components/
+│   │   │       ├── BookingForm.tsx
+│   │   │       └── CalendarPicker.tsx
+│   │   ├── chatbot/
+│   │   │   ├── page.tsx
+│   │   │   └── components/
+│   │   │       └── AIChatbot.tsx
+│   │   └── faq/
+│   │       └── page.tsx
+│   ├── api/
+│   │   ├── chat/
+│   │   │   └── route.ts      // API route for chat
+│   │   └── booking/
+│   │       └── route.ts      // API route for booking
+│   └── layout.tsx            // Root layout
+├── components/
+│   ├── ui/                   // shadcn/ui components
+│   │   ├── button.tsx
+│   │   └── dialog.tsx
+│   └── shared/               // Reusable cross-feature components
+│       ├── Header.tsx
+│       └── Footer.tsx
+├── lib/
+│   ├── supabase.ts           // Supabase client setup
+│   ├── utils.ts              // General utilities (cn, etc.)
+│   └── helpers/              // Specific helper functions
+│       └── date-helpers.ts
+├── public/                   // Static assets
+├── supabase/
+│   ├── functions/            // Supabase Edge Functions
+│   │   ├── ai-consultation/
+│   │   │   └── index.ts
+│   │   └── send-notification/
+│   │       └── index.ts
+│   └── migrations/           // Supabase DB migrations
+├── types/                    // Global TypeScript types
+│   └── index.d.ts
+├── .env.local
+├── next.config.js
+├── tailwind.config.ts
+└── tsconfig.json
+```
+
+**MUST NOT:**
+*   Create deeply nested directories without clear logical separation.
+*   Mix component definitions directly within `app/` route files unless they are highly specific and small.
+
+### 3.2. Import/Dependency Management
+
+**MUST:**
+*   Use absolute imports for components and modules defined within the project (configured via `tsconfig.json` `paths`).
+*   Group imports: React/Next.js, external libraries, internal components, internal utilities, CSS.
+*   Maintain alphabetical order within each import group.
+
+```typescript
+// MUST: Correct import ordering and absolute paths
+import React from 'react';
+import { useRouter } from 'next/router';
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
+import styles from './page.module.css';
+```
+
+**MUST NOT:**
+*   Use relative imports like `../../../components/Button`.
+*   Have unorganized or randomly ordered imports.
+
+### 3.3. Error Handling Patterns
+
+**MUST:**
+*   Implement centralized error logging (e.g., to Slack for critical errors).
+*   Use `try-catch` blocks for asynchronous operations, especially API calls and database interactions.
+*   Provide user-friendly error messages on the frontend.
+*   Utilize Next.js `error.tsx` for boundary errors in UI.
+*   Handle Supabase client errors gracefully.
+
+```typescript
+// MUST: Robust error handling for API calls
+// app/api/booking/route.ts
+import { NextResponse } from 'next/server';
+import { createServerClient } from '@/lib/supabase';
+
+export async function POST(request: Request) {
+  try {
+    const supabase = createServerClient();
+    const { data, error } = await supabase.from('reservations').insert(/* ... */);
+
+    if (error) {
+      console.error('Supabase insert error:', error);
+      return NextResponse.json({ message: 'Failed to create reservation', error: error.message }, { status: 500 });
+    }
+
+    // Send notification via Edge Function
+    await fetch(`${process.env.SUPABASE_URL}/functions/v1/send-reservation-notification`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ reservationId: data[0].id, type: 'new' })
+    });
+
+    return NextResponse.json({ message: 'Reservation created successfully', data }, { status: 201 });
+  } catch (err) {
+    console.error('Unhandled error in booking API:', err);
+    // Log to Slack or other monitoring service
+    return NextResponse.json({ message: 'Internal server error' }, { status: 500 });
+  }
+}
+*   **TypeScript Strictness**: TRD에서 요구하는 `strict` 모드 활성화 및 strictNullChecks, noImplicitAny 등 필수 옵션을 `tsconfig.json`에 반드시 명시합니다. 모든 함수/객체/props에 명확한 타입 부여.
+    *   **Rationale**: TRD의 사전 검증 및 안정성 목표 준수
+*   **Naming Conventions**:
+    *   변수/함수: `camelCase` (예: `userName`, `getUserProfile`)
+    *   컴포넌트/타입/인터페이스: `PascalCase` (예: `BookingForm`, `Patient`)
+    *   상수: `SCREAMING_SNAKE_CASE` (예: `MAX_RETRIES`, `API_BASE_URL`)
+    *   파일명: kebab-case (TRD에서 별도 지정 시 예외 없음)
+    *   디렉토리명: kebab-case
+    *   TRD에 네이밍 예시 또는 예외가 명시된 경우, 반드시 TRD 명세 우선
+    *   **Rationale**: TRD에서 코드 자동화 및 표준화 검증을 위해 지정한 네이밍 규칙 우선
+### 4.1. MUST Follow
+
+*   **TypeScript Strictness**: Enable `strict` mode in `tsconfig.json`. Use explicit types for function arguments, return values, and complex objects.
+    *   **Rationale**: Enhances code quality, catches errors early, and improves maintainability.
+*   **Naming Conventions**:
+    *   Variables: `camelCase` (e.g., `userName`, `appointmentDate`).
+    *   Functions: `camelCase` (e.g., `getUserProfile`, `formatDate`).
+    *   Components: `PascalCase` (e.g., `BookingForm`, `AIChatbot`).
+    *   Constants: `SCREAMING_SNAKE_CASE` (e.g., `MAX_RETRIES`, `API_BASE_URL`).
+    *   Types/Interfaces: `PascalCase` (e.g., `Patient`, `ReservationData`).
+    *   **Rationale**: Consistency improves readability and reduces cognitive load.
+*   **Component Structure**:
+    *   Functional components using arrow functions.
+    *   Props destructuring at the top of the component.
+    *   Use `use client` directive at the top of client components.
+// TRD 네이밍/타입/strict 예시
+```typescript
+*   **Tailwind CSS Best Practices**:
+    *   Use utility classes directly in JSX.
+    *   Utilize `clsx` and `tailwind-merge` for conditional and combined classes.
+    *   **Rationale**: Leverages Tailwind's power for efficient styling.
+*   **Supabase Interactions**:
+    *   Always use the `createServerClient` in Server Components/Actions and API Routes.
+    *   Use `createClientComponentClient` in Client Components.
+    *   Handle `error` objects returned by Supabase methods explicitly.
+    *   **Rationale**: Ensures proper authentication and data access patterns across server and client.
+
+```typescript
+// MUST: Component structure, typing, and Supabase interaction
+// app/booking/components/BookingForm.tsx (client component)
+'use client';
+
+import { useState } from 'react';
+import { createClient } from '@/lib/supabase';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import type { Database } from '@/lib/supabase'; // Import Supabase types
+
+type PatientInsert = Database['public']['Tables']['patients']['Insert'];
+
+interface BookingFormProps {
+  initialPatientData?: PatientInsert;
+  onBookingSuccess: () => void;
+}
+
+export function BookingForm({ initialPatientData, onBookingSuccess }: BookingFormProps) {
+  const supabase = createClient();
+  const [name, setName] = useState(initialPatientData?.name || '');
+  const [phone, setPhone] = useState(initialPatientData?.phone || '');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+
+    try {
+      const { data: patient, error: patientError } = await supabase
+        .from('patients')
+        .upsert({ name, phone }, { onConflict: 'phone' })
+        .select()
+        .single();
+
+      if (patientError) throw patientError;
+
+      const { error: reservationError } = await supabase.from('reservations').insert({
+        patient_id: patient.id,
+        service_type: 'General Consultation', // Example
+        appointment_date: new Date().toISOString().split('T')[0], // Example
+        appointment_time: '10:00:00' // Example
+      });
+
+      if (reservationError) throw reservationError;
+
+      onBookingSuccess();
+    } catch (err: any) {
+      console.error('Booking error:', err);
+      setError(err.message || 'An unexpected error occurred.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-4">
+      {/* ... form fields ... */}
+      {error && <p className="text-red-500">{error}</p>}
+      <Button type="submit" disabled={loading}>
+        {loading ? 'Booking...' : 'Confirm Booking'}
+      </Button>
+    </form>
+  );
+}
+```
+
+### 4.2. MUST NOT Do
+
+*   **Avoid Any/Implicit Any**: Do not use `any` type unless absolutely necessary for external libraries without type definitions. Avoid situations where TypeScript infers `any`.
+    *   **Rationale**: Defeats the purpose of TypeScript and introduces potential runtime errors.
+*   **Global State Pollution**: Avoid creating global variables or functions that are not explicitly part of a state management solution (e.g., Zustand).
+    *   **Rationale**: Leads to unpredictable side effects and difficult debugging.
+*   **Direct DOM Manipulation**: Avoid using `document.querySelector` or direct DOM manipulation in React components. Use React's state and refs instead.
+    *   **Rationale**: Breaks React's declarative paradigm and can lead to performance issues.
+*   **Over-optimization**: Do not prematurely optimize code that is not a proven performance bottleneck. Focus on readability and maintainability first.
+    *   **Rationale**: Often introduces complexity without significant benefits.
+*   **Large, Multi-Responsibility Files**: Avoid creating single files that handle multiple unrelated concerns (e.g., a component file that also defines API logic and database schema).
+    *   **Rationale**: Reduces modularity, makes files hard to read, and hinders maintainability.
+
+```typescript
+// MUST NOT: Anti-pattern - mixing concerns and direct DOM manipulation
+// app/booking/page.tsx (wrong example)
+'use client';
+
+import { useEffect } from 'react';
+// ... other imports
+
+export default function BookingPage() {
+  useEffect(() => {
+    // BAD: Direct DOM manipulation
+    const button = document.getElementById('submit-button');
+    if (button) {
+      button.addEventListener('click', () => {
+        alert('Booking submitted!');
+      });
+    }
+  }, []);
+
+  // BAD: All logic for booking form, calendar, and confirmation in one file
+  const handleBooking = () => {
+    // ... complex booking logic here
+    // ... API call
+    // ... Supabase interaction
+    // ... notification logic
+  };
+
+  return (
+    <div>
+      <h1>Book Your Appointment</h1>
+      {/* ... huge form and calendar components defined inline */}
+      <button id="submit-button" onClick={handleBooking}>Submit</button>
+    </div>
+  );
+}
+```
+
+## 5. Architecture Patterns
+
+### 5.1. Component/Module Structure Guidelines
+
+**MUST:**
+*   **Server Components First**: Default to Server Components for data fetching and rendering static/server-side content.
+*   **Client Components for Interactivity**: Use `use client` only when interactivity (hooks, event listeners) is required.
+*   **Co-location**: Place components, types, and styles related to a specific feature within its dedicated directory.
+*   **Atomic Design Principles**: Consider breaking down UI into smaller, reusable atoms, molecules, and organisms (e.g., `Button`, `Input` are atoms; `BookingForm` is an organism).
+
+### 5.2. Data Flow Patterns
+
+**MUST:**
+*   **Server Component Data Fetching**: Fetch data directly in Server Components using `await` for Supabase queries.
+*   **Server Actions for Mutations**: Use Server Actions for data mutations (e.g., form submissions, updates).
+*   **Props for Data Down**: Pass data from parent (Server) components to child (Client) components via props.
+*   **State Management (Client-side)**: Use Zustand for global client-side state that needs to be shared across multiple, unrelated client components. Use `useState`/`useReducer` for local component state.
+*   **React Query for Client-side Data Fetching**: For client-side data fetching that requires caching, revalidation, and loading states, use `@tanstack/react-query`.
+
+```typescript
+// MUST: Server Component data fetching and passing to Client Component
+// app/booking/page.tsx (Server Component)
+import { createServerClient } from '@/lib/supabase';
+import { BookingForm } from './components/BookingForm'; // Client Component
+
+export default async function BookingPage() {
+  const supabase = createServerClient();
+  const { data: patientData } = await supabase
+    .from('patients')
+    .select('*')
+    .limit(1) // Example: fetch current user's data
+    .single();
+
+  return (
+    <div className="container mx-auto py-8">
+      <h1 className="text-3xl font-bold mb-6">Book Your Appointment</h1>
+      <BookingForm initialPatientData={patientData || undefined} onBookingSuccess={() => console.log('Booking successful!')} />
+    </div>
+  );
+}
+```
+
+### 5.3. State Management Conventions
+
+**MUST:**
+*   **Local State**: Prefer `useState` and `useReducer` for state confined to a single component or a small component tree.
+*   **Global Client State**: Use Zustand for application-wide client-side state (e.g., user session details, theme settings, notifications).
+*   **Server State (Caching/Syncing)**: Use `@tanstack/react-query` for managing server-fetched data on the client, providing caching, background re-fetching, and automatic re-tries.
+
+```typescript
+// MUST: Zustand store example
+// stores/userStore.ts
+import { create } from 'zustand';
+
+interface UserState {
+  userId: string | null;
+  email: string | null;
+  setUserId: (id: string | null) => void;
+  setEmail: (email: string | null) => void;
+}
+
+export const useUserStore = create<UserState>((set) => ({
+  userId: null,
+  email: null,
+  setUserId: (id) => set({ userId: id }),
+  setEmail: (email) => set({ email }),
+}));
+```
+
+### 5.4. API Design Standards
+
+**MUST:**
+*   **RESTful Principles**: Design API routes following RESTful conventions (e.g., `/api/reservations` for collections, `/api/reservations/[id]` for specific resources).
+*   **Clear Endpoints**: Use descriptive and plural nouns for resource names.
+*   **HTTP Methods**: Use appropriate HTTP methods (GET for retrieval, POST for creation, PUT/PATCH for updates, DELETE for removal).
+*   **JSON Payloads**: All request and response bodies MUST be in JSON format.
+*   **Error Responses**: Return meaningful HTTP status codes (2xx for success, 4xx for client errors, 5xx for server errors) and include a JSON body with an `error` message.
+*   **Supabase Edge Functions for Business Logic**: Encapsulate complex business logic, external API calls (OpenAI, KakaoTalk), and sensitive operations within Supabase Edge Functions.
+    *   **Rationale**: Enhances security by keeping API keys server-side and improves performance by running logic closer to the database.
+
+```typescript
+// MUST: Edge Function for AI consultation
+// supabase/functions/ai-consultation/index.ts
+import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+
+serve(async (req) => {
+  if (req.method !== 'POST') {
+    return new Response(JSON.stringify({ error: 'Method Not Allowed' }), { status: 405 });
+  }
+
+  try {
+    const { symptoms, patientId } = await req.json();
+
+    if (!symptoms || !patientId) {
+      return new Response(JSON.stringify({ error: 'Missing symptoms or patientId' }), { status: 400 });
+    }
+
+    // Call OpenAI API
+    const aiResponse = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${Deno.env.get('OPENAI_API_KEY')}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        model: 'gpt-4o',
+        messages: [{ role: 'system', content: 'You are an AI assistant for eye care...' }, { role: 'user', content: `Symptoms: ${symptoms.join(', ')}` }]
+      })
+    });
+
+    if (!aiResponse.ok) {
+      const errorData = await aiResponse.json();
+      console.error('OpenAI API error:', errorData);
+      return new Response(JSON.stringify({ error: 'Failed to get AI response', details: errorData }), { status: aiResponse.status });
+    }
+
+    const aiResult = await aiResponse.json();
+
+    // Store consultation record in Supabase
+    const supabase = createClient(
+      Deno.env.get('SUPABASE_URL')!,
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')! // Use service role key for server-side operations
+    );
+
+    const { error: dbError } = await supabase.from('consultations').insert({
+      patient_id: patientId,
+      conversation: aiResult,
+      symptoms: symptoms,
+      recommendations: aiResult.choices[0]?.message?.content ? [aiResult.choices[0].message.content] : []
+    });
+
+    if (dbError) {
+      console.error('Supabase DB error:', dbError);
+      return new Response(JSON.stringify({ error: 'Failed to save consultation', details: dbError.message }), { status: 500 });
+    }
+
+    return new Response(JSON.stringify(aiResult), {
+      headers: { 'Content-Type': 'application/json' },
+      status: 200
+    });
+  } catch (error: any) {
+    console.error('Edge Function unhandled error:', error);
+    return new Response(JSON.stringify({ error: 'Internal Server Error', details: error.message }), { status: 500 });
+  }
+});
+```

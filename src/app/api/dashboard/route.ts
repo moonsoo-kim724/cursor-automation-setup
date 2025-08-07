@@ -20,7 +20,7 @@ export async function GET(request: NextRequest) {
     // 2. 로컬 Vooster 작업 데이터 로드
     const voosterTasksPath = path.join(process.cwd(), '.vooster', 'tasks.json')
     let voosterTasksData = []
-    let localProjectData = {}
+    let localProjectData: any = {}
     
     // Vooster 작업 데이터 로드
     if (fs.existsSync(voosterTasksPath)) {
@@ -28,14 +28,16 @@ export async function GET(request: NextRequest) {
       voosterTasksData = tasksConfig.tasks.slice(0, 10) // 최신 10개만 표시
       
       // 완료된 작업과 현재 작업 계산
-      const completedTasks = tasksConfig.tasks.filter(task => task.status === 'COMPLETED').map(task => task.taskId)
-      const inProgressTask = tasksConfig.tasks.find(task => task.status === 'IN_PROGRESS')
+      const completedTasks = tasksConfig.tasks.filter((task: any) => task.status === 'COMPLETED').map((task: any) => task.taskId)
+      const inProgressTask = tasksConfig.tasks.find((task: any) => task.status === 'IN_PROGRESS')
       
       localProjectData = {
         completedTasks,
         currentTask: inProgressTask?.taskId || 'T-006',
         projectStatus: 'in-progress',
-        totalTasks: tasksConfig.totalCount
+        totalTasks: tasksConfig.totalCount,
+        projectUid: '2RU4',
+        projectName: '연수김안과 AI 랜딩페이지'
       }
     }
     
@@ -63,7 +65,7 @@ export async function GET(request: NextRequest) {
         uid: localProjectData.projectUid || dashboardData.project.id,
         name: localProjectData.projectName || dashboardData.project.name
       },
-      voosterTasks: voosterTasksData.map(task => ({
+      voosterTasks: voosterTasksData.map((task: any) => ({
         id: task.taskId,
         title: task.summary,
         status: task.status.toLowerCase().replace('_', '_') === 'in_progress' ? 'in_progress' : 

@@ -4,26 +4,27 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    /* Mayo Clinic / Philips Healthcare 스타일 테마 변수 */
+    --background: 210 100% 99%; /* #f0f7ff - Light Medical Blue */
+    --foreground: 215 25% 27%; /* #334155 - Trust Navy */
+    --card: 0 0% 100%; /* Pure White */
+    --card-foreground: 215 25% 27%;
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96%;
-    --secondary-foreground: 222.2 84% 4.9%;
-    --muted: 210 40% 96%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96%;
-    --accent-foreground: 222.2 84% 4.9%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
-    --radius: 0.5rem;
+    --popover-foreground: 215 25% 27%;
+    --primary: 210 100% 33%; /* #0054a6 - Professional Blue */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 210 100% 99%; /* #f0f7ff - Light Medical Blue */
+    --secondary-foreground: 210 100% 33%;
+    --muted: 210 40% 98%;
+    --muted-foreground: 215 16% 47%;
+    --accent: 188 100% 40%; /* #00a8cc - Healthcare Teal */
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 210 40% 90%; /* Light border */
+    --input: 210 40% 95%; /* Input background */
+    --ring: 210 100% 33%; /* Focus ring - Professional Blue */
+    --radius: 0.75rem; /* Slightly more rounded for medical feel */
   }
 
   .dark {
@@ -50,13 +51,147 @@
 
 
 
+  * {
+    border-color: theme('colors.border');
+  }
+
   body {
     @apply bg-background text-foreground font-sans antialiased;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    scroll-behavior: smooth;
+  }
+
+  /* Critical CSS - 성능 최적화된 헤딩 스타일 */
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: 700;
+    color: #1f2937; /* text-gray-800 equivalent */
+    letter-spacing: -0.025em;
+    line-height: 1.2;
+    font-feature-settings: 'kern' 1;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1 {
+    font-size: 2.25rem; /* 36px base */
+  }
+
+  @media (min-width: 768px) {
+    h1 { font-size: 3rem; } /* 48px md */
+  }
+
+  @media (min-width: 1024px) {
+    h1 { font-size: 3.75rem; } /* 60px lg */
+  }
+
+  h2 {
+    font-size: 1.875rem; /* 30px base */
+  }
+
+  @media (min-width: 768px) {
+    h2 { font-size: 2.25rem; } /* 36px md */
+  }
+
+  @media (min-width: 1024px) {
+    h2 { font-size: 3rem; } /* 48px lg */
+  }
+
+  h3 {
+    font-size: 1.5rem; /* 24px base */
+  }
+
+  @media (min-width: 768px) {
+    h3 { font-size: 1.875rem; } /* 30px md */
+  }
+
+  /* 링크 스타일 - Medical Professional */
+  a {
+    @apply text-brand-primary-700 hover:text-brand-primary-800 transition-colors duration-200;
+  }
+
+  /* 선택 텍스트 스타일 - Medical Theme */
+  ::selection {
+    @apply bg-brand-secondary-200 text-brand-primary-900;
+  }
+
+  /* 포커스 스타일 - 접근성 강화 */
+  *:focus-visible {
+    @apply outline-2 outline-brand-primary-600 outline-offset-2;
+  }
+
+  /* 스크롤바 스타일링 */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-brand-secondary-100;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-brand-primary-400 rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-brand-primary-600;
   }
 }
 
 @layer components {
+  /* Container 스타일 - Medical Layout */
   .container {
     @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
   }
-} 
+
+  /* Medical Card 스타일 */
+  .medical-card {
+    @apply bg-white rounded-xl shadow-medical border border-brand-secondary-200 p-6 hover:shadow-large transition-all duration-200;
+  }
+
+  /* CTA Button 스타일 - Medical Professional */
+  .btn-medical-primary {
+    @apply bg-brand-primary-700 hover:bg-brand-primary-800 text-white px-6 py-3 rounded-lg font-semibold shadow-medium hover:shadow-large transition-all duration-200 focus:ring-4 focus:ring-brand-primary-200;
+  }
+
+  .btn-medical-secondary {
+    @apply bg-brand-secondary-100 hover:bg-brand-secondary-200 text-brand-primary-700 px-6 py-3 rounded-lg font-semibold border border-brand-secondary-300 hover:border-brand-primary-300 transition-all duration-200;
+  }
+
+  /* Medical Badge 스타일 */
+  .badge-medical {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-brand-accent-100 text-brand-accent-700 border border-brand-accent-200;
+  }
+
+  /* Medical Input 스타일 */
+  .input-medical {
+    @apply w-full px-4 py-3 border border-brand-secondary-300 rounded-lg bg-white text-brand-trust-700 placeholder-brand-trust-400 focus:ring-2 focus:ring-brand-primary-500 focus:border-brand-primary-500 transition-colors duration-200;
+  }
+
+  /* Medical Section 간격 */
+  .section-medical {
+    @apply py-16 md:py-24;
+  }
+
+  /* Hero Section 스타일 */
+  .hero-medical {
+    @apply bg-gradient-to-br from-brand-secondary-50 to-white;
+  }
+
+  /* Trust Indicator 스타일 */
+  .trust-indicator {
+    @apply flex items-center space-x-2 text-brand-trust-600;
+  }
+
+  /* Medical Typography */
+  .text-medical-heading {
+    @apply text-brand-trust-800 font-bold leading-tight;
+  }
+
+  .text-medical-body {
+    @apply text-brand-trust-600 leading-relaxed;
+  }
+
+  .text-medical-caption {
+    @apply text-brand-trust-500 text-sm leading-normal;
+  }
+}

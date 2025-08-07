@@ -1,0 +1,131 @@
+---
+description:
+globs:
+alwaysApply: true
+---
+# 연수김안과 AI 랜딩페이지 Design Guide
+
+## 1. Overall Mood (전체적인 무드)
+**"Progressive Medical Trust"** - 30년 전통의 신뢰성과 AI 혁신 기술이 조화를 이루는 미래지향적 의료 서비스 브랜드. 테크니컬하면서도 신뢰할 수 있는 무드로, "30년의 신뢰, AI로 미래를 열다"라는 브랜드 메시지를 시각적으로 구현합니다.
+
+## 2. Reference Service (참조 서비스)
+**Vercel**을 주요 레퍼런스로 선정하여 테크니컬한 전문성과 신뢰성을 동시에 표현합니다.
+- **Name**: Vercel
+- **Description**: 프론트엔드 클라우드 플랫폼
+- **Design Mood**: 테크니컬하면서도 신뢰할 수 있는, 깔끔하고 모던한 프로페셔널
+- **Primary Color**: #000000 (블랙)
+- **Secondary Color**: #0070F3 (브라이트 블루)
+
+## 3. Color & Gradient (색상 & 그라데이션)
+쿨톤 베이스에 중간 채도로 신뢰감과 미래적 느낌을 조화롭게 표현합니다.
+
+### 메인 컬러
+- **Primary Color**: #000000 (Deep Black) - 전문성과 신뢰성
+- **Secondary Color**: #0070F3 (Bright Blue) - AI 혁신과 미래 기술
+- **Accent Color**: #00D2FF (Cyan Blue) - 그라데이션 및 강조 요소
+- **Success Color**: #00D924 (Medical Green) - 예약 완료, 성공 상태
+
+### 그레이스케일
+- **Gray 900**: #1A1A1A (헤더, 중요 텍스트)
+- **Gray 700**: #4A4A4A (본문 텍스트)
+- **Gray 500**: #9CA3AF (보조 텍스트)
+- **Gray 300**: #D1D5DB (구분선, 테두리)
+- **Gray 100**: #F3F4F6 (배경, 카드)
+- **White**: #FFFFFF (메인 배경)
+
+### **Mood**: Cool tone, Medium saturation
+### **Color Usage**: 
+- Primary (Black): 로고, 헤딩, 네비게이션, CTA 버튼
+- Secondary (Blue): 링크, AI 챗봇 UI, 액션 버튼, 그라데이션
+- Accent (Cyan): 호버 효과, 그라데이션, 강조 포인트
+
+## 4. Typography & Font (타이포그래피 & 폰트)
+깔끔하고 가독성 높은 시스템 폰트 기반으로 전문성을 표현합니다.
+
+- **Font Family**: "Pretendard", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif
+- **Heading 1**: 48px, Font-weight: 700, Letter-spacing: -0.025em
+- **Heading 2**: 36px, Font-weight: 600, Letter-spacing: -0.02em
+- **Heading 3**: 24px, Font-weight: 600, Letter-spacing: -0.01em
+- **Body Large**: 18px, Font-weight: 400, Line-height: 1.6
+- **Body**: 16px, Font-weight: 400, Line-height: 1.5
+- **Caption**: 14px, Font-weight: 400, Line-height: 1.4
+
+## 5. Layout & Structure (레이아웃 & 구조)
+### 그리드 시스템
+- **Desktop**: 12-column grid, Max-width: 1200px
+- **Tablet**: 8-column grid, Max-width: 768px  
+- **Mobile**: 4-column grid, Max-width: 375px
+- **Spacing Unit**: 8px 기반 (8, 16, 24, 32, 48, 64px)
+
+### 섹션 구조
+1. **Hero Section**: "30년의 신뢰, AI로 미래를 열다" 메인 메시지
+2. **AI 상담 CTA**: 즉시 접근 가능한 챗봇 인터페이스
+3. **Services**: 주요 진료 분야 (시력교정, 백내장, 노안 등)
+4. **Trust Indicators**: 30년 전통, 의료진 소개
+5. **Quick Booking**: 간편 예약 시스템
+
+## 6. Visual Style (비주얼 스타일)
+### 아이콘
+- **Style**: Outline 스타일, 2px stroke
+- **Size**: 24px, 32px, 48px
+- **Color**: Primary Black 또는 Secondary Blue
+
+### 이미지
+- **Photography**: 자연스럽고 전문적인 의료진/병원 이미지
+- **Illustration**: 미니멀하고 모던한 라인 아트
+- **Border Radius**: 8px (카드), 16px (이미지), 24px (버튼)
+
+### 그라데이션
+- **Primary Gradient**: linear-gradient(135deg, #0070F3 0%, #00D2FF 100%)
+- **Subtle Gradient**: linear-gradient(135deg, #F8FAFC 0%, #E2E8F0 100%)
+
+## 7. UX Guide (UX 가이드)
+### **듀얼 트랙 UX 전략**
+
+#### **전문가를 위한 핵심 기능 집약**
+- 메인 화면 상단에 핵심 정보 한눈에 배치
+- AI 챗봇에서 전문 의료 용어로 즉시 질문 가능
+- "빠른 예약" 버튼으로 최소 클릭 완료
+- "전문의 직접 상담" 즉시 연결 옵션
+
+#### **초보자를 위한 친근한 온보딩**
+- "처음 방문하시나요?" 가이드 팝업 제공
+- AI 챗봇이 "어떤 증상이 있으신가요?"부터 친절하게 시작
+- 의료 용어 설명 툴팁 제공
+- **자주 묻는 질문(FAQ)** 섹션을 메인에 배치
+- 단계별 튜토리얼 가이드 페이지 준비
+- AI 자동 생성 FAQ로 지속적 콘텐츠 업데이트
+
+### 사용성 원칙
+- **명확성**: 모든 액션의 결과가 명확히 예측 가능
+- **접근성**: WCAG 2.1 AA 레벨 준수
+- **반응성**: 모든 인터랙션에 즉각적 피드백 제공
+
+## 8. UI Component Guide (UI 컴포넌트 가이드)
+
+### 버튼
+- **Primary Button**: Black background, White text, 48px height, 16px border-radius
+- **Secondary Button**: Blue outline, Blue text, 48px height
+- **CTA Button**: Blue gradient background, White text, 56px height
+
+### 입력 필드
+- **Input Field**: Gray border, 48px height, 8px border-radius
+- **Focus State**: Blue border, Blue shadow
+- **Error State**: Red border, Red helper text
+
+### 카드
+- **Card**: White background, 1px Gray border, 16px border-radius
+- **Shadow**: 0 4px 6px rgba(0, 0, 0, 0.05)
+- **Hover**: 0 8px 25px rgba(0, 0, 0, 0.1)
+
+### 네비게이션
+- **Header**: White background, 80px height, subtle shadow
+- **Logo**: 연수김안과 + AI 아이콘 조합
+- **Menu Items**: 16px font, Medium weight, Black color
+
+### AI 챗봇 UI
+- **Chat Bubble**: Blue gradient for AI, Gray for user
+- **Input Box**: White background, Blue accent border
+- **Quick Actions**: Blue outline buttons for common questions
+
+이 디자인 가이드로 연수김안과의 30년 전통과 AI 혁신이 완벽하게 조화된 랜딩페이지를 만들어보세요! 🚀

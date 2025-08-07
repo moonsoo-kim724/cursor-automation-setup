@@ -5,17 +5,26 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '@/lib/utils'
 
 const cardVariants = cva(
-  'rounded-xl border bg-white text-neutral-900 transition-all duration-200',
+  'rounded-lg border bg-white text-gray-900 transition-all duration-200',
   {
     variants: {
       variant: {
-        default: 'border-neutral-200 shadow-soft hover:shadow-medium',
-        elevated: 'border-neutral-200 shadow-medium hover:shadow-large',
-        brand: 'border-brand-primary-200 bg-brand-primary-50/50 shadow-brand',
-        success: 'border-brand-secondary-200 bg-brand-secondary-50/50',
-        warning: 'border-warning-200 bg-warning-50/50',
-        error: 'border-error-200 bg-error-50/50',
-        ghost: 'border-transparent bg-transparent shadow-none hover:bg-neutral-50',
+        // Vercel 스타일 기본 카드
+        default: 'border-gray-200 shadow-sm hover:shadow-md hover:border-gray-300',
+        // 강조된 카드
+        elevated: 'border-gray-200 shadow-md hover:shadow-lg hover:border-gray-300',
+        // 브랜드 카드 (블랙 테마)
+        brand: 'border-gray-300 bg-gray-50/50 hover:bg-gray-50',
+        // 성공/액션 카드 (그린 테마)
+        success: 'border-green-200 bg-green-50/50 hover:bg-green-50',
+        // 경고 카드
+        warning: 'border-yellow-200 bg-yellow-50/50 hover:bg-yellow-50',
+        // 에러 카드
+        error: 'border-red-200 bg-red-50/50 hover:bg-red-50',
+        // 고스트 카드
+        ghost: 'border-transparent bg-transparent shadow-none hover:bg-gray-50',
+        // 아웃라인 강조
+        outline: 'border-2 border-gray-200 shadow-none hover:border-gray-300',
       },
       size: {
         sm: 'p-4',
@@ -44,8 +53,8 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
         <motion.div
           ref={ref}
           className={cn(cardVariants({ variant, size, className }))}
-          whileHover={{ y: -2, scale: 1.02 }}
-          transition={{ duration: 0.2 }}
+          whileHover={{ y: -1, scale: 1.005 }}
+          transition={{ duration: 0.15, ease: "easeOut" }}
           {...(props as any)}
         >
           {children}
@@ -85,7 +94,7 @@ const CardTitle = React.forwardRef<
   <h3
     ref={ref}
     className={cn(
-      'text-xl font-semibold leading-none tracking-tight text-neutral-900',
+      'text-lg font-semibold leading-tight tracking-tight text-gray-900',
       className
     )}
     {...props}
@@ -101,7 +110,7 @@ const CardDescription = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <p
     ref={ref}
-    className={cn('text-sm text-neutral-600 leading-relaxed', className)}
+    className={cn('text-sm text-gray-600 leading-relaxed', className)}
     {...props}
   />
 ))
