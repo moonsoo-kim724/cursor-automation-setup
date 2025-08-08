@@ -10,7 +10,9 @@
       "Bash(npx @vooster/cli@latest:*)",
       "Bash(npm install:*)",
       "Bash(npm run build:*)",
-      "Bash(npm run analyze:*)"
+      "Bash(npm run analyze:*)",
+      "Bash(git commit:*)",
+      "Bash(git add:*)"
     ],
     "deny": []
   }
