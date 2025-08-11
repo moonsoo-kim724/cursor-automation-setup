@@ -1,6 +1,5 @@
 'use client'
 
-import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
@@ -161,7 +160,7 @@ export default function Home() {
                   {/* Main Logo */}
                   <div className="relative w-20 h-20 mx-auto">
                     <Eye className="h-20 w-20 text-white mx-auto drop-shadow-2xl" aria-label="연수김안과의원 로고" />
-                    
+
                     {/* Animated Glow Ring */}
                     <motion.div
                       animate={{
@@ -178,7 +177,7 @@ export default function Home() {
                         <div className="w-full h-full rounded-full bg-black" />
                       </div>
                     </motion.div>
-                    
+
                     {/* Inner Pulse */}
                     <motion.div
                       animate={{
@@ -192,7 +191,7 @@ export default function Home() {
                       }}
                       className="absolute -inset-4 rounded-full bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-cyan-500/20 blur-xl"
                     />
-                    
+
                     {/* Outer Glow */}
                     <motion.div
                       animate={{
@@ -224,7 +223,7 @@ export default function Home() {
                   연수김안과의원
                 </span>
               </motion.h1>
-              
+
               {/* Animated Underline */}
               <motion.div
                 initial={{ scaleX: 0 }}
@@ -425,7 +424,7 @@ export default function Home() {
               >
                 <Button
                   size="xl"
-                  onClick={() => window.open('tel:032-123-4567')}
+                  onClick={() => window.open('tel:1544-7260')}
                   className="w-full sm:w-auto bg-transparent border-2 border-white/30 text-white hover:bg-white/10 hover:border-white/50 font-medium px-8 py-4 text-lg transition-all duration-300"
                 >
                   <Phone className="h-6 w-6 mr-3" />
@@ -583,10 +582,10 @@ export default function Home() {
                 <div className="relative h-full">
                   {/* Background Gradient */}
                   <div className={`absolute inset-0 bg-gradient-to-br ${feature.gradient} opacity-5 rounded-2xl group-hover:opacity-10 transition-opacity duration-500`} />
-                  
+
                   {/* Border Gradient */}
                   <div className={`absolute inset-0 bg-gradient-to-br ${feature.gradient} opacity-20 rounded-2xl blur-sm group-hover:blur-md transition-all duration-500`} />
-                  
+
                   <div className="relative bg-gray-950/50 backdrop-blur-xl border border-white/10 rounded-2xl p-8 h-full group-hover:border-white/20 group-hover:bg-gray-900/50 transition-all duration-500 shadow-2xl">
                     <div className="flex flex-col h-full">
                       <div className="mb-6">
@@ -600,7 +599,7 @@ export default function Home() {
                       <p className="text-gray-300 leading-relaxed flex-grow group-hover:text-gray-200 transition-colors">
                         {feature.description}
                       </p>
-                      
+
                       {/* Bottom Accent Line */}
                       <motion.div
                         initial={{ scaleX: 0 }}
@@ -899,7 +898,14 @@ export default function Home() {
             <Button onClick={consultModal.closeModal} variant="secondary" className="flex-1">
               취소
             </Button>
-            <Button variant="success" className="flex-1">
+            <Button 
+              variant="success" 
+              className="flex-1"
+              onClick={() => {
+                consultModal.closeModal()
+                setIsChatbotOpen(true)
+              }}
+            >
               상담 시작
             </Button>
           </div>
@@ -931,7 +937,14 @@ export default function Home() {
             <Button onClick={appointmentModal.closeModal} variant="secondary" className="flex-1">
               취소
             </Button>
-            <Button variant="default" className="flex-1">
+            <Button 
+              variant="default" 
+              className="flex-1"
+              onClick={() => {
+                appointmentModal.closeModal()
+                setIsLeadbotOpen(true)
+              }}
+            >
               예약하기
             </Button>
           </div>

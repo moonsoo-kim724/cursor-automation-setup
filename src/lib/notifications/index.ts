@@ -98,8 +98,8 @@ export class NotificationManager {
           doctorName: data.doctorName,
           clinicInfo: {
             name: '연수김안과의원',
-            address: '인천광역시 연수구 컨벤시아대로 165 포스코타워-연수 B동 17층',
-            phone: '032-716-7582'
+            address: '인천시 연수구 컨벤시아대로 165 포스코타워송도 5층',
+            phone: '대표: 1544-7260, 직통: 032)817-3487'
           }
         }).then(success => {
           results.email = success

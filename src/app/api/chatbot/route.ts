@@ -376,7 +376,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(
       { 
         error: '서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.',
-        fallbackResponse: '죄송합니다. 현재 시스템 점검 중입니다. 전화 상담(032-123-4567)을 이용해주세요.'
+        fallbackResponse: '죄송합니다. 현재 시스템 점검 중입니다. 전화 상담(대표: 1544-7260, 직통: 032)817-3487)을 이용해주세요.'
       },
       { status: 500 }
     )

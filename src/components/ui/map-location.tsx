@@ -12,18 +12,18 @@ import { Modal, useModal } from './modal'
 // 병원 위치 정보 (환경변수로 관리 예정)
 const HOSPITAL_INFO = {
   name: '연수김안과의원',
-  address: '서울시 강남구 테헤란로 123 ABC빌딩 5층',
-  phone: '02-1234-5678',
+  address: '인천시 연수구 컨벤시아대로 165 포스코타워송도 5층',
+  phone: '대표: 1544-7260, 직통: 032)817-3487',
   coordinates: {
-    lat: 37.5012743, // 강남역 근처 예시 좌표
-    lng: 127.0396597
+    lat: 37.3851, // 송도 포스코타워 좌표
+    lng: 126.6564
   },
   // 네비게이션 딥링크
   deepLinks: {
-    kakaoMap: `kakaomap://route?ep=${127.0396597},${37.5012743}&by=CAR`,
-    naverMap: `nmap://route/car?dlat=${37.5012743}&dlng=${127.0396597}&dname=${encodeURIComponent('연수김안과의원')}`,
-    googleMaps: `https://maps.google.com/?q=${37.5012743},${127.0396597}`,
-    appleMaps: `maps://?q=${37.5012743},${127.0396597}&ll=${37.5012743},${127.0396597}`
+    kakaoMap: `kakaomap://route?ep=${126.6564},${37.3851}&by=CAR`,
+    naverMap: `nmap://route/car?dlat=${37.3851}&dlng=${126.6564}&dname=${encodeURIComponent('연수김안과의원')}`,
+    googleMaps: `https://maps.google.com/?q=${37.3851},${126.6564}`,
+    appleMaps: `maps://?q=${37.3851},${126.6564}&ll=${37.3851},${126.6564}`
   }
 }
 

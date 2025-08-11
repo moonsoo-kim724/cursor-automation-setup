@@ -168,8 +168,8 @@ export class EmailService {
                 <div class="info-box">
                     <h3>🏥 병원 정보</h3>
                     <p><strong>연수김안과의원</strong></p>
-                    <p>📍 ${template.clinicInfo?.address || '인천광역시 연수구 컨벤시아대로 165 포스코타워-연수 B동 17층'}</p>
-                    <p>📞 ${template.clinicInfo?.phone || '032-716-7582'}</p>
+                    <p>📍 ${template.clinicInfo?.address || '인천시 연수구 컨벤시아대로 165 포스코타워송도 5층'}</p>
+                    <p>📞 ${template.clinicInfo?.phone || '대표: 1544-7260, 직통: 032)817-3487'}</p>
                 </div>
 
                 <div style="text-align: center; margin: 30px 0;">
@@ -249,7 +249,7 @@ export class EmailService {
 
                 <div class="info-box">
                     <h3>🚗 교통 안내</h3>
-                    <p><strong>주소:</strong> 인천광역시 연수구 컨벤시아대로 165 포스코타워-연수 B동 17층</p>
+                    <p><strong>주소:</strong> 인천시 연수구 컨벤시아대로 165 포스코타워송도 5층</p>
                     <p><strong>지하철:</strong> 인천지하철 1호선 센트럴파크역 2번 출구</p>
                     <p><strong>주차:</strong> 포스코타워-연수 지하주차장 이용 가능</p>
                 </div>

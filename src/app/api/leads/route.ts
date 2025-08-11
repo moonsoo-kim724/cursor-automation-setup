@@ -1,5 +1,6 @@
 import { notificationManager } from '@/lib/notifications'
 import { createClient } from '@/lib/supabase/server'
+import { LeadProcessor, LeadDataSchema } from '@/lib/lead-processor'
 import { NextRequest, NextResponse } from 'next/server'
 
 interface LeadData {

@@ -66,3 +66,4 @@ __pycache__/
 # 기타
 *.tgz
 *.tar.gz
+.vercel

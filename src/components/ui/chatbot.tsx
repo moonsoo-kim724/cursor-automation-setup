@@ -424,7 +424,7 @@ export function Chatbot({ isOpen, onClose, onBookingRequest, language = 'ko' }: 
             <Button
               variant="ghost"
               size="sm"
-              onClick={() => window.open('tel:032-123-4567')}
+              onClick={() => window.open('tel:1544-7260')}
               className="text-gray-600 hover:text-gray-900 hover:bg-gray-100"
             >
               <Phone className="h-4 w-4" />
@@ -508,7 +508,7 @@ export function Chatbot({ isOpen, onClose, onBookingRequest, language = 'ko' }: 
                         <Button
                           size="sm"
                           variant="outline"
-                          onClick={() => window.open('tel:032-123-4567')}
+                          onClick={() => window.open('tel:1544-7260')}
                           className="flex items-center gap-2 border-gray-300 hover:border-gray-400"
                         >
                           <Phone className="h-3 w-3" />

@@ -4,7 +4,14 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a Next.js 14 AI-powered landing page for YSK Eye Clinic (연수김안과의원), featuring AI chatbot consultation, appointment booking, and multilingual support. The project uses modern web technologies with a focus on Korean market medical regulations and accessibility standards.
+This is a Next.js 14 AI-powered landing page for YSK Eye Clinic (연수김안과의원), featuring GPT + Typebot integration, automated newsletter system, and comprehensive lead management. The project uses modern web technologies with a focus on Korean market medical regulations and accessibility standards.
+
+### Key Features Implemented:
+- **GPT Integration**: Advanced AI consultation with OpenAI GPT-4
+- **Typebot Webhooks**: Automated lead capture from Typebot conversations
+- **Newsletter Automation**: Double opt-in email automation with Resend
+- **Lead Processing**: Intelligent lead scoring and automated follow-up
+- **Security Enhancement**: Rate limiting, input validation, and security headers
 
 ## Common Development Commands
 
