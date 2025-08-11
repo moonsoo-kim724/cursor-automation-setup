@@ -157,3 +157,60 @@ export class LeadScorer {
     }
   }
 }
+
+// 리드 처리 파이프라인
+export class LeadProcessor {
+  static async processLead(leadData: LeadData): Promise<{
+    success: boolean
+    leadId?: string
+    score?: ReturnType<typeof LeadScorer.calculateScore>
+    actions?: string[]
+    errors?: string[]
+  }> {
+    try {
+      const errors: string[] = []
+      const actions: string[] = []
+
+      // 1. 데이터 검증
+      const validationResult = LeadDataSchema.safeParse(leadData)
+      if (!validationResult.success) {
+        return {
+          success: false,
+          errors: validationResult.error.issues.map(issue => `${issue.path.join('.')}: ${issue.message}`)
+        }
+      }
+
+      const validatedData = validationResult.data
+      
+      // 2. 리드 점수 계산
+      const score = LeadScorer.calculateScore(validatedData)
+      
+      // 3. 데이터베이스 저장 (TODO: Supabase 구현)
+      const leadId = `lead_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
+      actions.push(`리드 저장 완료: ${leadId}`)
+      
+      console.log('💾 리드 저장:', {
+        leadId,
+        ...validatedData,
+        score: score.score,
+        priority: score.priority,
+        createdAt: new Date().toISOString()
+      })
+
+      return {
+        success: true,
+        leadId,
+        score,
+        actions,
+        errors: errors.length > 0 ? errors : undefined
+      }
+
+    } catch (error: any) {
+      console.error('리드 처리 오류:', error)
+      return {
+        success: false,
+        errors: [`처리 중 오류 발생: ${error.message}`]
+      }
+    }
+  }
+}

@@ -14,7 +14,14 @@
       "Bash(git commit:*)",
       "Bash(git add:*)",
       "Bash(git checkout:*)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Bash(npx next dev:*)",
+      "Bash(npm run dev:*)",
+      "Bash(vercel:*)",
+      "Bash(pkill:*)",
+      "Bash(rm:*)",
+      "Bash(git reset:*)",
+      "Bash(git clean:*)"
     ],
     "deny": []
   }
