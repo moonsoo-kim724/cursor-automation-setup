@@ -1,0 +1,43 @@
+# 디자인 QA 및 Figma/Canva 연동 프로세스 구축(Storybook+Chromatic)
+
+**Task ID:** T-030
+**Status:** BACKLOG
+**Importance:** SHOULD
+**Complexity:** 6/10
+**Urgency:** 8/10
+**Dependencies:** T-029, T-012
+
+## Description
+
+### 요구사항
+- Figma mcp/Canva 템플릿 선정 및 커스터마이즈, 시안↔개발 산출물 픽셀 단위 비교
+- 실시간 협업/리뷰, 회귀 방지 파이프라인 정착
+### 구현 세부(라이브러리/디자인/아키텍처)
+- Storybook 8 세팅(React/TS, Next.js preset), Chromatic 연동(PR마다 시각 회귀)
+- Figma 플러그인: Design Tokens/Measure, 토큰을 Tailwind/shadcn/ui에 동기화
+- 워크플로우: 브랜치 네이밍, 디자인 승인 체크리스트, 디자인 토큰 변경시 릴리즈 노트
+- CI: GitHub Actions에서 chromatic 실행 및 실패시 머지 차단
+### 의사코드
+```yml
+# .github/workflows/chromatic.yml
+name: chromatic
+on: [pull_request]
+jobs:
+  visual-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v2
+      - run: pnpm i
+      - run: pnpm build-storybook
+      - run: npx chromatic --project-token ${{ secrets.CHROMATIC_TOKEN }}
+```
+### 테스트 전략
+- 기준선: 첫 배포에서 베이스라인 스냅샷 생성
+- 실패 케이스: 색상/간격/타이포 변화 감지 여부, 의도치 않은 회귀 차단
+- 협업: Figma 코멘트→이슈 동기화, QA 결함 해결 SLA 24h
+
+---
+
+**Created:** 2025-08-12T06:51:57.717Z
+**Updated:** 2025-08-12T06:51:57.717Z

@@ -1,0 +1,54 @@
+# 메인 랜딩페이지 하이테크 리디자인 및 동적 인터랙티브 그래픽 적용
+
+**Task ID:** T-023
+**Status:** BACKLOG
+**Importance:** MUST
+**Complexity:** 8/10
+**Urgency:** 10/10
+**Dependencies:** T-001, T-016
+
+## Description
+
+### 요구사항
+- 기존 어두운 UI를 밝고 미래지향적 하이테크 헬스케어 스타일로 전면 리디자인
+- 동적 그래픽(Framer Motion, Lottie, SVG 애니메이션) 적극 적용
+- Figma mcp & Canva 템플릿 벤치마킹, 불필요 섹션 제거(병원소개 등) 후 AI 의료서비스 중심 구성
+- 성능 목표: LCP < 2s, CLS < 0.1, 애니메이션이 사용자 상호작용을 방해하지 않음(prefers-reduced-motion 준수)
+### 구현 세부(라이브러리/디자인/아키텍처)
+- 기술스택: Next.js 14(App Router, RSC), React 18, TypeScript, Tailwind, shadcn/ui, framer-motion, lottie-react, SVGO
+- 설치: `pnpm add framer-motion lottie-react` / `pnpm dlx svgo`로 SVG 최적화
+- 구조: app/(marketing)/page.tsx를 RSC로 구성, 애니메이션이 필요한 컴포넌트만 Client Component 분리
+- 접근성: prefers-reduced-motion 미디어쿼리로 애니메이션 강도 축소, focus-visible 스타일 정의
+- 디자인 토큰: Tailwind theme 확장(색상 스케일, 공간, 폰트), shadcn/ui 컴포넌트 토큰 일원화
+- 애니메이션: Hero 영역 3D 느낌의 SVG particle + Framer Motion parallax, CTA 마이크로인터랙션, Lottie JSON 비동기 로드(dynamic import)
+- SEO: 시맨틱 태그(header/main/section), h1 단일화, meta/OG, JSON-LD 의료기관 스키마
+### 의사코드
+```tsx
+// app/(marketing)/page.tsx (RSC)
+export default function Page() { return (<main><Hero/><Features/><AICTA/></main>); }
+
+// components/Hero.tsx ('use client')
+import { motion } from 'framer-motion';
+import Lottie from 'lottie-react';
+export function Hero(){
+  return (
+    <section className='relative overflow-hidden'>
+      <motion.h1 initial={{opacity:0,y:20}} animate={{opacity:1,y:0}} transition={{duration:0.6}}>AI 안과 상담</motion.h1>
+      <motion.div initial={{opacity:0}} whileInView={{opacity:1}}>
+        <Lottie animationData={require('../lottie/optic.json')} loop />
+      </motion.div>
+      <CTAButtons/>
+    </section>
+  );
+}
+```
+### 테스트 전략
+- 시각/인터랙션: Storybook에서 상호작용 테스트, 애니메이션 스냅샷 캡처
+- 성능: Lighthouse CI(LCP/CLS/TTI), WebPageTest 3G Throttling, CPU 4x slow
+- 접근성: axe-core로 애니메이션 관련 모션 감축 검증, 키보드 포커스 순서 확인
+- 회귀: Chromatic 비주얼 회귀(픽셀 차이 < 0.5%)
+
+---
+
+**Created:** 2025-08-12T06:51:57.717Z
+**Updated:** 2025-08-12T06:51:57.717Z

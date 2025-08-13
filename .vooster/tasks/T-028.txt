@@ -1,0 +1,35 @@
+# “눈콩이” 마스코트 기반 챗봇/Typebot UI/UX 커스터마이징
+
+**Task ID:** T-028
+**Status:** BACKLOG
+**Importance:** MUST
+**Complexity:** 6/10
+**Urgency:** 9/10
+**Dependencies:** T-027, T-023
+
+## Description
+
+### 요구사항
+- 눈콩이 이미지/애니메이션/말풍선 스타일 적용, 상담/예약 단계별 마이크로인터랙션
+- 모바일/PC 반응형, 이미지 저작권/용량 최적화
+### 구현 세부(라이브러리/디자인/아키텍처)
+- 자산: Lottie JSON(blink/wave), SVG 아바타(다크/라이트), WebP 썸네일
+- Typebot 테마: 사용자 버블/봇 버블 스타일, 헤더 아바타, 버튼 토큰
+- 위젯: Next.js에 Typebot 위젯 래퍼 컴포넌트 작성(테마 props)
+- 성능: 이미지 lazy, Lottie dynamic import, prefers-reduced-motion 고려
+### 의사코드
+```tsx
+// components/NunkongiBot.tsx
+export function NunkongiBot(){
+  return (<TypebotWidget botId={process.env.NEXT_PUBLIC_TYPEBOT_ID!} theme={{ botAvatarUrl:'/img/nunkongi.svg', bubbleRadius:16, accent:'#2dd4bf' }} />);
+}
+```
+### 테스트 전략
+- 디바이스: iOS/Android/Chrome/Safari/Edge 뷰포트 테스트
+- 성능: 이미지 용량(≤200KB), 애니메이션 CPU 점유율, LCP 영향
+- 접근성: 아바타 대체텍스트, 대비/포커스 표시 확인
+
+---
+
+**Created:** 2025-08-12T06:51:57.717Z
+**Updated:** 2025-08-12T06:51:57.717Z

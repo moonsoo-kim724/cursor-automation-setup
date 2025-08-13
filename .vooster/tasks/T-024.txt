@@ -1,0 +1,50 @@
+# 메인페이지 8개 카테고리 최신 안과 정보 섹션 신설
+
+**Task ID:** T-024
+**Status:** BACKLOG
+**Importance:** MUST
+**Complexity:** 7/10
+**Urgency:** 10/10
+**Dependencies:** T-023, T-001, T-002
+
+## Description
+
+### 요구사항
+- 카테고리: 최신 안과 논문, 노안/백내장, 시력교정술, 망막질환, 녹내장, 어린이시력관리, 안성형, 안질환/눈건강 정보
+- 각 카테고리 최신 글 카드/리스트 UI, 구독(이메일)/공유 기능, GA 이벤트 추적, SEO 친화적 링크 구조
+- 모바일 우선, 빠른 로드(SSR/ISR) 및 이미지 최적화
+### 구현 세부(라이브러리/디자인/아키텍처)
+- 데이터: Supabase(PostgreSQL)에서 posts, categories 조인 후 최신 N개 조회
+- 렌더링: Next.js 14 RSC + ISR(revalidate 300s), 이미지 최적화(next/image)
+- 구독: Resend 이메일 구독 엔드포인트(/api/subscribe) + Supabase 'subscribers' 테이블 저장
+- 공유: Web Share API 지원 + fallback 공유 링크 복사
+- 트래킹: GA4 이벤트(category_click, subscribe_click, share_click)
+- 라우팅: /insights/[category] 상세 리스트 페이지, canonical/OG 태그
+### 의사코드
+```tsx
+// lib/db.ts
+export async function fetchLatestByCategory(slug: string){
+  const { data } = await supabase.from('posts').select('*').eq('category_slug', slug).order('published_at',{ascending:false}).limit(6);
+  return data ?? [];
+}
+
+// app/(marketing)/components/CategorySection.tsx (RSC)
+export async function CategorySection(){
+  const slugs = ['papers','presbyopia','refractive','retina','glaucoma','kids','oculoplastics','eyehealth'];
+  const groups = await Promise.all(slugs.map(fetchLatestByCategory));
+  return (<section>{groups.map(renderCategory)}</section>);
+}
+
+// pages/api/subscribe/route.ts
+export async function POST(req: Request){ /* validate email->save to Supabase->Resend double opt-in */ }
+```
+### 테스트 전략
+- 단위: 쿼리 함수 페이지네이션/정렬 검증, 잘못된 슬러그 처리
+- 통합: ISR 재검증 동작, 구독 API(유효/중복/차단 도메인) 시나리오
+- UI: 반응형 스냅샷, 이미지 LQIP/BlurDataURL 확인
+- 분석: GA4 이벤트 수집 검증(디버그뷰), UTM 유지
+
+---
+
+**Created:** 2025-08-12T06:51:57.717Z
+**Updated:** 2025-08-12T06:51:57.717Z

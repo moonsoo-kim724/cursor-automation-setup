@@ -1,3 +1,20 @@
 {
-  "/page": "app/page.js"
+  "/_not-found/page": "app/_not-found/page.js",
+  "/api/chatbot/route": "app/api/chatbot/route.js",
+  "/admin/faq/page": "app/admin/faq/page.js",
+  "/api/consultation/summary/route": "app/api/consultation/summary/route.js",
+  "/api/dashboard/route": "app/api/dashboard/route.js",
+  "/api/leads/route": "app/api/leads/route.js",
+  "/api/newsletter/subscribe/route": "app/api/newsletter/subscribe/route.js",
+  "/api/notifications/send/route": "app/api/notifications/send/route.js",
+  "/api/gpt/consultation/route": "app/api/gpt/consultation/route.js",
+  "/api/scheduler/reminder/route": "app/api/scheduler/reminder/route.js",
+  "/api/send-navigation/route": "app/api/send-navigation/route.js",
+  "/api/typebot/webhook/route": "app/api/typebot/webhook/route.js",
+  "/api/vooster/webhook/route": "app/api/vooster/webhook/route.js",
+  "/manifest.webmanifest/route": "app/manifest.webmanifest/route.js",
+  "/sitemap.xml/route": "app/sitemap.xml/route.js",
+  "/page": "app/page.js",
+  "/robots.txt/route": "app/robots.txt/route.js",
+  "/dashboard/page": "app/dashboard/page.js"
 }

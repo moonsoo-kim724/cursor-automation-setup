@@ -1,217 +1,282 @@
-/**
- * YSK 연수김안과의원 - Typebot 웹훅 처리 API
- * POST /api/typebot/webhook
- */
-
+import { supabase } from '@/lib/supabase'
 import { NextRequest, NextResponse } from 'next/server'
-import { z } from 'zod'
-import { LeadProcessor, LeadDataSchema } from '@/lib/lead-processor'
 
-// Typebot 웹훅 스키마
-const TypebotWebhookSchema = z.object({
-  typebotId: z.string(),
-  sessionId: z.string(),
-  answers: z.array(z.object({
-    blockId: z.string(),
-    variableName: z.string().optional(),
-    value: z.any()
-  }))
-})
-
-type TypebotWebhookData = z.infer<typeof TypebotWebhookSchema>
-
-// Typebot 답변에서 리드 데이터 추출
-function extractLeadData(answers: TypebotWebhookData['answers']) {
-  const leadData: any = {
-    source: 'typebot',
-    urgency: 'medium'
-  }
-
-  for (const answer of answers) {
-    const { variableName, value } = answer
-    
-    if (!variableName || !value) continue
-
-    switch (variableName.toLowerCase()) {
-      case 'name':
-      case '이름':
-        leadData.name = String(value)
-        break
-      case 'phone':
-      case '전화번호':
-      case 'phoneNumber':
-        leadData.phone = String(value)
-        break
-      case 'email':
-      case '이메일':
-        leadData.email = String(value)
-        break
-      case 'age':
-      case '나이':
-        leadData.age = parseInt(value)
-        break
-      case 'symptoms':
-      case '증상':
-        leadData.symptoms = String(value)
-        break
-      case 'urgency':
-      case '긴급도':
-        leadData.urgency = String(value)
-        break
-      case 'preferredDate':
-      case '희망날짜':
-        leadData.preferredDate = String(value)
-        break
-      case 'preferredTime':
-      case '희망시간':
-        leadData.preferredTime = String(value)
-        break
-      case 'serviceType':
-      case '서비스타입':
-        leadData.serviceType = String(value)
-        break
-    }
-  }
-
-  return leadData
+interface TypebotWebhookData {
+  name?: string
+  phone?: string
+  date?: string
+  branch?: string
+  subIntent?: string
+  freeText?: string
+  source?: string
+  timestamp?: string
 }
 
 export async function POST(request: NextRequest) {
   try {
+    // CORS 헤더 설정
+    const headers = {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'POST, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type',
+      'Content-Type': 'application/json',
+    }
+
+    // 요청 데이터 파싱
     const body = await request.json()
-    
-    // 웹훅 데이터 검증
-    const validationResult = TypebotWebhookSchema.safeParse(body)
-    
-    if (!validationResult.success) {
+    console.log('Typebot webhook received:', body)
+
+    const webhookData: TypebotWebhookData = {
+      name: body.name || '',
+      phone: body.phone || '',
+      date: body.date || '',
+      branch: body.branch || '',
+      subIntent: body.subIntent || '',
+      freeText: body.freeText || '',
+      source: body.source || 'typebot',
+      timestamp: body.timestamp || new Date().toISOString()
+    }
+
+    // 필수 데이터 검증
+    if (!webhookData.name && !webhookData.freeText) {
       return NextResponse.json(
         {
           success: false,
-          error: '웹훅 데이터가 유효하지 않습니다',
-          details: validationResult.error.issues
+          error: 'Name or free text is required',
+          received: body
         },
-        { status: 400 }
+        { status: 400, headers }
       )
     }
 
-    const { typebotId, sessionId, answers } = validationResult.data
-
-    console.log('🤖 Typebot 웹훅 수신:', {
-      typebotId,
-      sessionId,
-      answersCount: answers.length,
-      timestamp: new Date().toISOString()
-    })
-
-    // 답변에서 리드 데이터 추출
-    const leadData = extractLeadData(answers)
-    
-    const results = {
-      leadSaved: false,
-      newsletterSubscribed: false,
-      emailSent: false,
-      slackNotified: false,
-      errors: [] as string[]
+    // Supabase 클라이언트 확인
+    if (!supabase) {
+      console.log('Supabase not configured, using mock response')
+      return NextResponse.json(
+        {
+          success: true,
+          message: 'Lead data received (mock mode)',
+          mock: true,
+          data: webhookData
+        },
+        { status: 200, headers }
+      )
     }
 
-    // 리드 데이터 처리 (이름과 전화번호가 있는 경우만)
-    if (leadData.name && leadData.phone) {
-      try {
-        const processResult = await LeadProcessor.processLead(leadData)
-        if (processResult.success) {
-          results.leadSaved = true
-          console.log('✅ 리드 저장 성공:', processResult.leadId)
-        } else {
-          results.errors.push('리드 저장 실패')
-        }
-      } catch (error) {
-        results.errors.push('리드 처리 오류')
-        console.error('리드 처리 오류:', error)
-      }
+    // 리드 데이터 저장
+    const leadData = {
+      name: webhookData.name || '익명',
+      phone: webhookData.phone || '',
+      email: '', // 타입봇에서는 이메일 수집하지 않음
+      service_type: webhookData.branch || 'general',
+      preferred_date: webhookData.date || null,
+      preferred_time: '', // 타입봇에서는 시간 수집하지 않음
+      symptoms: webhookData.freeText || `${webhookData.branch} 관련 상담 (${webhookData.subIntent})`,
+      source: webhookData.source,
+      status: 'pending',
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString()
     }
 
-    // 뉴스레터 자동 구독 (이메일이 있는 경우)
-    if (leadData.email && leadData.name) {
-      try {
-        const subscribeResponse = await fetch(`${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/api/newsletter/subscribe`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            email: leadData.email,
-            name: leadData.name,
-            source: 'typebot',
-            tags: ['typebot', 'auto_subscribe']
-          })
-        })
-        
-        if (subscribeResponse.ok) {
-          results.newsletterSubscribed = true
-        }
-      } catch (error) {
-        results.errors.push('뉴스레터 구독 실패')
-      }
+    const { data, error } = await supabase
+      .from('leads')
+      .insert([leadData])
+      .select()
+
+    if (error) {
+      console.error('Supabase insert error:', error)
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'Failed to save lead data',
+          details: error.message
+        },
+        { status: 500, headers }
+      )
     }
 
-    // Slack 알림 발송
+    console.log('Lead saved successfully:', data)
+
+    // 성공 시 이메일 알림 발송 (선택적)
     try {
-      // TODO: Slack 웹훅 구현
-      console.log('📢 Slack 알림:', { leadData, sessionId })
-      // results.slackNotified = true
-      results.errors.push('Slack 알림 발송 실패') // 임시로 에러 추가
-    } catch (error) {
-      results.errors.push('Slack 알림 발송 실패')
+      await sendNotificationEmail(leadData)
+    } catch (emailError) {
+      console.error('Email notification failed:', emailError)
+      // 이메일 실패는 전체 프로세스를 중단시키지 않음
     }
 
-    // 응답
-    return NextResponse.json({
-      success: true,
-      message: 'Typebot 웹훅이 부분적으로 처리되었습니다',
-      data: {
-        typebotId,
-        sessionId,
-        leadData,
-        processedAt: new Date().toISOString()
-      },
-      results,
-      errors: results.errors.length > 0 ? results.errors : undefined
-    })
-
-  } catch (error: any) {
-    console.error('Typebot 웹훅 처리 오류:', error)
+    // Slack 알림 발송 (선택적)
+    try {
+      await sendSlackNotification(leadData)
+    } catch (slackError) {
+      console.error('Slack notification failed:', slackError)
+      // Slack 실패는 전체 프로세스를 중단시키지 않음
+    }
 
     return NextResponse.json(
       {
-        success: false,
-        error: 'Typebot 웹훅 처리 중 서버 오류가 발생했습니다',
-        details: error.message,
-        timestamp: new Date().toISOString()
+        success: true,
+        message: 'Lead data received and processed successfully',
+        leadId: data[0]?.id,
+        data: {
+          name: leadData.name,
+          serviceType: leadData.service_type,
+          timestamp: leadData.created_at
+        }
       },
-      { status: 500 }
+      { status: 200, headers }
+    )
+
+  } catch (error) {
+    console.error('Typebot webhook error:', error)
+    return NextResponse.json(
+      {
+        success: false,
+        error: 'Internal server error',
+        details: error instanceof Error ? error.message : 'Unknown error'
+      },
+      {
+        status: 500,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Content-Type': 'application/json',
+        }
+      }
     )
   }
 }
 
-// API 정보 조회
-export async function GET() {
-  return NextResponse.json({
-    message: 'YSK 연수김안과의원 Typebot 웹훅 서비스',
-    version: '1.0.0',
-    features: [
-      'Typebot 대화 데이터 자동 처리',
-      '리드 데이터 추출 및 저장',
-      '뉴스레터 자동 구독',
-      'Slack 알림 발송',
-      '이메일 자동 응답'
-    ],
-    usage: {
-      endpoint: 'POST /api/typebot/webhook',
-      required_fields: ['typebotId', 'sessionId', 'answers'],
-      supported_variables: [
-        'name/이름', 'phone/전화번호', 'email/이메일', 
-        'age/나이', 'symptoms/증상', 'urgency/긴급도',
-        'preferredDate/희망날짜', 'preferredTime/희망시간'
-      ]
+// OPTIONS 요청 처리 (CORS preflight)
+export async function OPTIONS(request: NextRequest) {
+  return new Response(null, {
+    status: 200,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'POST, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type',
     },
-    timestamp: new Date().toISOString()
   })
+}
+
+// 이메일 알림 발송 함수
+async function sendNotificationEmail(leadData: any) {
+  if (!process.env.RESEND_API_KEY) {
+    console.log('Resend API key not configured, skipping email notification')
+    return
+  }
+
+  try {
+    const response = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${process.env.RESEND_API_KEY}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        from: 'YSK Eye Clinic <noreply@ysk-eye.ai>',
+        to: ['admin@ysk-eye.clinic'], // 병원 관리자 이메일
+        subject: `[연수김안과] 새로운 타입봇 상담 신청 - ${leadData.name}님`,
+        html: `
+          <h2>새로운 타입봇 상담 신청이 접수되었습니다</h2>
+          <div style="background: #f5f5f5; padding: 20px; border-radius: 8px; margin: 20px 0;">
+            <h3>상담자 정보</h3>
+            <p><strong>성함:</strong> ${leadData.name}</p>
+            <p><strong>연락처:</strong> ${leadData.phone || '미제공'}</p>
+            <p><strong>상담 분야:</strong> ${leadData.service_type}</p>
+            <p><strong>희망 날짜:</strong> ${leadData.preferred_date || '미지정'}</p>
+            <p><strong>증상/문의:</strong> ${leadData.symptoms}</p>
+            <p><strong>접수 시간:</strong> ${new Date(leadData.created_at).toLocaleString('ko-KR')}</p>
+            <p><strong>출처:</strong> 타입봇 눈콩이</p>
+          </div>
+          <p>관리자 대시보드에서 자세한 내용을 확인하고 고객에게 연락해 주세요.</p>
+        `
+      }),
+    })
+
+    if (!response.ok) {
+      throw new Error(`Email API error: ${response.status}`)
+    }
+
+    console.log('Notification email sent successfully')
+  } catch (error) {
+    console.error('Failed to send notification email:', error)
+    throw error
+  }
+}
+
+// Slack 알림 발송 함수
+async function sendSlackNotification(leadData: any) {
+  if (!process.env.SLACK_WEBHOOK_URL) {
+    console.log('Slack webhook URL not configured, skipping Slack notification')
+    return
+  }
+
+  try {
+    const slackMessage = {
+      text: `🏥 연수김안과 - 새로운 타입봇 상담 신청`,
+      blocks: [
+        {
+          type: "header",
+          text: {
+            type: "plain_text",
+            text: "🤖 타입봇 눈콩이 상담 신청"
+          }
+        },
+        {
+          type: "section",
+          fields: [
+            {
+              type: "mrkdwn",
+              text: `*성함:*\n${leadData.name}`
+            },
+            {
+              type: "mrkdwn",
+              text: `*연락처:*\n${leadData.phone || '미제공'}`
+            },
+            {
+              type: "mrkdwn",
+              text: `*상담 분야:*\n${leadData.service_type}`
+            },
+            {
+              type: "mrkdwn",
+              text: `*희망 날짜:*\n${leadData.preferred_date || '미지정'}`
+            }
+          ]
+        },
+        {
+          type: "section",
+          text: {
+            type: "mrkdwn",
+            text: `*증상/문의:*\n${leadData.symptoms}`
+          }
+        },
+        {
+          type: "context",
+          elements: [
+            {
+              type: "mrkdwn",
+              text: `접수 시간: ${new Date(leadData.created_at).toLocaleString('ko-KR')} | 출처: 타입봇`
+            }
+          ]
+        }
+      ]
+    }
+
+    const response = await fetch(process.env.SLACK_WEBHOOK_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(slackMessage),
+    })
+
+    if (!response.ok) {
+      throw new Error(`Slack API error: ${response.status}`)
+    }
+
+    console.log('Slack notification sent successfully')
+  } catch (error) {
+    console.error('Failed to send Slack notification:', error)
+    throw error
+  }
 }

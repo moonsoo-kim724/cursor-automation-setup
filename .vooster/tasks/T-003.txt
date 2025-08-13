@@ -1,7 +1,7 @@
 # 핵심 브랜딩 콘텐츠/FAQ 데이터 구조화 및 AI 챗봇 학습
 
 **Task ID:** T-003
-**Status:** BACKLOG
+**Status:** DONE
 **Importance:** MUST
 **Complexity:** 5/10
 **Urgency:** 7/10
@@ -26,4 +26,4 @@
 ---
 
 **Created:** 2025-07-29T04:44:49.562Z
-**Updated:** 2025-07-29T04:44:49.562Z
+**Updated:** 2025-08-06T04:20:41.949Z

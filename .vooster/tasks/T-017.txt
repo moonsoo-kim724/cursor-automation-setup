@@ -1,7 +1,7 @@
 # 메인 Hero 영역 및 AI 챗봇 UI 우선 리디자인
 
 **Task ID:** T-017
-**Status:** BACKLOG
+**Status:** DONE
 **Importance:** MUST
 **Complexity:** 7/10
 **Urgency:** 9/10
@@ -27,4 +27,4 @@
 ---
 
 **Created:** 2025-07-30T03:34:48.326Z
-**Updated:** 2025-07-30T03:34:48.326Z
+**Updated:** 2025-08-06T04:04:20.458Z

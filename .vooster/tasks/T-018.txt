@@ -1,7 +1,7 @@
 # 예약/상담 퍼널 UI/UX 리디자인 및 단계별 폼 개선
 
 **Task ID:** T-018
-**Status:** BACKLOG
+**Status:** DONE
 **Importance:** MUST
 **Complexity:** 7/10
 **Urgency:** 8/10
@@ -27,4 +27,4 @@
 ---
 
 **Created:** 2025-07-30T03:34:48.326Z
-**Updated:** 2025-07-30T03:34:48.326Z
+**Updated:** 2025-08-06T04:06:19.401Z

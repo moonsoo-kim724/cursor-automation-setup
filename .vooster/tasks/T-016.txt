@@ -1,7 +1,7 @@
 # 새 디자인 가이드 기반 전체 랜딩페이지 UI/UX 리디자인
 
 **Task ID:** T-016
-**Status:** BACKLOG
+**Status:** DONE
 **Importance:** MUST
 **Complexity:** 8/10
 **Urgency:** 10/10
@@ -44,4 +44,4 @@
 ---
 
 **Created:** 2025-07-30T03:34:48.326Z
-**Updated:** 2025-07-30T03:34:48.326Z
+**Updated:** 2025-08-06T04:02:43.453Z

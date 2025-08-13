@@ -1,0 +1,53 @@
+# 안과 정보 자동 포스팅 및 운영자 관리 UI 구축(Supabase+Edge Functions)
+
+**Task ID:** T-025
+**Status:** BACKLOG
+**Importance:** MUST
+**Complexity:** 8/10
+**Urgency:** 9/10
+**Dependencies:** T-002, T-024
+
+## Description
+
+### 요구사항
+- 운영자용 포스팅 CRUD UI(카테고리/작성일/썸네일/본문/태그)
+- 외부 데이터(RSS/논문) 자동 수집 및 등록, 예약 발행 스케줄링(Edge Function Cron)
+- 저작권 표기/원문 링크 필수, RLS/역할 기반 접근, 미리보기
+### 구현 세부(라이브러리/디자인/아키텍처)
+- 스키마(SQL): categories(id, slug, name), posts(id, category_id, title, slug, excerpt, content_md, thumbnail_url, source_url, tags, status[draft|scheduled|published], scheduled_at, published_at, embedding vector), sources(id, type[rss|manual], feed_url)
+- 보안: Supabase Auth(RBAC), RLS 정책(작성자만 수정), Storage에 이미지 업로드(서명 URL)
+- 에디터: Tiptap 또는 Markdown(MDX) 지원, 미리보기 패널
+- Edge Functions: rss-parser로 feed 수집, OpenAI text-embedding-3-large로 임베딩 생성 후 posts 삽입
+- 스케줄링: Supabase Scheduled Functions(cron 표현식)으로 정기 실행 및 예약 발행 상태 전환
+- 관리자 UI: shadcn/ui Form+Zod 검증, 테이블 필터/검색, 상태 변경(드래프트→예약/발행)
+### 의사코드
+```ts
+// supabase/functions/ingestFeeds/index.ts
+import Parser from 'rss-parser';
+export async function main(){
+  const feeds = await db.select('*').from('sources').eq('type','rss');
+  for(const f of feeds){
+    const items = await new Parser().parseURL(f.feed_url);
+    for(const it of items.items){
+      const exists = await db.from('posts').select('id').eq('source_url', it.link).single();
+      if(!exists){
+        const embedding = await openai.embeddings.create({model:'text-embedding-3-large', input: it.title + '
+' + (it.contentSnippet||'')});
+        await db.from('posts').insert({ title: it.title, slug: slugify(it.title), excerpt: it.contentSnippet, content_md: it.contentSnippet, source_url: it.link, status: 'draft', embedding: embedding.data[0].embedding, category_id: mapCategory(it)});
+      }
+    }
+  }
+}
+
+// 예약 발행 전환
+export async function publishScheduled(){ await db.rpc('publish_scheduled_posts'); }
+```
+### 테스트 전략
+- 단위: 슬러그 생성, 카테고리 매핑, 중복 삽입 방지, RLS 허용/거부 케이스
+- 통합: Edge Function 로컬 에뮬레이션, 크론 실행 건수/실패 재시도, 임베딩 길이 한도 처리
+- E2E: 관리자 CRUD 플로우, 예약→자동 발행 시 UI 반영, 원문 링크/저작권 표기 확인
+
+---
+
+**Created:** 2025-08-12T06:51:57.717Z
+**Updated:** 2025-08-12T06:51:57.717Z

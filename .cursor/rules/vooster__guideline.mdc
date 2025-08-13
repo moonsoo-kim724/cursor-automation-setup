@@ -11,12 +11,12 @@ alwaysApply: true
 
 ## 2. Core Principles (TRD 반영)
 
-1.  **TRD 준수 최우선**: 모든 기술적·기능적 의사결정은 TRD 명세를 우선합니다.
-2.  **성능 지표 충족**: FCP <1.5s, TTFB <200ms 등 TRD의 구체적 성능 목표를 반드시 달성
-3.  **보안 요건 강화**: RLS, 개인정보 암호화, 인증·인가 등 TRD의 보안 요구사항을 코드 레벨에서 구현
-4.  **유지보수성/확장성**: TRD에서 요구하는 확장성(EMR, 음성 AI 등) 고려한 컴포넌트 설계 및 분리
-5.  **테스트 및 검증성**: TRD에 명시된 테스트 커버리지, 자동화 요구를 반영하여 코드 작성
-6.  **코드 일관성/가독성**: TRD의 네이밍, 파일구조, 스타일 가이드에 따름
+1.  **TRD 최신 명세 반영 필수**: 모든 기술적, 기능적 의사결정은 항상 최신의 TRD(Technical Requirements Document) 내용을 기준으로 합니다. TRD 변경 내역은 코드 가이드라인에 즉시 반영하고, 변경 이력은 별도 문서로 관리합니다.
+2.  **성능 지표 충족**: 최신 TRD에 명시된 성능 목표(FCP, TTFB 등 수치 포함)를 반드시 충족해야 하며, 변경 시 코드에 주석 및 문서에 근거를 남깁니다.
+3.  **보안 요건 준수**: RLS, 개인정보 암호화, 인증·인가 등 TRD의 보안 요구사항을 코드 레벨에서 구현하고, 변경된 보안 정책이 있을 경우 코드 내 주석 및 가이드라인에 즉시 반영합니다.
+4.  **확장성 및 모듈화**: EMR 연동, 음성 AI 등 TRD의 최신 확장 요구를 염두에 두고 컴포넌트/서비스를 설계 및 분리합니다.
+5.  **테스트/검증 자동화**: TRD에서 요구하는 테스트 커버리지, 자동화(예: CI/CD, e2e 테스트 등) 수준을 준수하며, 변경 시 근거를 코드와 문서에 명확히 남깁니다.
+6.  **코드 표준화/일관성**: 네이밍, 파일구조, 스타일 가이드 등 TRD 명시 기준을 항상 최신 기준으로 맞추고, 예외 발생 시 TRD 내 근거를 명확히 남깁니다.
 
 ## 3. Language-Specific Guidelines (TRD 기준)
 
@@ -162,16 +162,15 @@ export async function POST(request: Request) {
     return NextResponse.json({ message: 'Internal server error' }, { status: 500 });
   }
 }
-*   **TypeScript Strictness**: TRD에서 요구하는 `strict` 모드 활성화 및 strictNullChecks, noImplicitAny 등 필수 옵션을 `tsconfig.json`에 반드시 명시합니다. 모든 함수/객체/props에 명확한 타입 부여.
-    *   **Rationale**: TRD의 사전 검증 및 안정성 목표 준수
+*   **TypeScript Strictness**: TRD에서 지정한 `strict` 모드 옵션(예: strictNullChecks, noImplicitAny, strictBindCallApply 등)을 `tsconfig.json`에 반드시 명시합니다. TRD가 변경될 경우 해당 옵션도 즉시 반영합니다. 모든 함수/객체/props에 명확한 타입을 부여해야 하며, TRD에서 추가된 타입 정책(예: 유니언 타입 사용 제한 등)이 있을 경우 이를 준수합니다.
+    *   **Rationale**: 최신 TRD의 안전성 및 사전 검증 기준에 부합
 *   **Naming Conventions**:
     *   변수/함수: `camelCase` (예: `userName`, `getUserProfile`)
     *   컴포넌트/타입/인터페이스: `PascalCase` (예: `BookingForm`, `Patient`)
     *   상수: `SCREAMING_SNAKE_CASE` (예: `MAX_RETRIES`, `API_BASE_URL`)
-    *   파일명: kebab-case (TRD에서 별도 지정 시 예외 없음)
-    *   디렉토리명: kebab-case
-    *   TRD에 네이밍 예시 또는 예외가 명시된 경우, 반드시 TRD 명세 우선
-    *   **Rationale**: TRD에서 코드 자동화 및 표준화 검증을 위해 지정한 네이밍 규칙 우선
+    *   파일명/디렉토리명: 최신 TRD에 명시된 규칙(kebab-case, snake_case 등) 우선 적용. 예외가 있으면 TRD 명세에 따라 예외를 명확히 남김.
+    *   TRD에 네이밍 예시, 예외, 추가 규칙(예: prefix, suffix, reserved word 사용 금지 등)이 명시된 경우, 반드시 TRD 최신 명세 우선 적용
+    *   **Rationale**: 최신 TRD 기준의 코드 표준화 및 자동화 검증에 부합
 ### 4.1. MUST Follow
 
 *   **TypeScript Strictness**: Enable `strict` mode in `tsconfig.json`. Use explicit types for function arguments, return values, and complex objects.

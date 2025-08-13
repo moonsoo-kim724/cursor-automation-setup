@@ -1,0 +1,38 @@
+# 접근성(WCAG 2.1 AA) 및 반응형 전면 점검/개선(리디자인 반영)
+
+**Task ID:** T-029
+**Status:** BACKLOG
+**Importance:** MUST
+**Complexity:** 6/10
+**Urgency:** 9/10
+**Dependencies:** T-028, T-022
+
+## Description
+
+### 요구사항
+- 리디자인 전반에 대한 WCAG 2.1 AA 준수 점검: 명도, 키보드 내비, 폼 레이블/에러, 모션 감축, 스크린리더 지원
+- Typebot 위젯/iframe 접근성 보완(aria-label, title, 포커스 트랩)
+- 반응형: 모바일/태블릿/데스크톱 브레이크포인트 최적화
+### 구현 세부(라이브러리/디자인/아키텍처)
+- 도구: axe-core, pa11y-ci, Lighthouse, eslint-plugin-jsx-a11y
+- 글로벌: Skip Link 추가, focus-visible 스타일, reduced-motion 시 애니메이션 억제
+- 폼: label-for/id 일치, aria-describedby로 에러 연결, 라이브 리전
+- 콘텐츠: 언어 속성(lang), 이미지 대체텍스트, 헤딩 계층 정비
+- 위젯: iframe title/aria-label, 키보드 포커스 사이클 제어
+### 의사코드
+```tsx
+// app/layout.tsx
+<body>
+  <a href='#main' className='skip'>본문 바로가기</a>
+  {children}
+</body>
+```
+### 테스트 전략
+- 자동: pa11y-ci 시나리오, axe 규칙 위반 0건 목표
+- 수동: 스크린리더(VoiceOver/NVDA) 플로우 검사, 키보드만으로 전 경로 수행
+- 반응형: Percy/Chromatic 뷰포트 매트릭스 스냅샷
+
+---
+
+**Created:** 2025-08-12T06:51:57.717Z
+**Updated:** 2025-08-12T06:51:57.717Z

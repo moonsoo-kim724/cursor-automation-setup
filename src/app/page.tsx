@@ -11,8 +11,8 @@ import Link from 'next/link'
 import { Suspense, useEffect, useState } from 'react'
 
 // 동적 임포트로 번들 크기 최적화 - Critical 컴포넌트 우선 로드
-const Chatbot = dynamic(() => import('@/components/ui/chatbot').then(mod => ({ default: mod.Chatbot })), {
-  loading: () => <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div></div>,
+const TypebotEmbed = dynamic(() => import('@/components/ui/typebot-embed').then(mod => ({ default: mod.TypebotEmbed })), {
+  loading: () => <div className="fixed bottom-6 right-6 w-14 h-14 bg-gray-200 rounded-full animate-pulse"></div>,
   ssr: false
 })
 
@@ -47,9 +47,6 @@ const StructuredData = dynamic(() => import('@/components/seo/structured-data').
 export default function Home() {
   const consultModal = useModal()
   const appointmentModal = useModal()
-
-  // AI 챗봇 상태
-  const [isChatbotOpen, setIsChatbotOpen] = useState(false)
 
   // 리드봇 상태
   const [isLeadbotOpen, setIsLeadbotOpen] = useState(false)
@@ -387,7 +384,7 @@ export default function Home() {
                 <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 via-purple-600 to-cyan-600 rounded-2xl blur opacity-75 group-hover:opacity-100 transition-opacity"></div>
                 <Button
                   size="xl"
-                  onClick={() => setIsChatbotOpen(true)}
+                  onClick={consultModal.openModal}
                   className="relative w-full sm:w-auto bg-white text-black hover:bg-gray-50 font-semibold px-8 py-4 text-lg shadow-2xl border-0 transition-all duration-300"
                 >
                   <MessageCircle className="h-6 w-6 mr-3" />
@@ -490,7 +487,7 @@ export default function Home() {
             <Button
               size="lg"
               variant="secondary"
-              onClick={() => setIsChatbotOpen(true)}
+              onClick={consultModal.openModal}
               className="rounded-full shadow-xl bg-brand-secondary-600 hover:bg-brand-secondary-700 border-2 border-white"
             >
               <MessageCircle className="h-6 w-6" />
@@ -855,7 +852,7 @@ export default function Home() {
               <Button
                 size="xl"
                 variant="secondary"
-                onClick={() => setIsChatbotOpen(true)}
+                onClick={consultModal.openModal}
                 leftIcon={<MessageCircle className="h-5 w-5" />}
                 className="bg-white text-black hover:bg-gray-100"
               >
@@ -898,12 +895,12 @@ export default function Home() {
             <Button onClick={consultModal.closeModal} variant="secondary" className="flex-1">
               취소
             </Button>
-            <Button 
-              variant="success" 
+            <Button
+              variant="success"
               className="flex-1"
               onClick={() => {
                 consultModal.closeModal()
-                setIsChatbotOpen(true)
+                // TypebotCustomChat은 자체적으로 표시되므로 별도 상태 필요 없음
               }}
             >
               상담 시작
@@ -937,8 +934,8 @@ export default function Home() {
             <Button onClick={appointmentModal.closeModal} variant="secondary" className="flex-1">
               취소
             </Button>
-            <Button 
-              variant="default" 
+            <Button
+              variant="default"
               className="flex-1"
               onClick={() => {
                 appointmentModal.closeModal()
@@ -951,17 +948,13 @@ export default function Home() {
         </div>
       </Modal>
 
-      {/* AI Chatbot */}
-      <Chatbot
-        isOpen={isChatbotOpen}
-        onClose={() => setIsChatbotOpen(false)}
-        onBookingRequest={(bookingInfo) => {
-          // 예약 정보 처리
-          console.log('Booking request:', bookingInfo)
-          setIsChatbotOpen(false)
-          appointmentModal.openModal()
+      {/* TypeBot 눈콩이 챗봇 */}
+      <TypebotEmbed
+        typebotId="연수김안과_눈콩이_퍼널"
+        theme={{
+          button: { backgroundColor: '#10b981' },
+          chatWindow: { backgroundColor: '#ffffff' }
         }}
-        language="ko"
       />
 
       {/* Lead Bot */}
@@ -974,61 +967,6 @@ export default function Home() {
         }}
       />
 
-      {/* 플로팅 AI 챗봇 버튼 */}
-      {!isChatbotOpen && (
-        <motion.div
-          initial={{ scale: 0, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ delay: 1, duration: 0.5, type: "spring", stiffness: 260, damping: 20 }}
-          className="fixed bottom-6 right-6 z-50"
-        >
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="relative"
-          >
-            <Button
-              onClick={() => setIsChatbotOpen(true)}
-              size="lg"
-              className="w-14 h-14 rounded-full bg-brand-secondary-600 hover:bg-brand-secondary-700 shadow-xl hover:shadow-2xl transition-all duration-300 border-2 border-white"
-            >
-              <MessageCircle className="h-6 w-6 text-white" />
-            </Button>
-            {/* 펄스 애니메이션 */}
-            <motion.div
-              animate={{
-                scale: [1, 1.3, 1],
-                opacity: [0.7, 0, 0.7]
-              }}
-              transition={{
-                duration: 2,
-                repeat: Infinity,
-                ease: "easeInOut"
-              }}
-              className="absolute inset-0 rounded-full bg-brand-secondary-400"
-            />
-            {/* 알림 배지 */}
-            <motion.div
-              animate={{
-                scale: [1, 1.1, 1],
-                opacity: [1, 0.8, 1]
-              }}
-              transition={{
-                duration: 1.5,
-                repeat: Infinity,
-                ease: "easeInOut"
-              }}
-              className="absolute -top-2 -right-2 w-5 h-5 bg-red-500 rounded-full flex items-center justify-center border-2 border-white"
-            >
-              <span className="text-xs font-bold text-white">AI</span>
-            </motion.div>
-          </motion.div>
-          {/* 툴팁 */}
-          <div className="absolute bottom-full right-0 mb-2 px-3 py-1 bg-gray-900 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-            무료 AI 상담 시작하기
-          </div>
-        </motion.div>
-      )}
 
       {/* 부스터 대시보드 접속 버튼 - 관리자용 */}
       <div className="fixed bottom-6 left-6 z-50">
@@ -1047,7 +985,7 @@ export default function Home() {
       {/* 모바일 메뉴 */}
       <Suspense fallback={null}>
         <MobileMenu
-          onChatbotOpen={() => setIsChatbotOpen(true)}
+          onChatbotOpen={consultModal.openModal}
           onLeadbotOpen={() => setIsLeadbotOpen(true)}
         />
       </Suspense>
@@ -1055,7 +993,7 @@ export default function Home() {
       {/* 모바일 빠른 액션 버튼 */}
       <Suspense fallback={null}>
         <QuickActions
-          onChatbotOpen={() => setIsChatbotOpen(true)}
+          onChatbotOpen={consultModal.openModal}
           onLeadbotOpen={() => setIsLeadbotOpen(true)}
         />
       </Suspense>

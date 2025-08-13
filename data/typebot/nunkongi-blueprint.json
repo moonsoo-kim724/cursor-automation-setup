@@ -1,0 +1,735 @@
+{
+  "version": "6",
+  "id": "cl1a2b3c4d5e6f7g8h9i0",one
+  "name": "연수김안과_눈콩이_퍼널",
+  "publicId": null,
+  "updatedAt": "2024-01-01T00:00:00.000Z",
+  "createdAt": "2024-01-01T00:00:00.000Z",
+  "settings": {
+    "general": {
+      "isBrandingEnabled": false,
+      "isInputPrefillEnabled": true,
+      "isHideQueryParamsEnabled": false,
+      "isNewResultOnRefreshEnabled": true
+    },
+    "typingEmulation": {
+      "enabled": true,
+      "speed": 300,
+      "maxDelay": 1500
+    },
+    "metadata": {
+      "title": "연수김안과 눈콩이",
+      "description": "눈 건강 상담 챗봇",
+      "imageUrl": "https://picsum.photos/seed/nunkongi/80/80"
+    }
+  },
+  "theme": {
+    "general": {
+      "font": "Noto Sans KR",
+      "background": {
+        "type": "Color",
+        "content": "#ffffff"
+      }
+    },
+    "chat": {
+      "hostAvatar": {
+        "isEnabled": true,
+        "url": "https://picsum.photos/seed/nunkongi/80/80"
+      },
+      "hostBubbles": {
+        "backgroundColor": "#F3F4F6",
+        "color": "#1F2937"
+      },
+      "guestBubbles": {
+        "backgroundColor": "#10b981",
+        "color": "#ffffff"
+      },
+      "buttons": {
+        "backgroundColor": "#10b981",
+        "color": "#ffffff"
+      },
+      "inputs": {
+        "backgroundColor": "#ffffff",
+        "color": "#1F2937",
+        "placeholderColor": "#9CA3AF"
+      }
+    }
+  },
+  "variables": [
+    {"id": "v1", "name": "branch"},
+    {"id": "v2", "name": "subIntent"},
+    {"id": "v3", "name": "name"},
+    {"id": "v4", "name": "phone"},
+    {"id": "v5", "name": "date"},
+    {"id": "v6", "name": "time"},
+    {"id": "v7", "name": "freeText"},
+    {"id": "v8", "name": "answer"},
+    {"id": "v9", "name": "citations"}
+  ],
+  "groups": [
+    {
+      "id": "group1",
+      "title": "Start",
+      "graphCoordinates": {"x": 0, "y": 0},
+      "blocks": [
+        {
+          "id": "block1",
+          "type": "start",
+          "label": "Start",
+          "outgoingEdgeId": "edge1"
+        }
+      ]
+    },
+    {
+      "id": "group2",
+      "title": "인트로",
+      "graphCoordinates": {"x": 200, "y": 0},
+      "blocks": [
+        {
+          "id": "block2",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "안녕하세요! 고객님의 소중한 눈 건강, 저 눈콩이와 함께 이야기 나눠볼까요? 😊"
+                  }
+                ]
+              },
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "무엇이든 편하게 물어보세요. 제가 차근차근 안내해 드릴게요."
+                  }
+                ]
+              },
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "가장 궁금하신 분야를 콕! 집어주세요."
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "block3",
+          "type": "choice",
+          "items": [
+            {
+              "id": "item1",
+              "blockId": "block3",
+              "content": "시력교정술 (매일 쓰던 안경, 이젠 안녕!)",
+              "outgoingEdgeId": "edge2"
+            },
+            {
+              "id": "item2",
+              "blockId": "block3",
+              "content": "노안·백내장 수술 (침침한 눈, 다시 선명하게)",
+              "outgoingEdgeId": "edge3"
+            },
+            {
+              "id": "item3",
+              "blockId": "block3",
+              "content": "소아안과·드림렌즈 (우리 아이 첫 눈 건강)",
+              "outgoingEdgeId": "edge4"
+            },
+            {
+              "id": "item4",
+              "blockId": "block3",
+              "content": "안구건조증·기타질환 (눈의 불편함, 시원하게 해결)",
+              "outgoingEdgeId": "edge5"
+            },
+            {
+              "id": "item5",
+              "blockId": "block3",
+              "content": "급해요! 바로 예약/상담",
+              "outgoingEdgeId": "edge6"
+            }
+          ],
+          "options": {
+            "buttonLabel": "선택하기",
+            "isMultipleChoice": false,
+            "variableId": "v1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "group3",
+      "title": "시력교정술 상담",
+      "graphCoordinates": {"x": 400, "y": 0},
+      "blocks": [
+        {
+          "id": "block4",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "아하, 시력교정술을 생각하고 계시는군요!"
+                  }
+                ]
+              },
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "안경이나 렌즈 때문에 종종 속상하고 불편하셨죠?"
+                  }
+                ]
+              },
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "어떤 순간에 가장 '아, 정말 불편하다!' 느끼셨어요?"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "block5",
+          "type": "choice",
+          "items": [
+            {
+              "id": "item6",
+              "blockId": "block5",
+              "content": "김 서린 안경, 흘러내리는 안경... 너무 불편해요.",
+              "outgoingEdgeId": "edge7"
+            },
+            {
+              "id": "item7",
+              "blockId": "block5",
+              "content": "운동, 여행... 마음껏 즐기고 싶어요!",
+              "outgoingEdgeId": "edge7"
+            },
+            {
+              "id": "item8",
+              "blockId": "block5",
+              "content": "꾸민 날에도 안경은 좀... 외모에 더 신경쓰고 싶어요.",
+              "outgoingEdgeId": "edge7"
+            },
+            {
+              "id": "item9",
+              "blockId": "block5",
+              "content": "제 직업에선 안경이 위험하거나 방해가 돼요.",
+              "outgoingEdgeId": "edge7"
+            }
+          ],
+          "options": {
+            "buttonLabel": "선택하기",
+            "isMultipleChoice": false,
+            "variableId": "v2"
+          }
+        }
+      ]
+    },
+    {
+      "id": "group4",
+      "title": "시력교정술 방법",
+      "graphCoordinates": {"x": 600, "y": 0},
+      "blocks": [
+        {
+          "id": "block6",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "맞아요, 그런 불편함들 정말 공감돼요. 😭"
+                  }
+                ]
+              },
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "혹시 어떤 수술을 통해 '선명한 세상'을 만나고 싶으신가요?"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "block7",
+          "type": "choice",
+          "items": [
+            {
+              "id": "item10",
+              "blockId": "block7",
+              "content": "라식/라섹: 가장 많이들 하니까 궁금해요.",
+              "outgoingEdgeId": "edge8"
+            },
+            {
+              "id": "item11",
+              "blockId": "block7",
+              "content": "렌즈삽입술: 제 각막은 소중하니까요. 깎지 않는 수술!",
+              "outgoingEdgeId": "edge8"
+            },
+            {
+              "id": "item12",
+              "blockId": "block7",
+              "content": "스마일/클리어어라식: 아픈 건 싫어요. 회복이 빠른 수술이 좋겠어요.",
+              "outgoingEdgeId": "edge8"
+            },
+            {
+              "id": "item13",
+              "blockId": "block7",
+              "content": "추천해주세요: 사실... 잘 몰라요. 제 눈에 딱 맞는 걸로!",
+              "outgoingEdgeId": "edge8"
+            }
+          ],
+          "options": {
+            "buttonLabel": "선택하기",
+            "isMultipleChoice": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "group5",
+      "title": "예약 정보 입력",
+      "graphCoordinates": {"x": 800, "y": 300},
+      "blocks": [
+        {
+          "id": "block8",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "좋아요! 이제 거의 다 됐어요. 여기까지 너무 잘 하셨어요."
+                  }
+                ]
+              },
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "예약 정보를 입력해 주세요."
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "block9",
+          "type": "text input",
+          "options": {
+            "labels": {
+              "placeholder": "성함을 입력해주세요",
+              "button": "확인"
+            },
+            "variableId": "v3"
+          }
+        },
+        {
+          "id": "block10",
+          "type": "text input",
+          "options": {
+            "labels": {
+              "placeholder": "연락처를 입력해주세요 (숫자만)",
+              "button": "확인"
+            },
+            "variableId": "v4"
+          }
+        },
+        {
+          "id": "block11",
+          "type": "date",
+          "options": {
+            "labels": {
+              "button": "날짜 선택"
+            },
+            "variableId": "v5",
+            "format": "yyyy-MM-dd"
+          }
+        },
+        {
+          "id": "block21",
+          "type": "webhook",
+          "options": {
+            "webhook": {
+              "url": "https://ysk-eye.ai/api/typebot/webhook",
+              "method": "POST",
+              "headers": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"name\": \"{{v3}}\",\n  \"phone\": \"{{v4}}\",\n  \"date\": \"{{v5}}\",\n  \"branch\": \"{{v1}}\",\n  \"subIntent\": \"{{v2}}\",\n  \"freeText\": \"{{v7}}\",\n  \"source\": \"typebot\",\n  \"timestamp\": \"{{now}}\"\n}"
+            }
+          }
+        },
+        {
+          "id": "block12",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "예약이 완료되었습니다! 🎉"
+                  }
+                ]
+              },
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "{{v3}}님, {{v5}}에 뵙겠습니다."
+                  }
+                ]
+              },
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "연락처: {{v4}}"
+                  }
+                ]
+              },
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "도움이 되었다니 기뻐요! 🫶 언제든 다시 찾아주세요."
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "group6",
+      "title": "노안백내장 상담",
+      "graphCoordinates": {"x": 400, "y": 200},
+      "blocks": [
+        {
+          "id": "block13",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "부모님이나 혹은 본인의 눈 때문에 걱정이 많으셨겠어요."
+                  }
+                ]
+              },
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "요즘 들어 어떤 변화 때문에 가장 속상하신가요?"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "block14",
+          "type": "choice",
+          "items": [
+            {
+              "id": "item14",
+              "blockId": "block14",
+              "content": "스마트폰 글씨가 자꾸 멀어져요... (노안)",
+              "outgoingEdgeId": "edge9"
+            },
+            {
+              "id": "item15",
+              "blockId": "block14",
+              "content": "세상이 뿌옇고 답답하게 보여요. (백내장)",
+              "outgoingEdgeId": "edge9"
+            },
+            {
+              "id": "item16",
+              "blockId": "block14",
+              "content": "밤 운전이 무서울 정도로 빛이 번져요. (백내장)",
+              "outgoingEdgeId": "edge9"
+            },
+            {
+              "id": "item17",
+              "blockId": "block14",
+              "content": "이 모든 게 다 제 이야기 같아요.",
+              "outgoingEdgeId": "edge9"
+            }
+          ],
+          "options": {
+            "buttonLabel": "선택하기",
+            "isMultipleChoice": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "group7",
+      "title": "소아안과 상담",
+      "graphCoordinates": {"x": 400, "y": 400},
+      "blocks": [
+        {
+          "id": "block15",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "우리 아이 눈 건강, 부모님 마음에 가장 큰 걱정 중 하나죠."
+                  }
+                ]
+              },
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "어떤 점이 가장 궁금하고 걱정되세요?"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "block16",
+          "type": "choice",
+          "items": [
+            {
+              "id": "item18",
+              "blockId": "block16",
+              "content": "영유아 (0-6세): 시력 발달 걱정",
+              "outgoingEdgeId": "edge10"
+            },
+            {
+              "id": "item19",
+              "blockId": "block16",
+              "content": "초등학생 (7-12세): 근시 진행 걱정",
+              "outgoingEdgeId": "edge10"
+            },
+            {
+              "id": "item20",
+              "blockId": "block16",
+              "content": "청소년 (13-18세): 안경 없이 지내고 싶어요",
+              "outgoingEdgeId": "edge10"
+            }
+          ],
+          "options": {
+            "buttonLabel": "선택하기",
+            "isMultipleChoice": false
+          }
+        }
+      ]
+    },
+    {activities
+      "id": "group8",
+      "title": "안구건조증 상담",
+      "graphCoordinates": {"x": 400, "y": 600},
+      "blocks": [
+        {
+          "id": "block17",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "눈이 불편하면 온종일 신경 쓰이고 힘드시죠. 😥"
+                  }
+                ]
+              },
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "어떤 증상 때문에 고생하고 계세요?"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "block18",
+          "type": "choice",
+          "items": [
+            {
+              "id": "item21",
+              "blockId": "block18",
+              "content": "눈이 사막 같아요. 뻑뻑하고 시려요. (안구건조증)",
+              "outgoingEdgeId": "edge11"
+            },
+            {
+              "id": "item22",
+              "blockId": "block18",
+              "content": "눈앞에 먼지가 둥둥... 신경 쓰여요. (비문증)",
+              "outgoingEdgeId": "edge11"
+            },
+            {
+              "id": "item23",
+              "blockId": "block18",
+              "content": "저도 모르게 눈꺼풀이 파르르 떨려요.",
+              "outgoingEdgeId": "edge11"
+            },
+            {
+              "id": "item24",
+              "blockId": "block18",
+              "content": "말로 설명하기 어려운 불편함이 있어요.",
+              "outgoingEdgeId": "edge12"
+            }
+          ],
+          "options": {
+            "buttonLabel": "선택하기",
+            "isMultipleChoice": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "group9",
+      "title": "자유 입력",
+      "graphCoordinates": {"x": 600, "y": 600},
+      "blocks": [
+        {
+          "id": "block19",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "자유롭게 불편함이나 궁금한 점을 적어주세요."
+                  }
+                ]
+              },
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "(의료법 준수: 챗봇은 진단/처방을 제공하지 않으며 정보 안내 목적입니다.)"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "block20",
+          "type": "text input",
+          "options": {
+            "labels": {
+              "placeholder": "증상이나 궁금한 점을 자유롭게 입력해주세요",
+              "button": "전송"
+            },
+            "variableId": "v7",
+            "isLong": true
+          }
+        },
+        {
+          "id": "block22",
+          "type": "webhook",
+          "options": {
+            "webhook": {
+              "url": "https://ysk-eye.ai/api/typebot/webhook",
+              "method": "POST",
+              "headers": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"freeText\": \"{{v7}}\",\n  \"source\": \"typebot_freeform\",\n  \"timestamp\": \"{{now}}\"\n}"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge1",
+      "from": {"blockId": "block1"},
+      "to": {"groupId": "group2"}
+    },
+    {
+      "id": "edge2",
+      "from": {"itemId": "item1"},
+      "to": {"groupId": "group3"}
+    },
+    {
+      "id": "edge3",
+      "from": {"itemId": "item2"},
+      "to": {"groupId": "group6"}
+    },
+    {
+      "id": "edge4",
+      "from": {"itemId": "item3"},
+      "to": {"groupId": "group7"}
+    },
+    {
+      "id": "edge5",
+      "from": {"itemId": "item4"},
+      "to": {"groupId": "group8"}
+    },
+    {
+      "id": "edge6",
+      "from": {"itemId": "item5"},
+      "to": {"groupId": "group5"}
+    },
+    {
+      "id": "edge7",
+      "from": {"blockId": "block5"},
+      "to": {"groupId": "group4"}
+    },
+    {
+      "id": "edge8",
+      "from": {"blockId": "block7"},
+      "to": {"groupId": "group5"}
+    },
+    {
+      "id": "edge9",
+      "from": {"blockId": "block14"},
+      "to": {"groupId": "group5"}
+    },
+    {
+      "id": "edge10",
+      "from": {"blockId": "block16"},
+      "to": {"groupId": "group5"}
+    },
+    {
+      "id": "edge11",
+      "from": {"blockId": "block18"},
+      "to": {"groupId": "group5"}
+    },
+    {
+      "id": "edge12",
+      "from": {"itemId": "item24"},
+      "to": {"groupId": "group9"}
+    }
+  ]
+}

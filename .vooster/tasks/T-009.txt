@@ -1,7 +1,7 @@
 # 장애 알림(Slack, 이메일) 연동
 
 **Task ID:** T-009
-**Status:** BACKLOG
+**Status:** DONE
 **Importance:** MUST
 **Complexity:** 3/10
 **Urgency:** 7/10
@@ -28,4 +28,4 @@
 ---
 
 **Created:** 2025-07-29T04:44:49.562Z
-**Updated:** 2025-07-29T04:44:49.562Z
+**Updated:** 2025-08-10T23:40:12.477Z

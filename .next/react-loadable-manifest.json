@@ -1,60 +1,64 @@
 {
   "..\\node_modules\\@supabase\\auth-js\\dist\\module\\lib\\helpers.js -> @supabase/node-fetch": {
-    "id": "..\\node_modules\\@supabase\\auth-js\\dist\\module\\lib\\helpers.js -> @supabase/node-fetch",
+    "id": 485,
     "files": []
   },
   "..\\node_modules\\@supabase\\functions-js\\dist\\module\\helper.js -> @supabase/node-fetch": {
-    "id": "..\\node_modules\\@supabase\\functions-js\\dist\\module\\helper.js -> @supabase/node-fetch",
+    "id": 485,
     "files": []
   },
   "..\\node_modules\\@supabase\\realtime-js\\dist\\module\\RealtimeClient.js -> @supabase/node-fetch": {
-    "id": "..\\node_modules\\@supabase\\realtime-js\\dist\\module\\RealtimeClient.js -> @supabase/node-fetch",
+    "id": 485,
     "files": []
   },
   "..\\node_modules\\@supabase\\storage-js\\dist\\module\\lib\\helpers.js -> @supabase/node-fetch": {
-    "id": "..\\node_modules\\@supabase\\storage-js\\dist\\module\\lib\\helpers.js -> @supabase/node-fetch",
+    "id": 485,
     "files": []
   },
   "app\\page.tsx -> @/components/mobile/mobile-menu": {
-    "id": "app\\page.tsx -> @/components/mobile/mobile-menu",
+    "id": 1947,
     "files": [
-      "static/chunks/_app-pages-browser_src_components_mobile_mobile-menu_tsx.js"
+      "static/chunks/947.2ed4bc9145cb8357.js"
     ]
   },
   "app\\page.tsx -> @/components/mobile/quick-actions": {
-    "id": "app\\page.tsx -> @/components/mobile/quick-actions",
+    "id": 4038,
     "files": [
-      "static/chunks/_app-pages-browser_src_components_mobile_quick-actions_tsx.js"
+      "static/chunks/878.939c0e311b72141f.js"
     ]
   },
   "app\\page.tsx -> @/components/seo/structured-data": {
-    "id": "app\\page.tsx -> @/components/seo/structured-data",
+    "id": 4660,
     "files": [
-      "static/chunks/_app-pages-browser_src_components_seo_structured-data_tsx.js"
-    ]
-  },
-  "app\\page.tsx -> @/components/ui/chatbot": {
-    "id": "app\\page.tsx -> @/components/ui/chatbot",
-    "files": [
-      "static/chunks/_app-pages-browser_src_components_ui_chatbot_tsx.js"
+      "static/chunks/667.0387183c7107d944.js",
+      "static/chunks/660.dc4c6c27ff1df03a.js"
     ]
   },
   "app\\page.tsx -> @/components/ui/faq-section": {
-    "id": "app\\page.tsx -> @/components/ui/faq-section",
+    "id": 9303,
     "files": [
-      "static/chunks/_app-pages-browser_src_components_ui_faq-section_tsx.js"
+      "static/chunks/733-657ea6367bb5dfce.js",
+      "static/chunks/667.0387183c7107d944.js",
+      "static/chunks/923.4e573fd229b7f98c.js",
+      "static/chunks/303.910285eb5a845a0c.js"
     ]
   },
   "app\\page.tsx -> @/components/ui/leadbot": {
-    "id": "app\\page.tsx -> @/components/ui/leadbot",
+    "id": 9927,
     "files": [
-      "static/chunks/_app-pages-browser_src_components_ui_leadbot_tsx.js"
+      "static/chunks/927.ac2e689af3009651.js"
     ]
   },
   "app\\page.tsx -> @/components/ui/map-location": {
-    "id": "app\\page.tsx -> @/components/ui/map-location",
+    "id": 6366,
     "files": [
-      "static/chunks/_app-pages-browser_src_components_ui_map-location_tsx.js"
+      "static/chunks/366.1f79508de17570e2.js"
+    ]
+  },
+  "app\\page.tsx -> @/components/ui/typebot-embed": {
+    "id": 5419,
+    "files": [
+      "static/chunks/419.04337ef0f5ea0e49.js"
     ]
   }
 }

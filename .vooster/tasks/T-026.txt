@@ -1,0 +1,47 @@
+# GPTs 챗봇 + Typebot 퍼널 연동 오류 수정 및 답변 품질 개선(RAG 연동)
+
+**Task ID:** T-026
+**Status:** BACKLOG
+**Importance:** MUST
+**Complexity:** 8/10
+**Urgency:** 10/10
+**Dependencies:** T-004, T-005, T-025
+
+## Description
+
+### 요구사항
+- GPTs+Typebot 연동 정상화, <3초 응답 지연 목표, 오류 처리/타임아웃/재시도
+- Supabase posts(임베딩) 기반 최신 안과 정보 RAG 검색 반영, 답변 인용/출처 표시
+- Webhook/API 보강, 로깅/모니터링, QA 체크리스트 문서화
+### 구현 세부(라이브러리/디자인/아키텍처)
+- 검색: Supabase pgvector(embedding) cosine similarity로 top-k 검색(k=5, threshold)
+- 임베딩: OpenAI text-embedding-3-large, 한국어 우선 토크나이징 고려(chunk 800-1200 tokens, overlap 200)
+- 응답: OpenAI GPT-4o, 시스템 프롬프트에 의료 면책/요약 규칙 포함, 인용 블록 포함
+- API: Next.js Route Handler /api/chat(stream) — Typebot Webhook이 호출; GPTs Actions에도 동일 API 제공
+- 캐시: Vercel Edge Cache/Redis(선택)로 검색 결과 캐시 5분
+- 오류: AbortController 10s, 429/5xx 지수 백오프, Sentry 로깅
+### 의사코드
+```ts
+// app/api/chat/route.ts
+export async function POST(req: Request){
+  const { q, user } = await req.json();
+  const ctx = await ragSearch(q);
+  const prompt = buildPrompt(q, ctx);
+  const res = await openai.chat.completions.create({model:'gpt-4o', messages:[{role:'system', content: SYSTEM_PROMPT},{role:'user', content: prompt}], stream:true});
+  return stream(res);
+}
+
+async function ragSearch(q:string){
+  const emb = await openai.embeddings.create({model:'text-embedding-3-large', input:q});
+  return await db.rpc('match_posts', {query_embedding: emb.data[0].embedding, match_threshold: 0.78, match_count: 5});
+}
+```
+### 테스트 전략
+- 품질: 오답률/환자 안전 문구 포함 여부 체크리스트, RAG Off/On A/B 비교, 출처 누락 탐지
+- 성능: p95 응답 시간, 스트리밍 첫 토큰 <1.2s, 타임아웃/재시도 동작
+- 회복탄력성: OpenAI 장애 시 캐시/FAQ fallback, Typebot 재시도 시맨틱
+
+---
+
+**Created:** 2025-08-12T06:51:57.717Z
+**Updated:** 2025-08-12T06:51:57.717Z

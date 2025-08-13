@@ -1,6 +1,6 @@
 {
-  "totalCount": 22,
-  "downloadedAt": "2025-08-05T23:15:54.006Z",
+  "totalCount": 30,
+  "downloadedAt": "2025-08-13T03:54:30.924Z",
   "tasks": [
     {
       "taskId": "T-001",
@@ -25,12 +25,12 @@
     {
       "taskId": "T-003",
       "summary": "핵심 브랜딩 콘텐츠/FAQ 데이터 구조화 및 AI 챗봇 학습",
-      "status": "BACKLOG",
+      "status": "DONE",
       "importance": "MUST",
       "complexity": 5,
       "urgency": 7,
       "createdAt": "2025-07-29T04:44:49.562Z",
-      "updatedAt": "2025-07-29T04:44:49.562Z"
+      "updatedAt": "2025-08-06T04:20:41.949Z"
     },
     {
       "taskId": "T-004",
@@ -75,22 +75,22 @@
     {
       "taskId": "T-008",
       "summary": "카카오톡/이메일/Slack 자동 알림 기능",
-      "status": "BACKLOG",
+      "status": "DONE",
       "importance": "MUST",
       "complexity": 6,
       "urgency": 8,
       "createdAt": "2025-07-29T04:44:49.562Z",
-      "updatedAt": "2025-07-29T04:44:49.562Z"
+      "updatedAt": "2025-08-10T23:40:08.633Z"
     },
     {
       "taskId": "T-009",
       "summary": "장애 알림(Slack, 이메일) 연동",
-      "status": "BACKLOG",
+      "status": "DONE",
       "importance": "MUST",
       "complexity": 3,
       "urgency": 7,
       "createdAt": "2025-07-29T04:44:49.562Z",
-      "updatedAt": "2025-07-29T04:44:49.562Z"
+      "updatedAt": "2025-08-10T23:40:12.477Z"
     },
     {
       "taskId": "T-010",
@@ -155,32 +155,32 @@
     {
       "taskId": "T-016",
       "summary": "새 디자인 가이드 기반 전체 랜딩페이지 UI/UX 리디자인",
-      "status": "BACKLOG",
+      "status": "DONE",
       "importance": "MUST",
       "complexity": 8,
       "urgency": 10,
       "createdAt": "2025-07-30T03:34:48.326Z",
-      "updatedAt": "2025-07-30T03:34:48.326Z"
+      "updatedAt": "2025-08-06T04:02:43.453Z"
     },
     {
       "taskId": "T-017",
       "summary": "메인 Hero 영역 및 AI 챗봇 UI 우선 리디자인",
-      "status": "BACKLOG",
+      "status": "DONE",
       "importance": "MUST",
       "complexity": 7,
       "urgency": 9,
       "createdAt": "2025-07-30T03:34:48.326Z",
-      "updatedAt": "2025-07-30T03:34:48.326Z"
+      "updatedAt": "2025-08-06T04:04:20.458Z"
     },
     {
       "taskId": "T-018",
       "summary": "예약/상담 퍼널 UI/UX 리디자인 및 단계별 폼 개선",
-      "status": "BACKLOG",
+      "status": "DONE",
       "importance": "MUST",
       "complexity": 7,
       "urgency": 8,
       "createdAt": "2025-07-30T03:34:48.326Z",
-      "updatedAt": "2025-07-30T03:34:48.326Z"
+      "updatedAt": "2025-08-06T04:06:19.401Z"
     },
     {
       "taskId": "T-019",
@@ -205,22 +205,102 @@
     {
       "taskId": "T-021",
       "summary": "웹 성능 최적화 (Lighthouse 95+ 목표)",
-      "status": "BACKLOG",
+      "status": "DONE",
       "importance": "MUST",
       "complexity": 6,
       "urgency": 8,
       "createdAt": "2025-07-30T03:34:48.326Z",
-      "updatedAt": "2025-07-30T03:34:48.326Z"
+      "updatedAt": "2025-08-10T23:40:17.442Z"
     },
     {
       "taskId": "T-022",
       "summary": "웹 접근성(WCAG 2.1 AA) 및 반응형 디자인 개선",
-      "status": "BACKLOG",
+      "status": "DONE",
       "importance": "MUST",
       "complexity": 6,
       "urgency": 9,
       "createdAt": "2025-07-30T03:34:48.326Z",
-      "updatedAt": "2025-07-30T03:34:48.326Z"
+      "updatedAt": "2025-08-10T23:40:22.055Z"
+    },
+    {
+      "taskId": "T-023",
+      "summary": "메인 랜딩페이지 하이테크 리디자인 및 동적 인터랙티브 그래픽 적용",
+      "status": "BACKLOG",
+      "importance": "MUST",
+      "complexity": 8,
+      "urgency": 10,
+      "createdAt": "2025-08-12T06:51:57.717Z",
+      "updatedAt": "2025-08-12T06:51:57.717Z"
+    },
+    {
+      "taskId": "T-024",
+      "summary": "메인페이지 8개 카테고리 최신 안과 정보 섹션 신설",
+      "status": "BACKLOG",
+      "importance": "MUST",
+      "complexity": 7,
+      "urgency": 10,
+      "createdAt": "2025-08-12T06:51:57.717Z",
+      "updatedAt": "2025-08-12T06:51:57.717Z"
+    },
+    {
+      "taskId": "T-025",
+      "summary": "안과 정보 자동 포스팅 및 운영자 관리 UI 구축(Supabase+Edge Functions)",
+      "status": "BACKLOG",
+      "importance": "MUST",
+      "complexity": 8,
+      "urgency": 9,
+      "createdAt": "2025-08-12T06:51:57.717Z",
+      "updatedAt": "2025-08-12T06:51:57.717Z"
+    },
+    {
+      "taskId": "T-026",
+      "summary": "GPTs 챗봇 + Typebot 퍼널 연동 오류 수정 및 답변 품질 개선(RAG 연동)",
+      "status": "BACKLOG",
+      "importance": "MUST",
+      "complexity": 8,
+      "urgency": 10,
+      "createdAt": "2025-08-12T06:51:57.717Z",
+      "updatedAt": "2025-08-12T06:51:57.717Z"
+    },
+    {
+      "taskId": "T-027",
+      "summary": "리드 챗봇(Typebot) 퍼널 JSON 설계 반영 및 구조 개선",
+      "status": "BACKLOG",
+      "importance": "MUST",
+      "complexity": 7,
+      "urgency": 9,
+      "createdAt": "2025-08-12T06:51:57.717Z",
+      "updatedAt": "2025-08-12T06:51:57.717Z"
+    },
+    {
+      "taskId": "T-028",
+      "summary": "“눈콩이” 마스코트 기반 챗봇/Typebot UI/UX 커스터마이징",
+      "status": "BACKLOG",
+      "importance": "MUST",
+      "complexity": 6,
+      "urgency": 9,
+      "createdAt": "2025-08-12T06:51:57.717Z",
+      "updatedAt": "2025-08-12T06:51:57.717Z"
+    },
+    {
+      "taskId": "T-029",
+      "summary": "접근성(WCAG 2.1 AA) 및 반응형 전면 점검/개선(리디자인 반영)",
+      "status": "BACKLOG",
+      "importance": "MUST",
+      "complexity": 6,
+      "urgency": 9,
+      "createdAt": "2025-08-12T06:51:57.717Z",
+      "updatedAt": "2025-08-12T06:51:57.717Z"
+    },
+    {
+      "taskId": "T-030",
+      "summary": "디자인 QA 및 Figma/Canva 연동 프로세스 구축(Storybook+Chromatic)",
+      "status": "BACKLOG",
+      "importance": "SHOULD",
+      "complexity": 6,
+      "urgency": 8,
+      "createdAt": "2025-08-12T06:51:57.717Z",
+      "updatedAt": "2025-08-12T06:51:57.717Z"
     }
   ]
 }

@@ -1,7 +1,7 @@
 # 웹 성능 최적화 (Lighthouse 95+ 목표)
 
 **Task ID:** T-021
-**Status:** BACKLOG
+**Status:** DONE
 **Importance:** MUST
 **Complexity:** 6/10
 **Urgency:** 8/10
@@ -32,4 +32,4 @@ Google Lighthouse 점수 95점 이상, 주요 성능 지표(FCP < 1.5s, TTFB < 2
 ---
 
 **Created:** 2025-07-30T03:34:48.326Z
-**Updated:** 2025-07-30T03:34:48.326Z
+**Updated:** 2025-08-10T23:40:17.442Z

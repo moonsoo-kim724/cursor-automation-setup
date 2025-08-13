@@ -1,7 +1,7 @@
 # 카카오톡/이메일/Slack 자동 알림 기능
 
 **Task ID:** T-008
-**Status:** BACKLOG
+**Status:** DONE
 **Importance:** MUST
 **Complexity:** 6/10
 **Urgency:** 8/10
@@ -27,4 +27,4 @@
 ---
 
 **Created:** 2025-07-29T04:44:49.562Z
-**Updated:** 2025-07-29T04:44:49.562Z
+**Updated:** 2025-08-10T23:40:08.633Z
